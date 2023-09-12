@@ -16,7 +16,7 @@ You should see "Hello World" pop up in textbox... tada!
 
 Lots more work to come... this is just the beginning of a greater project... hopefully.
 
-# Log Viewer Version 1.0
+# Log Viewer Version 1.2
 View remote log contents in real time on a web page.
 
 Remote servers have a python script watching specific log files and send POST requests every time new content is added to the log file.
@@ -27,6 +27,19 @@ Dependancies:
 - inotify
 - requests
 - redis
+
+## Changes
+1.2:
+    - All python packages are installed via pip from offline packages, including gunicorn and gevent.
+    - gunicorn is installed and uitilized.
+    - bloat packages removed
+
+Up coming:
+    - HTTPS
+    - Form for creating more sources, and the display windows for each of those sources.
+    - string validation and termination
+    - authentication?
+    - stylesheets
 
 # app.py
 The flask front end... Nothing too special here. Establishes routes and publishes incoming data.

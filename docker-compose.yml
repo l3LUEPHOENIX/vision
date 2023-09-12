@@ -1,8 +1,8 @@
-version: '1.0'
+version: '1.1'
 services:
   log-viewer:
-    image: gibson/log-viewer
-    build: ./log-viewer/Dockerfile
+    image: gibson/log-viewer:1.1
+    build: ./log-viewer
     hostname: log-viewer
     ports:
       - "8000:8000"
