@@ -9,14 +9,11 @@ Run: `docker compose up -d`
 
 Open your web browser to `http://localhost:8000`
 
-**curl must be installed on your system**
-Open up a terminal and run: `curl -H "Content-type: application/json" -d '{"message":"Hello World!"}' -X POST http://localhost:8000/publish`
-
-You should see "Hello World" pop up in textbox... tada!
+You should see logs populating in both boxes... tada!
 
 Lots more work to come... this is just the beginning of a greater project... hopefully.
 
-# Log Viewer Version 1.1
+# Log Viewer Version 1.2
 View remote log contents in real time on a web page.
 
 Remote servers have a python script watching specific log files and send POST requests every time new content is added to the log file.
@@ -34,9 +31,14 @@ Dependancies:
     - gunicorn is installed and uitilized.
     - bloat packages removed
 
+1.2:
+    - log-source1 docker container for testing
+    - tweaks to publisher.py to be put into log-source1 container
+    - tweaks to event_generator.py to be put into log-source1 container
+    - run.sh made in order to start both publisher.py and event_generator.py in the log-source1 container
+
 Up coming:
     - HTTPS
-    - Form for creating more sources, and the display windows for each of those sources.
     - string validation and termination
     - authentication?
     - stylesheets
