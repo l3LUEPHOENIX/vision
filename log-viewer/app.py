@@ -18,9 +18,9 @@ def publish():
     if request.get_json():
         message = request.get_json()
         sse.publish(message, type='event')
-        return "SUCCESS: JSON"
+        return "SUCCESS: JSON\n"
     else:
-        return "FAILED TO PUBLISH DATA"
+        return "FAILED TO PUBLISH DATA\n"
     
 if __name__ == '__main__':
     # To start with gunicorn:
