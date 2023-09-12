@@ -13,6 +13,13 @@ You should see logs populating in both boxes... tada!
 
 Lots more work to come... this is just the beginning of a greater project... hopefully.
 
+## Troubleshoot
+### Windows
+#### exec ./run.sh no such file or directory
+If when trying to run `docker compose up -d`, the log-source containers fail to launch, run: `git config --global core.autocrlf false`
+
+Then delete the repo and re-clone it. After that, try docker compose again.
+
 # Log Viewer Version 1.2
 View remote log contents in real time on a web page.
 
