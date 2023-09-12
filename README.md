@@ -40,6 +40,7 @@ Up coming:
     - string validation and termination
     - authentication?
     - stylesheets
+    - Download log
 
 # app.py
 The flask front end... Nothing too special here. Establishes routes and publishes incoming data.

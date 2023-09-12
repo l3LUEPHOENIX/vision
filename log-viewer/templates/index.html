@@ -6,15 +6,16 @@
 <body>
   <h1>Log Viewer</h1>
   <div id="data-container">
-    <textarea id="messages" cols="150" rows="50" readonly="true" wrap="true"></textarea>
+    <textarea id="edp" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+    <textarea id="sar" cols="80" rows="50" readonly="true" wrap="true"></textarea>
   </div>
   <script>
-    const dataContainer = document.getElementById('messages');
+    
     var source = new EventSource("{{ url_for('sse.stream') }}");
-    source.addEventListener('event', function(event) {
-        var data = JSON.parse(event.data);
+    source.addEventListener('event', function(event) {  
+      var data = JSON.parse(event.data);
         
-        document.getElementById('messages').textContent += `${data.message}\n`
+        document.getElementById(`${data.source}`).textContent += `${data.message}\n`
 
     }, false);
     source.addEventListener('error', function(event) {
