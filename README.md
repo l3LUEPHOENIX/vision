@@ -1,3 +1,21 @@
+# Try it!
+Clone the repo:
+`git clone https://github.com/l3LUEPHOENIX/log-viewer.git`
+
+Navigate inside the repo
+
+**Obviously, you need docker and might also need to install docker compose**
+Run: `docker compose up -d`
+
+Open your web browser to `http://localhost:8000`
+
+**curl must be installed on your system**
+Open up a terminal and run: `curl -H "Content-type: application/json" -d '{"message":"Hello World!"}' -X POST http://localhost:8000/publish`
+
+You should see "Hello World" pop up in textbox... tada!
+
+Lots more work to come... this is just the beginning of a greater project... hopefully.
+
 # Log Viewer Version 1.0
 View remote log contents in real time on a web page.
 
