@@ -16,7 +16,7 @@ You should see "Hello World" pop up in textbox... tada!
 
 Lots more work to come... this is just the beginning of a greater project... hopefully.
 
-# Log Viewer Version 1.2
+# Log Viewer Version 1.1
 View remote log contents in real time on a web page.
 
 Remote servers have a python script watching specific log files and send POST requests every time new content is added to the log file.
@@ -29,7 +29,7 @@ Dependancies:
 - redis
 
 ## Changes
-1.2:
+1.1:
     - All python packages are installed via pip from offline packages, including gunicorn and gevent.
     - gunicorn is installed and uitilized.
     - bloat packages removed
