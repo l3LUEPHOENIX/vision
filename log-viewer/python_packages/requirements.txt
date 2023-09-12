@@ -1,0 +1,11 @@
+python_packages/Flask_SSE-1.0.0-py2.py3-none-any.whl
+python_packages/flask-2.3.3-py3-none-any.whl
+python_packages/Jinja2-3.1.2-py3-none-any.whl
+python_packages/itsdangerous-2.1.2-py3-none-any.whl
+python_packages/MarkupSafe-2.1.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+python_packages/redis-5.0.0-py3-none-any.whl
+python_packages/async_timeout-4.0.3-py3-none-any.whl
+python_packages/six-1.16.0-py2.py3-none-any.whl
+python_packages/blinker-1.6.2-py3-none-any.whl
+python_packages/werkzeug-2.3.7-py3-none-any.whl
+python_packages/click-8.1.7-py3-none-any.whl
