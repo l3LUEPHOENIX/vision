@@ -1,4 +1,17 @@
+# Log Viewer Version 1.3
+View remote log contents in real time on a web page.
+
+Remote servers have a python script watching specific log files and send POST requests every time new content is added to the log file.
+
 # Try it!
+
+Dependancies:
+- Flask
+- Flask-sse
+- inotify
+- requests
+- redis
+
 Clone the repo:
 `git clone https://github.com/l3LUEPHOENIX/log-viewer.git`
 
@@ -20,18 +33,6 @@ If when trying to run `docker compose up -d`, the log-source containers fail to 
 
 Then delete the repo and re-clone it. After that, try docker compose again.
 
-# Log Viewer Version 1.2
-View remote log contents in real time on a web page.
-
-Remote servers have a python script watching specific log files and send POST requests every time new content is added to the log file.
-
-Dependancies:
-- Flask
-- Flask-sse
-- inotify
-- requests
-- redis
-
 ## Changes
 1.1:
     - All python packages are installed via pip from offline packages, including gunicorn and gevent.
@@ -43,24 +44,35 @@ Dependancies:
     - tweaks to publisher.py to be put into log-source1 container
     - tweaks to event_generator.py to be put into log-source1 container
     - run.sh made in order to start both publisher.py and event_generator.py in the log-source1 container
+1.3:
+    - styling
 
 Up coming:
     - HTTPS
     - string validation and termination
     - authentication?
-    - stylesheets
     - Download log
 
-# app.py
+# log-viewer container
+## app.py
 The flask front end... Nothing too special here. Establishes routes and publishes incoming data.
 
-# publisher.py
+## index.html
+This is the only document for now. It contains all necessary styling and javascript.
+
+# log-source1 container (for testing)
+Barebones container that has a log being monitored and traffic sent to log-viewer.
+
+## dummy.log
+The log being watched and being written to by event_generator.py
+
+## publisher.py
 This script lives on the remote server and watches a specified log file. Every time new content is added, it will send a POST request to the flask app and display it on the page.
 
 To test without having to run publisher.py
-`curl -H "Content-type: application/json" -d '{"message":"Hello World!"}' -X POST http://localhost:8000/publish`
+`curl -H "Content-type: application/json" -d '{"message":"Hello World!","source":"edp"}' -X POST http://localhost:8000/publish`
 
 While inotify only works for linux, I plan on finding a better, more crossplatform solution.
 
-# event_generator.py
+## event_generator.py
 I used this to add automatically generate log entries for testing.
