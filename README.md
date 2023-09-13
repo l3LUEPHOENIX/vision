@@ -44,6 +44,7 @@ Then delete the repo and re-clone it. After that, try docker compose again.
     - tweaks to publisher.py to be put into log-source1 container
     - tweaks to event_generator.py to be put into log-source1 container
     - run.sh made in order to start both publisher.py and event_generator.py in the log-source1 container
+
 1.3:
     - styling
 
