@@ -2,12 +2,64 @@
 <html>
 <head>
   <title>Log Viewer</title>
+  <style>
+    body {
+      background-color: #333333;
+    }
+    .data-container {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      padding: 10px;
+    }
+    .data-container-header {
+      padding: 20px;
+      text-align: center;
+      font-size: 30px;
+      grid-column: 1 / span 2;
+      background-color: black;
+      color: white;
+    }
+    .data-container p {
+      margin: 0;
+      padding: 0;
+      font: 20px;
+    }
+    .grid-item {
+      background-color: #595959;
+      color: black;
+      border: 5px solid #262626;
+      font: 20px;
+      height: 500px;
+      margin: 5px;
+    }
+    .grid-item-header {
+      background-color: black;
+      color: white;
+      margin-bottom: 1px;
+      position: sticky;
+    }
+    .grid-item-body {
+      height: 95%;
+      overflow: scroll;
+      overflow-wrap: break-word;
+    }
+  </style>
 </head>
 <body>
-  <h1>Log Viewer</h1>
-  <div id="data-container">
-    <textarea id="edp" cols="80" rows="50" readonly="true" wrap="true"></textarea>
-    <textarea id="sar" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+  <div id="data-container" class="data-container">
+    <div class="data-container-header">LOG VIEWER</div>
+    <div class="grid-item">
+      <div class="grid-item-header">EDP</div>
+      <div id="edp" class="grid-item-body"></div>
+    </div>
+    <div class="grid-item">
+      <div class="grid-item-header">SAR</div>
+      <div id="sar" class="grid-item-body"></div>
+    </div>
+    <!-- <div class="grid-item">
+      <div class="grid-item-header">OTHER</div>
+      <div id="other" class="grid-item-body"></div>
+    </div> -->
   </div>
   <script>
     
@@ -15,7 +67,10 @@
     source.addEventListener('event', function(event) {  
       var data = JSON.parse(event.data);
         
-        document.getElementById(`${data.source}`).textContent += `${data.message}\n`
+        const para = document.createElement("p");
+        const node = document.createTextNode(`${data.message}\n`);
+        para.appendChild(node);
+        document.getElementById(`${data.source}`).appendChild(para);
 
     }, false);
     source.addEventListener('error', function(event) {
