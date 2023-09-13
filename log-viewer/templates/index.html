@@ -24,8 +24,6 @@
     .grid-item {
       color: black;
       font: 20px;
-      align-content: center;
-      justify-content: center;
     }
     .grid-item-header {
       background-color: black;
@@ -34,11 +32,11 @@
       padding: 10px;
       text-align: center;
       font-size: 30px;
-      width: 95%;
     }
     .grid-item-body {
       height: 70vh;
-      width: 95%;
+      box-sizing: border-box;
+      width: 100%;
       resize: none;
       border: 5px solid #262626;
       background-color: #595959;
@@ -55,6 +53,10 @@
     <div class="grid-item">
       <div class="grid-item-header">SAR</div>
       <textarea id="sar" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+    </div>
+    <div class="grid-item">
+      <div class="grid-item-header">OTHER</div>
+      <textarea id="OTHER" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
     </div>
   </div>
   <script>
