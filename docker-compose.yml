@@ -4,6 +4,8 @@ services:
     image: gibson/log-viewer:1.3
     build: ./log-viewer
     hostname: log-viewer
+    depends_on:
+      - redis
     ports:
       - "8000:8000"
     networks:
@@ -16,16 +18,22 @@ services:
       log-view-net:
         ipv4_address: 192.168.1.3
   log-source1:
-    image: gibson/log-source1
-    build: ./log-source1
+    image: gibson/log-source2
+    build: ./log-source2
     hostname: edp
+    depends_on:
+      - log-viewer
+      - redis
     networks:
       log-view-net:
         ipv4_address: 192.168.1.4
   log-source2:
-    image: gibson/log-source1
-    build: ./log-source1
+    image: gibson/log-source2
+    build: ./log-source2
     hostname: sar
+    depends_on:
+      - log-viewer
+      - redis
     networks:
       log-view-net:
         ipv4_address: 192.168.1.5

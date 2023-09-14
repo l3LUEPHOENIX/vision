@@ -1,0 +1,7 @@
+python_packages/certifi-2023.7.22-py3-none-any.whl
+python_packages/charset_normalizer-2.0.12-py3-none-any.whl
+python_packages/idna-3.4-py3-none-any.whl
+python_packages/inotify-0.2.10.tar.gz
+python_packages/nose-1.3.7-py3-none-any.whl
+python_packages/requests-2.27.1-py2.py3-none-any.whl
+python_packages/urllib3-1.26.16-py2.py3-none-any.whl

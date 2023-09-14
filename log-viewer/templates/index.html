@@ -40,6 +40,7 @@
       resize: none;
       border: 5px solid #262626;
       background-color: #595959;
+      overflow-anchor: none;
     }
   </style>
 </head>
@@ -62,11 +63,6 @@
       var data = JSON.parse(event.data);
         
         document.getElementById(`${data.source}`).textContent += `${data.message}\n`
-        
-        var myTextareas = document.getElementsByTagName('textarea');
-        for (let i = 0; i < myTextareas.length; i++) {
-          myTextareas[i].scrollTop = textarea.scrollHeight;
-        }
 
     }, false);
     source.addEventListener('error', function(event) {
