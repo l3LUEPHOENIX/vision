@@ -42,16 +42,23 @@
       background-color: #595959;
       overflow-anchor: none;
     }
+    .follow {
+      background-color: #595959;
+    }
   </style>
 </head>
 <body>
   <div id="data-container" class="data-container">
     <div class="data-container-header">LOG VIEWER</div>
     <div class="grid-item">
+      <input type="checkbox" class="follow" name="follow" id="edp-follow" value="follow">
+      <label for="follow">Follow</label>
       <div class="grid-item-header">EDP</div>
       <textarea id="edp" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
     </div>
     <div class="grid-item">
+      <input type="checkbox" class="follow" name="follow" id="sar-follow" value="follow">
+      <label for="follow">Follow</label>
       <div class="grid-item-header">SAR</div>
       <textarea id="sar" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
     </div>
@@ -62,15 +69,21 @@
     source.addEventListener('event', function(event) {  
       var data = JSON.parse(event.data);
         
+
+      // Add the newest entry into it's respective textarea.
         document.getElementById(`${data.source}`).textContent += `${data.message}\n`;
-        // Eventually enclose this in an 'if' statement that will check a checkbox per text area
-        // that will be labeled 'follow'. If checked, keep croll bar at the bottom, followin the output.
-        // else, do nothing and allow user to scrol freely through text area. 
-        // reason: when it follows the bottom of the text area, no inputs force the user back to the bottom.
-        var textarea = document.getElementsByClassName("grid-item-body");
-        for (i = 0; i < textarea.length; i++) {
-          textarea[i].scrollTop = textarea[i].scrollHeight;
-          // textarea.scrollTop(textarea[i].scrollHeight);
+        
+        // Check to see if each grid-item's follow checkbox is checked. If it is, auto-scroll
+        // the text area to the bottom of the page. If this is checked while data is being added
+        // to the textarea, and the user tries to scroll, their scrolling will be interupted.
+        var myCheckBoxes = document.getElementsByClassName("follow");
+        var myTextAreas = document.getElementsByClassName("grid-item-body");
+        for (i = 0; i < myCheckBoxes.length; i++) {
+          if (myCheckBoxes[i].checked) {
+            
+            myTextAreas[i].scrollTop = myTextAreas[i].scrollHeight;
+          
+          };
         };
 
     }, false);
