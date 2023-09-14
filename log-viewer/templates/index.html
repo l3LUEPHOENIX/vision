@@ -70,7 +70,7 @@
       var data = JSON.parse(event.data);
         
 
-      // Add the newest entry into it's respective textarea.
+        // Add the newest entry into it's respective textarea.
         document.getElementById(`${data.source}`).textContent += `${data.message}\n`;
         
         // Check to see if each grid-item's follow checkbox is checked. If it is, auto-scroll
@@ -85,6 +85,7 @@
           
           };
         };
+        document.getElementById(`${data.source}`).textContent += `${data.message}\n`
 
     }, false);
     source.addEventListener('error', function(event) {
