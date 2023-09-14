@@ -69,22 +69,12 @@
     source.addEventListener('event', function(event) {  
       var data = JSON.parse(event.data);
         
-
-      // Add the newest entry into it's respective textarea.
-        document.getElementById(`${data.source}`).textContent += `${data.message}\n`;
+        document.getElementById(`${data.source}`).textContent += `${data.message}\n`
         
-        // Check to see if each grid-item's follow checkbox is checked. If it is, auto-scroll
-        // the text area to the bottom of the page. If this is checked while data is being added
-        // to the textarea, and the user tries to scroll, their scrolling will be interupted.
-        var myCheckBoxes = document.getElementsByClassName("follow");
-        var myTextAreas = document.getElementsByClassName("grid-item-body");
-        for (i = 0; i < myCheckBoxes.length; i++) {
-          if (myCheckBoxes[i].checked) {
-            
-            myTextAreas[i].scrollTop = myTextAreas[i].scrollHeight;
-          
-          };
-        };
+        var myTextareas = document.getElementsByTagName('textarea');
+        for (let i = 0; i < myTextareas.length; i++) {
+          myTextareas[i].scrollTop = textarea.scrollHeight;
+        }
 
     }, false);
     source.addEventListener('error', function(event) {

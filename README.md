@@ -51,8 +51,16 @@ Then delete the repo and re-clone it. After that, try docker compose again.
 Up coming:
     - HTTPS
     - string validation and termination
-    - authentication?
+    - authentication? (ldap)
     - Download log
+    - changeable fonts (sizes and styles)
+    - api keys?
+    - add and remove sources
+    - downloadable watcher scripts of different types: take arguments for url, log file, and api key
+        - powershell
+        - python
+        - bash
+    - a way to start and stop watcher scripts from web ui
 
 # log-viewer container
 ## app.py
@@ -63,6 +71,9 @@ This is the only document for now. It contains all necessary styling and javascr
 
 # log-source1 container (for testing)
 Barebones container that has a log being monitored and traffic sent to log-viewer.
+
+# log-source2 container (for testing)
+Same files as log-source1 container, except it's running python 3.6.8 instead of 3.10
 
 ## dummy.log
 The log being watched and being written to by event_generator.py
