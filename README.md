@@ -5,24 +5,28 @@ Remote servers have a python script watching specific log files and send POST re
 
 # Try it!
 
-Dependancies:
-- Flask
-- Flask-sse
-- inotify
-- requests
-- redis
+Requires:
+- Python
+    - Flask
+    - Flask-sse
+    - inotify
+    - requests
+    - redis
+- Redis
+- gunicorn
+- gevent
+- Docker
 
-Clone the repo:
+1. Clone the repo:
 `git clone https://github.com/l3LUEPHOENIX/log-viewer.git`
 
-Navigate inside the repo
+2. Navigate inside the repo
 
-**Obviously, you need docker and might also need to install docker compose**
-Run: `docker compose up -d`
+3. Run: `docker compose up -d`
 
-Open your web browser to `http://localhost:8000`
+4. Open your web browser to `http://localhost:8000`
 
-You should see logs populating in both boxes... tada!
+5. You should see logs populating in both boxes... tada!
 
 Lots more work to come... this is just the beginning of a greater project... hopefully.
 
@@ -34,32 +38,32 @@ If when trying to run `docker compose up -d`, the log-source containers fail to 
 Then delete the repo and re-clone it. After that, try docker compose again.
 
 ## Changes
-1.1:
-    - All python packages are installed via pip from offline packages, including gunicorn and gevent.
-    - gunicorn is installed and uitilized.
-    - bloat packages removed
+### 1.1
+- All python packages are installed via pip from offline packages, including gunicorn and gevent.
+- gunicorn is installed and uitilized.
+- bloat packages removed
 
-1.2:
-    - log-source1 docker container for testing
-    - tweaks to publisher.py to be put into log-source1 container
-    - tweaks to event_generator.py to be put into log-source1 container
-    - run.sh made in order to start both publisher.py and event_generator.py in the log-source1 container
+### 1.2
+- log-source1 docker container for testing
+- tweaks to publisher.py to be put into log-source1 container
+- tweaks to event_generator.py to be put into log-source1 container
+- run.sh made in order to start both publisher.py and event_generator.py in the log-source1 container
 
-1.3:
-    - styling
+### 1.3
+- styling
 
 Up coming:
-    - HTTPS
-    - string validation and termination
-    - authentication? (ldap)
-    - Download log
-    - changeable fonts (sizes and styles)
-    - api keys?
-    - add and remove sources
-    - downloadable watcher scripts of different types: take arguments for url, log file, and api key
-        - powershell
-        - python
-        - bash
+- HTTPS
+- string validation and termination
+- authentication? (ldap)
+- Download log
+- changeable fonts (sizes and styles)
+- api keys?
+- add and remove sources
+- downloadable watcher scripts of different types: take arguments for url, log file, and api key
+    - powershell
+    - python
+    - bash
     - a way to start and stop watcher scripts from web ui
 
 # log-viewer container
