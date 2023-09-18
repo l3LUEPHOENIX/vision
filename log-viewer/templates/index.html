@@ -46,32 +46,43 @@
       background-color: #595959;
     }
   </style>
-</head>
-<body>
-  <div id="data-container" class="data-container">
-    <div class="data-container-header">LOG VIEWER</div>
-    <div class="grid-item">
-      <input type="checkbox" class="follow" name="follow" id="edp-follow" value="follow">
-      <label for="follow">Follow</label>
-      <div class="grid-item-header">EDP</div>
-      <textarea id="edp" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
-    </div>
-    <div class="grid-item">
-      <input type="checkbox" class="follow" name="follow" id="sar-follow" value="follow">
-      <label for="follow">Follow</label>
-      <div class="grid-item-header">SAR</div>
-      <textarea id="sar" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
-    </div>
-  </div>
   <script>
     
+    function addSource(form) {
+      var newSource = form.sources.value;
+      console.log(newSource)
+      if (newSource ==  "NONE") {
+        return null
+      } else  if (document.getElementById(`${newSource}-container`)){
+        return null
+      } else {
+        var newBox = `
+        <div id="${newSource}-container" class="grid-item">
+          <input type="checkbox" class="follow" name="follow" id="${newSource}-follow" value="follow">
+          <label for="follow">Follow</label>
+          <button onClick="removeSource(this)">REMOVE</button>
+          <div class="grid-item-header">${newSource.toUpperCase()}</div>
+          <textarea id="${newSource.toLowerCase()}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+        </div>
+        `;
+        document.getElementById("data-container").innerHTML += newBox;
+      };
+    };
+
+    function removeSource(elem) {
+      var sourceBox = elem.parentNode;
+      sourceBox.remove();
+    };
+
     var source = new EventSource("{{ url_for('sse.stream') }}");
     source.addEventListener('event', function(event) {  
       var data = JSON.parse(event.data);
         
 
         // Add the newest entry into it's respective textarea.
-        document.getElementById(`${data.source}`).textContent += `${data.message}\n`;
+        if (document.getElementById(`${data.source}`)) {
+          document.getElementById(`${data.source}`).textContent += `${data.message}\n`;
+        };
         
         // Check to see if each grid-item's follow checkbox is checked. If it is, auto-scroll
         // the text area to the bottom of the page. If this is checked while data is being added
@@ -91,5 +102,35 @@
         alert("Failed to connect to event stream. Is Redis running?");
     }, false);
   </script>
+</head>
+<body>
+  <form action="javascript:;" onsubmit="addSource(this)">
+    <label for="sources">Add a Source: </label>
+
+    <select name="sources" id="sources">
+      <option value="NONE"></option>
+      <option value="edp">EDP</option>
+      <option value="sar">SAR</option>
+      <option value="other">OTHER</option>
+    </select>
+    <input type="submit" value="submit">
+  </form>
+  <div id="data-container" class="data-container">
+    <div class="data-container-header">LOG VIEWER</div>
+    <div id="edp-container" class="grid-item">
+      <input type="checkbox" class="follow" name="follow" id="edp-follow" value="follow">
+      <label for="follow">Follow</label>
+      <button onClick="removeSource(this)">REMOVE</button>
+      <div class="grid-item-header">EDP</div>
+      <textarea id="edp" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+    </div>
+    <div id="sar-container" class="grid-item">
+      <input type="checkbox" class="follow" name="follow" id="sar-follow" value="follow">
+      <label for="follow">Follow</label>
+      <button onClick="removeSource(this)">REMOVE</button>
+      <div class="grid-item-header">SAR</div>
+      <textarea id="sar" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+    </div>
+  </div>
 </body>
 </html>
