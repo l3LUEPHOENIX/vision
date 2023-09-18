@@ -68,6 +68,14 @@
       border-radius: 5px;
     }
 
+    .grid-item-header-button:hover {
+      background-color: #0056b3;
+    }
+
+    .grid-item-header-button:active {
+      background-color: #003166;
+    }
+
     /* Styling for the checkbox */
     .grid-item-header-checkbox {
       margin-left: 10px;
@@ -100,7 +108,7 @@
       console.log(newSource)
       if (newSource ==  "NONE") {
         return null
-      } else  if (document.getElementById(`${newSource}-container`)){
+      } else  if (document.getElementById(`${newSourceId}`)){
         return null
       } else {
         var newBox = `
