@@ -5,6 +5,7 @@
   <style>
     body {
       background-color: #333333;
+      min-width: 1060px;
     }
     .data-container {
       display: grid;
@@ -25,13 +26,51 @@
       color: black;
       font: 20px;
     }
+    /* Styling for the banner container */
     .grid-item-header {
       background-color: black;
-      color: white;
-      margin-bottom: 1px;
-      padding: 10px;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      /* min-width: 479px; */
+    }
+
+    /* Styling for the banner title (aligned to the far left) */
+    .grid-item-header-title {
+      font-size: 24px;
+      flex: 1; /* Takes up remaining space */
+    }
+
+    /* Styling for the checkbox (aligned to the right) */
+    .grid-item-header-checkbox-container {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Styling for the buttons (aligned to the right) */
+    .grid-item-header-button-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .grid-item-header-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin-left: 10px;
+      cursor: pointer;
       text-align: center;
-      font-size: 30px;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+
+    /* Styling for the checkbox */
+    .grid-item-header-checkbox {
+      margin-right: 10px;
     }
     .grid-item-body {
       height: 70vh;
@@ -42,14 +81,18 @@
       background-color: #595959;
       overflow-anchor: none;
     }
-    .follow {
-      background-color: #595959;
+    .grid-item-header-checkbox-label {
+      float: left;
     }
   </style>
   <script>
     
     function addSource(form) {
-      var newSource = form.sources.value;
+      var newSource = JSON.parse(form.sources.value);
+      var newSourceName = newSource.Name
+      var newSourcePath = newSource.Path
+      var newSourceId = newSource.id
+      
       console.log(newSource)
       if (newSource ==  "NONE") {
         return null
@@ -57,12 +100,19 @@
         return null
       } else {
         var newBox = `
-        <div id="${newSource}-container" class="grid-item">
-          <input type="checkbox" class="follow" name="follow" id="${newSource}-follow" value="follow">
-          <label for="follow">Follow</label>
-          <button onClick="removeSource(this)">REMOVE</button>
-          <div class="grid-item-header">${newSource.toUpperCase()}</div>
-          <textarea id="${newSource.toLowerCase()}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+        <div id="${newSourceId}-container" class="grid-item">
+          <div class="grid-item-header">
+            <div class="grid-item-header-title">${newSourceName}:${newSourcePath}</div>
+            <div class="grid-item-header-checkbox-container">
+              <input type="checkbox" class="grid-item-header-checkbox">
+              <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
+            </div>
+            <div class="grid-item-header-button-container">
+              <button class="grid-item-header-button">Download</button>
+              <button onClick="removeSource(this)" class="grid-item-header-button">Remove</button>
+            </div>
+          </div>
+          <textarea id="${newSourceId}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
         </div>
         `;
         document.getElementById("data-container").innerHTML += newBox;
@@ -70,7 +120,7 @@
     };
 
     function removeSource(elem) {
-      var sourceBox = elem.parentNode;
+      var sourceBox = elem.parentNode.parentNode.parentNode;
       sourceBox.remove();
     };
 
@@ -87,7 +137,7 @@
         // Check to see if each grid-item's follow checkbox is checked. If it is, auto-scroll
         // the text area to the bottom of the page. If this is checked while data is being added
         // to the textarea, and the user tries to scroll, their scrolling will be interupted.
-        var myCheckBoxes = document.getElementsByClassName("follow");
+        var myCheckBoxes = document.getElementsByClassName("grid-item-header-checkbox");
         var myTextAreas = document.getElementsByClassName("grid-item-body");
         for (i = 0; i < myCheckBoxes.length; i++) {
           if (myCheckBoxes[i].checked) {
@@ -108,28 +158,42 @@
     <label for="sources">Add a Source: </label>
 
     <select name="sources" id="sources">
-      <option value="NONE"></option>
-      <option value="edp">EDP</option>
-      <option value="sar">SAR</option>
-      <option value="other">OTHER</option>
+      <option value='NONE'></option>
+      <option value='{"Name":"EDP","Path":"/var/log/edp/edp_provision.log","id":"edp-provision"}'>EDP</option>
+      <option value='{"Name":"SAR","Path":"/root/docker_artifacts/skyflower.log","id":"sar-skyflower"}'>SAR</option>
+      <option value='{"Name":"OTHER","Path":"none","id":"other"}'>OTHER</option>
     </select>
     <input type="submit" value="submit">
   </form>
   <div id="data-container" class="data-container">
     <div class="data-container-header">LOG VIEWER</div>
     <div id="edp-container" class="grid-item">
-      <input type="checkbox" class="follow" name="follow" id="edp-follow" value="follow">
-      <label for="follow">Follow</label>
-      <button onClick="removeSource(this)">REMOVE</button>
-      <div class="grid-item-header">EDP</div>
-      <textarea id="edp" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+      <div class="grid-item-header">
+        <div class="grid-item-header-title">EDP:/var/log/edp/edp_provision.log</div>
+        <div class="grid-item-header-checkbox-container">
+          <input type="checkbox" class="grid-item-header-checkbox">
+          <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
+        </div>
+        <div class="grid-item-header-button-container">
+          <button class="grid-item-header-button">Download</button>
+          <button onClick="removeSource(this)" class="grid-item-header-button">Remove</button>
+        </div>
+      </div>
+      <textarea id="edp-provision" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
     </div>
     <div id="sar-container" class="grid-item">
-      <input type="checkbox" class="follow" name="follow" id="sar-follow" value="follow">
-      <label for="follow">Follow</label>
-      <button onClick="removeSource(this)">REMOVE</button>
-      <div class="grid-item-header">SAR</div>
-      <textarea id="sar" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+      <div class="grid-item-header">
+        <div class="grid-item-header-title">SAR:/root/docker_artifacts/skyflower.log</div>
+        <div class="grid-item-header-checkbox-container">
+          <input type="checkbox" class="grid-item-header-checkbox">
+          <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
+        </div>
+        <div class="grid-item-header-button-container">
+          <button class="grid-item-header-button">Download</button>
+          <button onClick="removeSource(this)" class="grid-item-header-button">Remove</button>
+        </div>
+      </div>
+      <textarea id="sar-skyflower" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
     </div>
   </div>
 </body>

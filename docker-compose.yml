@@ -20,7 +20,7 @@ services:
   log-source1:
     image: gibson/log-source2
     build: ./log-source2
-    hostname: edp
+    hostname: edp-provision
     depends_on:
       - log-viewer
       - redis
@@ -30,7 +30,7 @@ services:
   log-source2:
     image: gibson/log-source2
     build: ./log-source2
-    hostname: sar
+    hostname: sar-skyflower
     depends_on:
       - log-viewer
       - redis
