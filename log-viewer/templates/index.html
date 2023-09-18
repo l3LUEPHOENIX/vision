@@ -46,25 +46,26 @@
       background-color: #595959;
     }
   </style>
-</head>
-<body>
-  <div id="data-container" class="data-container">
-    <div class="data-container-header">LOG VIEWER</div>
-    <div class="grid-item">
-      <input type="checkbox" class="follow" name="follow" id="edp-follow" value="follow">
-      <label for="follow">Follow</label>
-      <div class="grid-item-header">EDP</div>
-      <textarea id="edp" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
-    </div>
-    <div class="grid-item">
-      <input type="checkbox" class="follow" name="follow" id="sar-follow" value="follow">
-      <label for="follow">Follow</label>
-      <div class="grid-item-header">SAR</div>
-      <textarea id="sar" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
-    </div>
-  </div>
   <script>
     
+    function addSource(form) {
+      var newSource = form.sources.value;
+      console.log(newSource)
+      if (newSource ==  "NONE") {
+        return null
+      } else {
+        var newBox = `
+        <div class="grid-item">
+          <input type="checkbox" class="follow" name="follow" id="${newSource}-follow" value="follow">
+          <label for="follow">Follow</label>
+          <div class="grid-item-header">${newSource.toUpperCase()}</div>
+          <textarea id="${newSource.toLowerCase()}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+        </div>
+        `;
+        document.getElementById("data-container").innerHTML += newBox;
+      };
+    };
+
     var source = new EventSource("{{ url_for('sse.stream') }}");
     source.addEventListener('event', function(event) {  
       var data = JSON.parse(event.data);
@@ -91,5 +92,33 @@
         alert("Failed to connect to event stream. Is Redis running?");
     }, false);
   </script>
+</head>
+<body>
+  <form action="javascript:;" onsubmit="addSource(this)">
+    <label for="sources">Add a Source: </label>
+
+    <select name="sources" id="sources">
+      <option value="NONE"></option>
+      <option value="edp">EDP</option>
+      <option value="sar">SAR</option>
+      <option value="other">OTHER</option>
+    </select>
+    <input type="submit" value="submit">
+  </form>
+  <div id="data-container" class="data-container">
+    <div class="data-container-header">LOG VIEWER</div>
+    <div class="grid-item">
+      <input type="checkbox" class="follow" name="follow" id="edp-follow" value="follow">
+      <label for="follow">Follow</label>
+      <div class="grid-item-header">EDP</div>
+      <textarea id="edp" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+    </div>
+    <div class="grid-item">
+      <input type="checkbox" class="follow" name="follow" id="sar-follow" value="follow">
+      <label for="follow">Follow</label>
+      <div class="grid-item-header">SAR</div>
+      <textarea id="sar" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+    </div>
+  </div>
 </body>
 </html>
