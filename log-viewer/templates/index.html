@@ -5,7 +5,7 @@
   <style>
     body {
       background-color: #333333;
-      min-width: 1060px;
+      min-width: 1100px;
     }
     .data-container {
       display: grid;
@@ -70,7 +70,10 @@
 
     /* Styling for the checkbox */
     .grid-item-header-checkbox {
-      margin-right: 10px;
+      margin-left: 10px;
+      float: right; /* delete me later */
+      height: 35px;
+      width: 35px;
     }
     .grid-item-body {
       height: 70vh;
@@ -83,6 +86,7 @@
     }
     .grid-item-header-checkbox-label {
       float: left;
+      font-size: 20px;
     }
   </style>
   <script>
@@ -104,8 +108,8 @@
           <div class="grid-item-header">
             <div class="grid-item-header-title">${newSourceName}:${newSourcePath}</div>
             <div class="grid-item-header-checkbox-container">
-              <input type="checkbox" class="grid-item-header-checkbox">
               <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
+              <input type="checkbox" class="grid-item-header-checkbox">
             </div>
             <div class="grid-item-header-button-container">
               <button class="grid-item-header-button">Download</button>
@@ -171,8 +175,8 @@
       <div class="grid-item-header">
         <div class="grid-item-header-title">EDP:/var/log/edp/edp_provision.log</div>
         <div class="grid-item-header-checkbox-container">
-          <input type="checkbox" class="grid-item-header-checkbox">
           <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
+          <input type="checkbox" class="grid-item-header-checkbox">
         </div>
         <div class="grid-item-header-button-container">
           <button class="grid-item-header-button">Download</button>
@@ -185,8 +189,8 @@
       <div class="grid-item-header">
         <div class="grid-item-header-title">SAR:/root/docker_artifacts/skyflower.log</div>
         <div class="grid-item-header-checkbox-container">
-          <input type="checkbox" class="grid-item-header-checkbox">
           <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
+          <input type="checkbox" class="grid-item-header-checkbox">
         </div>
         <div class="grid-item-header-button-container">
           <button class="grid-item-header-button">Download</button>
