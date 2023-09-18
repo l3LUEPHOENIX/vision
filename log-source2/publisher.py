@@ -5,7 +5,7 @@ import json
 import inotify.adapters
 import socket
 
-url = 'http://192.168.1.2:8000/publish'
+url = 'https://192.168.1.2:8443/publish'
 
 # response = requests.post(url, data=json.dumps(data))
 
@@ -30,7 +30,7 @@ try:
             new_line = log_file.readline()
             while new_line:
                 data = {'message': new_line.strip(), 'source': socket.gethostname()}
-                requests.post(url, json=json.dumps(data))
+                requests.post(url, json=json.dumps(data),verify=False)
 
                 print(new_line.strip())
                 new_line = log_file.readline()

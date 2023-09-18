@@ -25,4 +25,4 @@ def publish():
 if __name__ == '__main__':
     # To start with gunicorn:
     # gunicorn app:app --worker-class gevent --bind 0.0.0.0:8000
-    app.run(host="0.0.0.0",port=8000)
+    app.run(host="0.0.0.0",port=8443,ssl_context=('cert.pem', 'key.pem'))
