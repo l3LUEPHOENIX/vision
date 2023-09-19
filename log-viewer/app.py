@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sse import sse
+import redis
 
 app = Flask(__name__)
 app.register_blueprint(sse, url_prefix='/stream')
