@@ -1,0 +1,85 @@
+body {
+    background-color: #333333;
+    min-width: 1100px;
+}
+.data-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    column-gap: 5px;
+    padding: 10px;
+}
+.data-container-header {
+    padding: 20px;
+    text-align: center;
+    font-size: 30px;
+    grid-column: 1 / span 2;
+    background-color: black;
+    color: white;
+    margin-bottom: 10px;
+}
+.grid-item {
+    color: black;
+    font: 20px;
+}
+/* Styling for the banner container */
+.grid-item-header {
+    background-color: black;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+/* Styling for the banner title (aligned to the far left) */
+.grid-item-header-title {
+    font-size: 24px;
+    flex: 1; /* Takes up remaining space */
+}
+/* Styling for the buttons (aligned to the right) */
+.grid-item-header-button-container {
+    display: flex;
+    align-items: center;
+}
+.grid-item-header-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+}
+.grid-item-header-button:hover {
+    background-color: #0056b3;
+}
+.grid-item-header-button:active {
+    background-color: #003166;
+}
+/* Styling for the checkbox (aligned to the right) */
+.grid-item-header-checkbox-container {
+    display: flex;
+    align-items: center;
+}
+.grid-item-header-checkbox {
+    margin-left: 10px;
+    float: right;
+    height: 35px;
+    width: 35px;
+}
+.grid-item-header-checkbox-label {
+    float: left;
+    font-size: 20px;
+}
+.grid-item-body {
+    height: 70vh;
+    box-sizing: border-box;
+    width: 100%;
+    resize: none;
+    border: 5px solid #262626;
+    background-color: #595959;
+    overflow-anchor: none;
+    font-size: 19px;
+}

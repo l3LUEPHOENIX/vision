@@ -2,176 +2,8 @@
 <html>
 <head>
   <title>Log Viewer</title>
-  <style>
-    body {
-      background-color: #333333;
-      min-width: 1100px;
-    }
-    .data-container {
-      display: grid;
-      grid-template-columns: 50% 50%;
-      column-gap: 5px;
-      padding: 10px;
-    }
-    .data-container-header {
-      padding: 20px;
-      text-align: center;
-      font-size: 30px;
-      grid-column: 1 / span 2;
-      background-color: black;
-      color: white;
-      margin-bottom: 10px;
-    }
-    .grid-item {
-      color: black;
-      font: 20px;
-    }
-    /* Styling for the banner container */
-    .grid-item-header {
-      background-color: black;
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      /* min-width: 479px; */
-    }
-
-    /* Styling for the banner title (aligned to the far left) */
-    .grid-item-header-title {
-      font-size: 24px;
-      flex: 1; /* Takes up remaining space */
-    }
-
-    /* Styling for the checkbox (aligned to the right) */
-    .grid-item-header-checkbox-container {
-      display: flex;
-      align-items: center;
-    }
-
-    /* Styling for the buttons (aligned to the right) */
-    .grid-item-header-button-container {
-      display: flex;
-      align-items: center;
-    }
-
-    .grid-item-header-button {
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      margin-left: 10px;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-      font-size: 16px;
-      border-radius: 5px;
-    }
-
-    .grid-item-header-button:hover {
-      background-color: #0056b3;
-    }
-
-    .grid-item-header-button:active {
-      background-color: #003166;
-    }
-
-    /* Styling for the checkbox */
-    .grid-item-header-checkbox {
-      margin-left: 10px;
-      float: right; /* delete me later */
-      height: 35px;
-      width: 35px;
-    }
-    .grid-item-body {
-      height: 70vh;
-      box-sizing: border-box;
-      width: 100%;
-      resize: none;
-      border: 5px solid #262626;
-      background-color: #595959;
-      overflow-anchor: none;
-      font-size: 19px;
-    }
-    .grid-item-header-checkbox-label {
-      float: left;
-      font-size: 20px;
-    }
-  </style>
-  <script>
-    
-    function addSource(form) {
-      var newSource = JSON.parse(form.sources.value);
-      var newSourceName = newSource.Name;
-      var newSourcePath = newSource.Path;
-      var newSourceId = newSource.id;
-      
-      console.log(newSource)
-      if (newSource ==  "NONE") {
-        return null
-      } else  if (document.getElementById(`${newSourceId}`)){
-        return null
-      } else {
-        var newBox = `
-        <div id="${newSourceId}-container" class="grid-item">
-          <div class="grid-item-header">
-            <div class="grid-item-header-title">${newSourceName}:${newSourcePath}</div>
-            <div class="grid-item-header-checkbox-container">
-              <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
-              <input type="checkbox" class="grid-item-header-checkbox">
-            </div>
-            <div class="grid-item-header-button-container">
-              <button class="grid-item-header-button">Download</button>
-              <button onClick="removeSource(this)" class="grid-item-header-button">Remove</button>
-            </div>
-          </div>
-          <textarea id="${newSourceId}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
-        </div>
-        `;
-        document.getElementById("data-container").innerHTML += newBox;
-      };
-    };
-
-    function removeSource(elem) {
-      var sourceBox = elem.parentNode.parentNode.parentNode;
-      sourceBox.remove();
-    };
-
-    function changeFontSize(size) {
-      var myTextAreas = document.getElementsByTagName("textarea")
-      for (i = 0; i < myTextAreas.length; i++) {
-        myTextAreas[i].style.fontSize = size;
-      };
-    };
-
-    var source = new EventSource("{{ url_for('sse.stream') }}");
-    source.addEventListener('event', function(event) {  
-      var data = JSON.parse(event.data);
-        
-
-        // Add the newest entry into it's respective textarea.
-        if (document.getElementById(`${data.source}`)) {
-          document.getElementById(`${data.source}`).textContent += `${data.message}\n`;
-        };
-        
-        // Check to see if each grid-item's follow checkbox is checked. If it is, auto-scroll
-        // the text area to the bottom of the page. If this is checked while data is being added
-        // to the textarea, and the user tries to scroll, their scrolling will be interupted.
-        var myCheckBoxes = document.getElementsByClassName("grid-item-header-checkbox");
-        var myTextAreas = document.getElementsByClassName("grid-item-body");
-        for (i = 0; i < myCheckBoxes.length; i++) {
-          if (myCheckBoxes[i].checked) {
-            
-            myTextAreas[i].scrollTop = myTextAreas[i].scrollHeight;
-          
-          };
-        };
-
-    }, false);
-    source.addEventListener('error', function(event) {
-        alert("Failed to connect to event stream. Is Redis running?");
-    }, false);
-  </script>
+  <link rel="stylesheet" href="static/style.css">
+  <script src="static/index.js"></script>
 </head>
 <body>
   <form action="javascript:;" onsubmit="addSource(this)">
@@ -182,14 +14,14 @@
       <option value='{"Name":"SAR","Path":"/root/docker_artifacts/skyflower.log","id":"sar-skyflower"}'>SAR</option>
       <option value='{"Name":"OTHER","Path":"none","id":"other"}'>OTHER</option>
     </select>
-    <input type="submit" value="submit">
+    <input type="submit" value="Add">
     <label for="fontsize">Font Size: </label>
     <select name="fontsize" id="fontsize" onchange="changeFontSize(this.value)">
       <option value="15px">15</option>
       <option value="16px">16</option>
       <option value="17px">17</option>
       <option value="18px">18</option>
-      <option value="19px">19</option>
+      <option value="19px" selected>19</option>
       <option value="20px">20</option>
       <option value="21px">21</option>
       <option value="22px">22</option>
@@ -206,8 +38,10 @@
           <input type="checkbox" class="grid-item-header-checkbox">
         </div>
         <div class="grid-item-header-button-container">
+          <button onClick="clearTextarea(this)" class="grid-item-header-button">Clear</button>
           <button class="grid-item-header-button">Download</button>
           <button onClick="removeSource(this)" class="grid-item-header-button">Remove</button>
+          <button onClick="toggleHide(this)" class="grid-item-header-button" style="display:block;">-</button>
         </div>
       </div>
       <textarea id="edp-provision" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
@@ -220,8 +54,10 @@
           <input type="checkbox" class="grid-item-header-checkbox">
         </div>
         <div class="grid-item-header-button-container">
+          <button onClick="clearTextarea(this)" class="grid-item-header-button">Clear</button>
           <button class="grid-item-header-button">Download</button>
           <button onClick="removeSource(this)" class="grid-item-header-button">Remove</button>
+          <button onClick="toggleHide(this)" class="grid-item-header-button" style="display:block;">-</button>
         </div>
       </div>
       <textarea id="sar-skyflower" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
