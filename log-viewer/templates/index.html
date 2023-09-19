@@ -91,6 +91,7 @@
       border: 5px solid #262626;
       background-color: #595959;
       overflow-anchor: none;
+      font-size: 19px;
     }
     .grid-item-header-checkbox-label {
       float: left;
@@ -101,9 +102,9 @@
     
     function addSource(form) {
       var newSource = JSON.parse(form.sources.value);
-      var newSourceName = newSource.Name
-      var newSourcePath = newSource.Path
-      var newSourceId = newSource.id
+      var newSourceName = newSource.Name;
+      var newSourcePath = newSource.Path;
+      var newSourceId = newSource.id;
       
       console.log(newSource)
       if (newSource ==  "NONE") {
@@ -134,6 +135,13 @@
     function removeSource(elem) {
       var sourceBox = elem.parentNode.parentNode.parentNode;
       sourceBox.remove();
+    };
+
+    function changeFontSize(size) {
+      var myTextAreas = document.getElementsByTagName("textarea")
+      for (i = 0; i < myTextAreas.length; i++) {
+        myTextAreas[i].style.fontSize = size;
+      };
     };
 
     var source = new EventSource("{{ url_for('sse.stream') }}");
@@ -168,7 +176,6 @@
 <body>
   <form action="javascript:;" onsubmit="addSource(this)">
     <label for="sources">Add a Source: </label>
-
     <select name="sources" id="sources">
       <option value='NONE'></option>
       <option value='{"Name":"EDP","Path":"/var/log/edp/edp_provision.log","id":"edp-provision"}'>EDP</option>
@@ -176,6 +183,18 @@
       <option value='{"Name":"OTHER","Path":"none","id":"other"}'>OTHER</option>
     </select>
     <input type="submit" value="submit">
+    <label for="fontsize">Font Size: </label>
+    <select name="fontsize" id="fontsize" onchange="changeFontSize(this.value)">
+      <option value="15px">15</option>
+      <option value="16px">16</option>
+      <option value="17px">17</option>
+      <option value="18px">18</option>
+      <option value="19px">19</option>
+      <option value="20px">20</option>
+      <option value="21px">21</option>
+      <option value="22px">22</option>
+      <option value="23px">23</option>
+    </select>
   </form>
   <div id="data-container" class="data-container">
     <div class="data-container-header">LOG VIEWER</div>
