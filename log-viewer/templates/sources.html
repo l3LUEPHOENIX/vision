@@ -22,6 +22,7 @@
     </style>
 </head>
 <body>
+    <form id="edp-provision" method="post"></form>
     <table>
         <tr>
             <td>api-key</td>
@@ -29,31 +30,24 @@
             <td>ContainerId(s)</td>
         </tr>
         <tr>
-            <form name="edp-provision" onsubmit="formSubmit(this)" method="post">
             <td>
-                <input type="text" name="api-key" readonly="true" value="abc123">
-                <!-- <textarea id="textarea1" rows="3" cols="20"></textarea> -->
+                <input form="edp-provision" type="text" name="apikey" readonly="true" value="abc123">
                 <button onclick="copyToClipboard(this)">Copy</button>
             </td>
             <td>
-                <input type="text" name="display-name" value="edp">
-                <!-- <textarea id="textarea2" rows="3" cols="20"></textarea> -->
+                <input form="edp-provision" type="text" name="displayname" value="edp">
             </td>
             <td>
-                <!-- <textarea id="textarea3" rows="3" cols="20"></textarea> -->
-                <div>
-                    <input type="text" id="containerId_1" name="containerId_1" value="provision">
-                    <input type="text" id="containerId_2" name="containerId_2" value="tool-comm">
-                    <button type="button" class="add-button" onclick="addTextinput(this)">Add</button>
-                </div>
+                <input form="edp-provision" type="text" id="containerId_1" name="containerId_1" value="provision">
+                <input form="edp-provision" type="text" id="containerId_2" name="containerId_2" value="tool-comm">
+                <button type="button" class="add-button" onclick="addTextinput(this)">Add</button>
             </td>
             <td>
-                <button type="button" onclick="applyChanges()">Apply Changes</button>
+                <button form="edp-provision">Apply Changes</button>
             </td>
             <td>
-                <button type="button" onclick="deleteRow()">Delete</button>
+                <button form="edp-provision" onclick="deleteRow()">Delete</button>
             </td>
-            </form>
         </tr>
     </table>
     <!-- <form name="form1" onsubmit="formSubmit(this)" method="post">
@@ -77,19 +71,45 @@
 
         function addTextinput(elm) {
             const parentRow = elm.parentNode;
-            const newTextinput = document.createElement('input');
-            
+            // const newTextinput = document.createElement('input');
             var itemCount = parentRow.getElementsByTagName('input').length;
+            var newTextinput = `<input form="edp-provision" type="text" id="containerId_${itemCount + 1}" name="containerId_${itemCount + 1}" value="new-container-id">`
             
-            newTextinput.id = `containerId_${itemCount + 1}`;
-            newTextinput.name = `containerId_${itemCount + 1}`;
-            newTextinput.type = "text";
+            // newTextinput.type = "text";
+            // newTextinput.id = `containerId_${itemCount + 1}`;
+            // newTextinput.name = `containerId_${itemCount + 1}`;
+            // newTextinput.value = "new-container";
+            // newTextinput.form = "edp-provision";
 
-            parentRow.insertBefore(newTextinput, elm); // parentRow.childNodes.getElementById(`containerId_${itemCount}`).nextSibling
+            // parentRow.insertBefore(newTextinput, elm);
+            parentRow.innerHTML += newTextinput;
         }
 
-        function applyChanges() {
-            // Implement your logic to apply changes here
+        function applyChanges(form) {
+            // var formInputs = form.getElementsByTagName('input');
+            // var containerIds = [];
+            
+            // for (i = 0; i < formInputs.length; i++) {
+            //     if (formInputs[i].name.includes("containerId")) {
+            //         containerIds.push(formInputs[i].name);
+            //     }
+            // }
+
+            // var data = {
+            //     'api-key': form.apikey.value,
+            //     'display-name': form.displayname.value,
+            //     'containerIds': containerIds
+            // };
+
+            // fetch('/sources', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Accept': 'application/json',
+            //         'Content-type': 'application/json'
+            //     },
+            //     body: JSON.stringify(data)
+            // }).then(response => console.log(JSON.stringify(response)))
+            form.submit();
         }
 
         function deleteRow() {

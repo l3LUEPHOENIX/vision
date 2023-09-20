@@ -27,8 +27,12 @@ def publish():
 def sources():
     # Return the sources page and POST any changes.
     if request.method == 'POST':
-        inputText = request.form["text-input"]
-        return f"<h1>{inputText}</h1>"
+        data = {
+            'apikey' : request.form['apikey'],
+            'displayname' : request.form['displayname'],
+            'containerIds' : [request.form[containerId] for containerId in request.form.keys() if 'containerId' in containerId]
+        }
+        return f"<h1>{data}</h1>"
     else:
         return render_template('sources.html')
 
