@@ -71,44 +71,21 @@
 
         function addTextinput(elm) {
             const parentRow = elm.parentNode;
-            // const newTextinput = document.createElement('input');
+            const newTextinput = document.createElement('input');
             var itemCount = parentRow.getElementsByTagName('input').length;
-            var newTextinput = `<input form="edp-provision" type="text" id="containerId_${itemCount + 1}" name="containerId_${itemCount + 1}" value="new-container-id">`
+            // var newTextinput = `<input form="edp-provision" type="text" id="containerId_${itemCount + 1}" name="containerId_${itemCount + 1}" value="new-container-id">`
             
-            // newTextinput.type = "text";
-            // newTextinput.id = `containerId_${itemCount + 1}`;
-            // newTextinput.name = `containerId_${itemCount + 1}`;
-            // newTextinput.value = "new-container";
-            // newTextinput.form = "edp-provision";
+            newTextinput.type = "text";
+            newTextinput.id = `containerId_${itemCount + 1}`;
+            newTextinput.name = `containerId_${itemCount + 1}`;
+            newTextinput.value = "new-container";
+            newTextinput.setAttribute("form","edp-provision");
 
-            // parentRow.insertBefore(newTextinput, elm);
-            parentRow.innerHTML += newTextinput;
+            parentRow.insertBefore(newTextinput, elm);
+            // parentRow.innerHTML += newTextinput;
         }
 
         function applyChanges(form) {
-            // var formInputs = form.getElementsByTagName('input');
-            // var containerIds = [];
-            
-            // for (i = 0; i < formInputs.length; i++) {
-            //     if (formInputs[i].name.includes("containerId")) {
-            //         containerIds.push(formInputs[i].name);
-            //     }
-            // }
-
-            // var data = {
-            //     'api-key': form.apikey.value,
-            //     'display-name': form.displayname.value,
-            //     'containerIds': containerIds
-            // };
-
-            // fetch('/sources', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Accept': 'application/json',
-            //         'Content-type': 'application/json'
-            //     },
-            //     body: JSON.stringify(data)
-            // }).then(response => console.log(JSON.stringify(response)))
             form.submit();
         }
 
