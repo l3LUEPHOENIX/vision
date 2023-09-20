@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Table</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        .add-button {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>api-key</td>
+            <td>display-name</td>
+            <td>ContainerId(s)</td>
+        </tr>
+        <tr>
+            <form name="edp-provision" onsubmit="formSubmit(this)" method="post">
+            <td>
+                <input type="text" name="api-key" readonly="true" value="abc123">
+                <!-- <textarea id="textarea1" rows="3" cols="20"></textarea> -->
+                <button onclick="copyToClipboard(this)">Copy</button>
+            </td>
+            <td>
+                <input type="text" name="display-name" value="edp">
+                <!-- <textarea id="textarea2" rows="3" cols="20"></textarea> -->
+            </td>
+            <td>
+                <!-- <textarea id="textarea3" rows="3" cols="20"></textarea> -->
+                <div>
+                    <input type="text" id="containerId_1" name="containerId_1" value="provision">
+                    <input type="text" id="containerId_2" name="containerId_2" value="tool-comm">
+                    <button type="button" class="add-button" onclick="addTextinput(this)">Add</button>
+                </div>
+            </td>
+            <td>
+                <button type="button" onclick="applyChanges()">Apply Changes</button>
+            </td>
+            <td>
+                <button type="button" onclick="deleteRow()">Delete</button>
+            </td>
+            </form>
+        </tr>
+    </table>
+    <!-- <form name="form1" onsubmit="formSubmit(this)" method="post">
+        <input type="text" name="text-input">
+        <input type="submit">
+    </form>
+    <form name="form2" onsubmit="formSubmit(this)" method="post">
+        <input type="text" name="text-input">
+        <input type="submit">
+    </form> -->
+    <script>
+        function formSubmit(form) {
+            // var textInput = form.text-input.value;
+            alert('submitted');
+        }
+
+        function copyToClipboard(elm) {
+            const input = elm.parentNode.getElementsByTagName('input');
+            navigator.clipboard.writeText(input[0].value);
+        }
+
+        function addTextinput(elm) {
+            const parentRow = elm.parentNode;
+            const newTextinput = document.createElement('input');
+            
+            var itemCount = parentRow.getElementsByTagName('input').length;
+            
+            newTextinput.id = `containerId_${itemCount + 1}`;
+            newTextinput.name = `containerId_${itemCount + 1}`;
+            newTextinput.type = "text";
+
+            parentRow.insertBefore(newTextinput, elm); // parentRow.childNodes.getElementById(`containerId_${itemCount}`).nextSibling
+        }
+
+        function applyChanges() {
+            // Implement your logic to apply changes here
+        }
+
+        function deleteRow() {
+            // Implement your logic to delete the row here
+        }
+    </script>
+</body>
+</html>

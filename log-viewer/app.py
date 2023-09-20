@@ -22,7 +22,16 @@ def publish():
         return "SUCCESS: JSON\n"
     else:
         return "FAILED TO PUBLISH DATA\n"
-    
+
+@app.route('/sources', methods=['GET','POST'])
+def sources():
+    # Return the sources page and POST any changes.
+    if request.method == 'POST':
+        inputText = request.form["text-input"]
+        return f"<h1>{inputText}</h1>"
+    else:
+        return render_template('sources.html')
+
 if __name__ == '__main__':
     # To start with gunicorn:
     # gunicorn app:app --worker-class gevent --bind 0.0.0.0:8000
