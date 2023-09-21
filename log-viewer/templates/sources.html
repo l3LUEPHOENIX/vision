@@ -4,81 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log Viewer - Sources</title>
-    <style>
-        body {
-            background-color: #333333;
-        }
-
-        table {
-            border-collapse: collapse;
-            border-color: #262626;
-            width: 100%;
-        }
-
-        input {
-            border: 1px solid #262626;
-            background-color: #cccccc;
-            height: 25px;
-            min-width: 225px;
-            font-size: 16px;
-        }
-
-        th, td {
-            border: 1px solid #262626;
-            padding: 8px;
-            text-align: left;
-            min-width: 310px;
-        }
-
-        th {
-            background-color: black;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #595959;
-        }
-
-        tr:nth-child(odd) {
-            background-color: #666666;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-gap: 5px;
-        }
-
-        .table-button-container {
-            /* display: flex; */
-            align-items: center;
-        }
-
-        .table-button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 5px 5px;
-            margin: 5px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            border-radius: 5px;
-            white-space: nowrap;
-        }
-
-        .table-button:hover {
-            background-color: #0056b3;
-        }
-
-        .table-button:active {
-            background-color: #003166;
-        }
-    </style>
+    <link rel="stylesheet" href="static/sources.css">
+    <script src="static/sources.js"></script>
 </head>
 <body>
-    <form id="edp-form" method="post"></form>
+    <form id="new-form" method="post"></form>
+    {% for source in logsources %}
+    <form id="{{ source.displayname }}-form" method="post"></form>
+    {% endfor %}
     <table>
         <thead>
             <tr>
@@ -89,77 +22,51 @@
             </tr>
         </thead>
         <tbody>
-            <tr id="edp-row">
-                <td id="edp-apikey">
-                    <input form="edp-form" type="text" name="apikey" readonly="true" value="abc123">
+            <tr id="new-row">
+                <td id="new-apikey">
+                    <input form="new-form" type="text" name="apikey" readonly="true" value="">
                     <button class="table-button" type="button" onclick="copyToClipboard(this)">Copy</button>
                 </td>
-                <td id="edp-displayname">
-                    <input form="edp-form" type="text" name="displayname" value="edp">
+                <td id="new-displayname">
+                    <input form="new-form" type="text" name="displayname" value="new-display-name">
                 </td>
-                <td id="edp-containerids">
+                <td id="new-containerids">
                     <div class="grid-container">
-                        <input form="edp-form" type="text" id="containerId_1" name="containerId_1" value="provision">
-                        <input form="edp-form" type="text" id="containerId_2" name="containerId_2" value="tool-comm">
+                        <input form="new-form" type="text" id="containerId_1" name="containerId_1" value="new-containerid">
                     </div>
                 </td>
-                <td class="table-button-container" id="edp-actions">
+                <td class="table-button-container" id="new-actions">
                     <button class="table-button" type="button" class="add-button" onclick="addTextinput(this)">Add</button>
-                    <button class="table-button" form="edp-form">Apply Changes</button>
-                    <input form="edp-form" type="text" name="actionType" value="UPDATE" style="display:none">
-                    <button class="table-button" form="edp-form" type="button" onclick="deleteRow(this)">Delete</button>
+                    <button class="table-button" form="new-form">Apply Changes</button>
+                    <input form="new-form" type="text" name="actionType" value="UPDATE" style="display:none">
+                    <button class="table-button" form="new-form" type="button" onclick="deleteRow(this)">Delete</button>
                 </td>
             </tr>
+            {% for source in logsources %}
+                <tr id="{{ source.displayname }}-row">
+                    <td id="{{ source.displayname }}-apikey">
+                        <input form="{{ source.displayname }}-form" type="text" name="apikey" readonly="true" value="{{ source.apikey }}">
+                        <button class="table-button" type="button" onclick="copyToClipboard(this)">Copy</button>
+                    </td>
+                    <td id="{{ source.displayname }}-displayname">
+                        <input form="{{ source.displayname }}-form" type="text" name="displayname" value="{{ source.displayname }}">
+                    </td>
+                    <td id="{{ source.displayname }}-containerids">
+                        <div class="grid-container">
+                            {% for containerid in source.containerids %}
+                            <input form="{{ source.displayname }}-form" type="text" id="containerId_{{ loop.index + 1 }}" name="containerId_{{ loop.index + 1 }}" value="{{ containerid }}">
+                            {% endfor %}
+                        </div>
+                    </td>
+                    <td class="table-button-container" id="{{ source.displayname }}-actions">
+                        <button class="table-button" type="button" class="add-button" onclick="addTextinput(this)">Add</button>
+                        <button class="table-button" form="{{ source.displayname }}-form">Apply Changes</button>
+                        <input form="{{ source.displayname }}-form" type="text" name="actionType" value="UPDATE" style="display:none">
+                        <button class="table-button" form="{{ source.displayname }}-form" type="button" onclick="deleteRow(this)">Delete</button>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
-    <!-- <form name="form1" onsubmit="formSubmit(this)" method="post">
-        <input type="text" name="text-input">
-        <input type="submit">
-    </form>
-    <form name="form2" onsubmit="formSubmit(this)" method="post">
-        <input type="text" name="text-input">
-        <input type="submit">
-    </form> -->
-    <script>
-        function formSubmit(form) {
-            // var textInput = form.text-input.value;
-            alert('submitted');
-        }
-
-        function copyToClipboard(elm) {
-            const input = elm.parentNode.getElementsByTagName('input');
-            navigator.clipboard.writeText(input[0].value);
-        }
-
-        function addTextinput(elm) {
-            const containeridRow = elm.parentNode.parentNode.getElementsByClassName('grid-container')[0];
-            const newTextinput = document.createElement('input');
-            var itemCount = containeridRow.getElementsByTagName('input').length;
-            // var newTextinput = `<input form="edp-provision" type="text" id="containerId_${itemCount + 1}" name="containerId_${itemCount + 1}" value="new-container-id">`
-            
-            newTextinput.type = "text";
-            newTextinput.id = `containerId_${itemCount + 1}`;
-            newTextinput.name = `containerId_${itemCount + 1}`;
-            newTextinput.value = "new-container";
-            newTextinput.setAttribute("form","edp-form");
-
-            containeridRow.appendChild(newTextinput);
-            // parentRow.innerHTML += newTextinput;
-        }
-
-        function applyChanges(form) {
-            form.submit();
-        }
-
-        function deleteRow(elm) {
-            // Get the actionType field and set the value to DELETE and remove all elements.
-            const thisRowInputs = elm.parentNode.parentNode.getElementsByTagName("input");
-            const actionType = thisRowInputs[thisRowInputs.length - 1];
-
-            actionType.setAttribute('value','DELETE');
-            document.getElementById(elm.getAttribute('form')).submit();
-            elm.parentNode.parentNode.remove();
-        }
-    </script>
 </body>
 </html>

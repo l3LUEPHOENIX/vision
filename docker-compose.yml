@@ -8,7 +8,7 @@ services:
     depends_on:
       - redis
     environment:
-      MONGODB_DATABASE: log-viewer-db
+      MONGODB_DATABASE: log_viewer_db
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: example
       MONGODB_HOSTNAME: mongodb
@@ -36,7 +36,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
-      MONGO_INITDB_DATABASE: log-viewer-db
+      MONGO_INITDB_DATABASE: log_viewer_db
       MONGO_DATA_DIR: /data/db
       MONGO_LOG_DIR: /dev/null
     networks:
