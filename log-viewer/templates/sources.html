@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Table</title>
+    <title>Log Viewer - Sources</title>
     <style>
         body {
             background-color: #333333;
@@ -15,10 +15,19 @@
             width: 100%;
         }
 
+        input {
+            border: 1px solid #262626;
+            background-color: #cccccc;
+            height: 25px;
+            min-width: 225px;
+            font-size: 16px;
+        }
+
         th, td {
             border: 1px solid #262626;
             padding: 8px;
             text-align: left;
+            min-width: 310px;
         }
 
         th {
@@ -39,6 +48,33 @@
             grid-template-columns: 1fr;
             grid-gap: 5px;
         }
+
+        .table-button-container {
+            /* display: flex; */
+            align-items: center;
+        }
+
+        .table-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 5px;
+            margin: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+
+        .table-button:hover {
+            background-color: #0056b3;
+        }
+
+        .table-button:active {
+            background-color: #003166;
+        }
     </style>
 </head>
 <body>
@@ -56,7 +92,7 @@
             <tr id="edp-row">
                 <td id="edp-apikey">
                     <input form="edp-form" type="text" name="apikey" readonly="true" value="abc123">
-                    <button onclick="copyToClipboard(this)">Copy</button>
+                    <button class="table-button" type="button" onclick="copyToClipboard(this)">Copy</button>
                 </td>
                 <td id="edp-displayname">
                     <input form="edp-form" type="text" name="displayname" value="edp">
@@ -67,11 +103,11 @@
                         <input form="edp-form" type="text" id="containerId_2" name="containerId_2" value="tool-comm">
                     </div>
                 </td>
-                <td id="edp-actions">
-                    <button type="button" class="add-button" onclick="addTextinput(this)">Add</button>
-                    <button form="edp-form">Apply Changes</button>
+                <td class="table-button-container" id="edp-actions">
+                    <button class="table-button" type="button" class="add-button" onclick="addTextinput(this)">Add</button>
+                    <button class="table-button" form="edp-form">Apply Changes</button>
                     <input form="edp-form" type="text" name="actionType" value="UPDATE" style="display:none">
-                    <button form="edp-form" type="button" onclick="deleteRow(this)">Delete</button>
+                    <button class="table-button" form="edp-form" type="button" onclick="deleteRow(this)">Delete</button>
                 </td>
             </tr>
         </tbody>
