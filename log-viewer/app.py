@@ -27,12 +27,22 @@ def publish():
 def sources():
     # Return the sources page and POST any changes.
     if request.method == 'POST':
-        data = {
-            'apikey' : request.form['apikey'],
-            'displayname' : request.form['displayname'],
-            'containerIds' : [request.form[containerId] for containerId in request.form.keys() if 'containerId' in containerId]
-        }
-        return f"<h1>{data}</h1>"
+        if request.form['actionType'] == "UPDATE":
+            data = {
+                'actionType': request.form['actionType'],
+                'apikey' : request.form['apikey'],
+                'displayname' : request.form['displayname'],
+                'containerIds' : [request.form[containerId] for containerId in request.form.keys() if 'containerId' in containerId]
+            }
+            return f"<h1>{data}</h1>"
+        elif request.form['actionType'] == "DELETE":
+            data = {
+                'actionType': request.form['actionType'],
+                'apikey' : request.form['apikey'],
+                'displayname' : request.form['displayname'],
+                'containerIds' : [request.form[containerId] for containerId in request.form.keys() if 'containerId' in containerId]
+            }
+            return f"<h1>{data}</h1>"
     else:
         return render_template('sources.html')
 

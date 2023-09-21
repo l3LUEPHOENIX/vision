@@ -5,50 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Table</title>
     <style>
+        body {
+            background-color: #333333;
+        }
+
         table {
             border-collapse: collapse;
+            border-color: #262626;
             width: 100%;
         }
-        table, th, td {
-            border: 1px solid #ccc;
-        }
+
         th, td {
-            padding: 10px;
+            border: 1px solid #262626;
+            padding: 8px;
             text-align: left;
         }
-        .add-button {
-            margin-bottom: 5px;
+
+        th {
+            background-color: black;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #595959;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #666666;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-gap: 5px;
         }
     </style>
 </head>
 <body>
-    <form id="edp-provision" method="post"></form>
+    <form id="edp-form" method="post"></form>
     <table>
-        <tr>
-            <td>api-key</td>
-            <td>display-name</td>
-            <td>ContainerId(s)</td>
-        </tr>
-        <tr>
-            <td>
-                <input form="edp-provision" type="text" name="apikey" readonly="true" value="abc123">
-                <button onclick="copyToClipboard(this)">Copy</button>
-            </td>
-            <td>
-                <input form="edp-provision" type="text" name="displayname" value="edp">
-            </td>
-            <td>
-                <input form="edp-provision" type="text" id="containerId_1" name="containerId_1" value="provision">
-                <input form="edp-provision" type="text" id="containerId_2" name="containerId_2" value="tool-comm">
-                <button type="button" class="add-button" onclick="addTextinput(this)">Add</button>
-            </td>
-            <td>
-                <button form="edp-provision">Apply Changes</button>
-            </td>
-            <td>
-                <button form="edp-provision" onclick="deleteRow()">Delete</button>
-            </td>
-        </tr>
+        <thead>
+            <tr>
+                <th>API Keys</th>
+                <th>Display Name</th>
+                <th>Container ID(s)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="edp-row">
+                <td id="edp-apikey">
+                    <input form="edp-form" type="text" name="apikey" readonly="true" value="abc123">
+                    <button onclick="copyToClipboard(this)">Copy</button>
+                </td>
+                <td id="edp-displayname">
+                    <input form="edp-form" type="text" name="displayname" value="edp">
+                </td>
+                <td id="edp-containerids">
+                    <div class="grid-container">
+                        <input form="edp-form" type="text" id="containerId_1" name="containerId_1" value="provision">
+                        <input form="edp-form" type="text" id="containerId_2" name="containerId_2" value="tool-comm">
+                    </div>
+                </td>
+                <td id="edp-actions">
+                    <button type="button" class="add-button" onclick="addTextinput(this)">Add</button>
+                    <button form="edp-form">Apply Changes</button>
+                    <input form="edp-form" type="text" name="actionType" value="UPDATE" style="display:none">
+                    <button form="edp-form" type="button" onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
     </table>
     <!-- <form name="form1" onsubmit="formSubmit(this)" method="post">
         <input type="text" name="text-input">
@@ -70,18 +96,18 @@
         }
 
         function addTextinput(elm) {
-            const parentRow = elm.parentNode;
+            const containeridRow = elm.parentNode.parentNode.getElementsByClassName('grid-container')[0];
             const newTextinput = document.createElement('input');
-            var itemCount = parentRow.getElementsByTagName('input').length;
+            var itemCount = containeridRow.getElementsByTagName('input').length;
             // var newTextinput = `<input form="edp-provision" type="text" id="containerId_${itemCount + 1}" name="containerId_${itemCount + 1}" value="new-container-id">`
             
             newTextinput.type = "text";
             newTextinput.id = `containerId_${itemCount + 1}`;
             newTextinput.name = `containerId_${itemCount + 1}`;
             newTextinput.value = "new-container";
-            newTextinput.setAttribute("form","edp-provision");
+            newTextinput.setAttribute("form","edp-form");
 
-            parentRow.insertBefore(newTextinput, elm);
+            containeridRow.appendChild(newTextinput);
             // parentRow.innerHTML += newTextinput;
         }
 
@@ -89,8 +115,14 @@
             form.submit();
         }
 
-        function deleteRow() {
-            // Implement your logic to delete the row here
+        function deleteRow(elm) {
+            // Get the actionType field and set the value to DELETE and remove all elements.
+            const thisRowInputs = elm.parentNode.parentNode.getElementsByTagName("input");
+            const actionType = thisRowInputs[thisRowInputs.length - 1];
+
+            actionType.setAttribute('value','DELETE');
+            document.getElementById(elm.getAttribute('form')).submit();
+            elm.parentNode.parentNode.remove();
         }
     </script>
 </body>
