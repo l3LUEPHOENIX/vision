@@ -16,3 +16,5 @@ python_packages/packaging-23.1-py3-none-any.whl
 python_packages/setuptools-68.2.1-py3-none-any.whl
 python_packages/zope.event-5.0-py3-none-any.whl
 python_packages/zope.interface-6.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+python_packages/dnspython-2.4.2-py3-none-any.whl
+python_packages/pymongo-4.5.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl

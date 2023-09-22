@@ -29,11 +29,11 @@ th {
 }
 
 tr:nth-child(even) {
-    background-color: #595959;
+    background-color: #666666;
 }
 
 tr:nth-child(odd) {
-    background-color: #666666;
+    background-color: #808080;
 }
 
 .grid-container {

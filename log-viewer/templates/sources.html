@@ -22,10 +22,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr id="new-row">
+            <tr id="new">
                 <td id="new-apikey">
-                    <input form="new-form" type="text" name="apikey" readonly="true" value="">
-                    <button class="table-button" type="button" onclick="copyToClipboard(this)">Copy</button>
+                    <input form="new-form" type="text" name="apikey" readonly="true" value="generated-on-submit">
                 </td>
                 <td id="new-displayname">
                     <input form="new-form" type="text" name="displayname" value="new-display-name">
@@ -37,13 +36,12 @@
                 </td>
                 <td class="table-button-container" id="new-actions">
                     <button class="table-button" type="button" class="add-button" onclick="addTextinput(this)">Add</button>
-                    <button class="table-button" form="new-form">Apply Changes</button>
+                    <button class="table-button" form="new-form">Submit</button>
                     <input form="new-form" type="text" name="actionType" value="UPDATE" style="display:none">
-                    <button class="table-button" form="new-form" type="button" onclick="deleteRow(this)">Delete</button>
                 </td>
             </tr>
             {% for source in logsources %}
-                <tr id="{{ source.displayname }}-row">
+                <tr id="{{ source.displayname }}">
                     <td id="{{ source.displayname }}-apikey">
                         <input form="{{ source.displayname }}-form" type="text" name="apikey" readonly="true" value="{{ source.apikey }}">
                         <button class="table-button" type="button" onclick="copyToClipboard(this)">Copy</button>
@@ -53,8 +51,8 @@
                     </td>
                     <td id="{{ source.displayname }}-containerids">
                         <div class="grid-container">
-                            {% for containerid in source.containerids %}
-                            <input form="{{ source.displayname }}-form" type="text" id="containerId_{{ loop.index + 1 }}" name="containerId_{{ loop.index + 1 }}" value="{{ containerid }}">
+                            {% for containerid in source.containerIds %}
+                            <input form="{{ source.displayname }}-form" type="text" id="containerId_{{ loop.index }}" name="containerId_{{ loop.index }}" value="{{ containerid }}">
                             {% endfor %}
                         </div>
                     </td>

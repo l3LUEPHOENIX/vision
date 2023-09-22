@@ -28,6 +28,7 @@ services:
     image: mongo
     hostname: mongodb
     container_name: log-viewer-mongodb
+    command: mongod --auth
     volumes:
       - ./mongodb/data:/data/db
     depends_on:

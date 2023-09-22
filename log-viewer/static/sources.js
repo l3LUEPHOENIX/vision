@@ -10,6 +10,7 @@ function copyToClipboard(elm) {
 
 function addTextinput(elm) {
     const containeridRow = elm.parentNode.parentNode.getElementsByClassName('grid-container')[0];
+    const rowID = elm.parentNode.parentNode.getAttribute('id');
     const newTextinput = document.createElement('input');
     var itemCount = containeridRow.getElementsByTagName('input').length;
     // var newTextinput = `<input form="edp-provision" type="text" id="containerId_${itemCount + 1}" name="containerId_${itemCount + 1}" value="new-container-id">`
@@ -18,7 +19,7 @@ function addTextinput(elm) {
     newTextinput.id = `containerId_${itemCount + 1}`;
     newTextinput.name = `containerId_${itemCount + 1}`;
     newTextinput.value = "new-container";
-    newTextinput.setAttribute("form","edp-form");
+    newTextinput.setAttribute("form",`${rowID}-form`);
 
     containeridRow.appendChild(newTextinput);
     // parentRow.innerHTML += newTextinput;

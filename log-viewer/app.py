@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sse import sse
-from pymongo import MongoClient
+import pymongo
 import secrets
 import os
 import redis
@@ -11,13 +11,12 @@ app.config["REDIS_URL"] = "redis://192.168.1.3"
 app.config['DEBUG'] = True
 
 # Create a mongodb client
-client = MongoClient(os.environ['MONGODB_HOSTNAME'], 27017, username=os.environ['MONGODB_USERNAME'],password=os.environ['MONGODB_PASSWORD'])
+client = pymongo.MongoClient(os.environ['MONGODB_HOSTNAME'], 27017, username=os.environ['MONGODB_USERNAME'],password=os.environ['MONGODB_PASSWORD'])
 
 # Get the Log Viewer database from mongodb
-db = client.log_viewer_db
-
+db = client["log_viewer_db"]
 # Get/Create the sources collection in monogdb
-sources = db.sources
+log_sources = db["sources"]
 
 @app.route('/')
 def index():
@@ -42,27 +41,29 @@ def sources():
         apikey = {'apikey':request.form['apikey']}
         if request.form['actionType'] == "UPDATE":
             data = {
-                'displayname' : request.form['displayname'],
-                'containerIds' : [request.form[containerId] for containerId in request.form.keys() if 'containerId' in containerId and request.form[containerId] is not '']
+                "$set" : {
+                    'displayname' : request.form['displayname'],
+                    'containerIds' : [request.form[containerId] for containerId in request.form.keys() if 'containerId' in containerId and request.form[containerId] != '']
+                }
             }
-            if sources.find_one(apikey):
-                sources.update_one(apikey,data)
+            if log_sources.find_one(apikey):
+                log_sources.update_one(apikey,data)
             else:
                 # Generate api-key and get all fields
                 newdata = {
                     'apikey': secrets.token_urlsafe(30),
                     'displayname': request.form['displayname'],
-                    'containerIds' : [request.form[containerId] for containerId in request.form.keys() if 'containerId' in containerId and request.form[containerId] is not '']
+                    'containerIds' : [request.form[containerId] for containerId in request.form.keys() if 'containerId' in containerId and request.form[containerId] != '']
                 }
-                sources.insert_one(newdata)
+                log_sources.insert_one(newdata)
             return redirect(url_for('sources'))
         elif request.form['actionType'] == "DELETE":
-            if sources.find_one(apikey):
-                sources.delete_one(apikey)
+            if log_sources.find_one(apikey):
+                log_sources.delete_one(apikey)
             return redirect(url_for('sources'))
     else:
         # Turn mongo cursor object (output of find()) into a list.
-        data = [document for document in sources.find()]
+        data = list(log_sources.find())
         return render_template('sources.html', logsources=data)
 
 if __name__ == '__main__':
