@@ -22,7 +22,7 @@ def validatePost(data):
     try:
         provided_version_number = data["version"]
     except:
-        return False
+        return {'message':data["version"],'containerId':'test-test'}
 
     if data["version"] == 1:
         try:
@@ -30,7 +30,7 @@ def validatePost(data):
             provided_containerId = data["content"]["containerId"]
             provided_message = data["content"]["message"]
         except:
-            return False
+            return "Bad structure"
         keys = [ document["apikey"] for document in list(log_sources.find())]
         if provided_key in keys:
             data_profile = log_sources.find_one({'apikey':provided_key})
@@ -38,11 +38,11 @@ def validatePost(data):
             if provided_containerId in allowed_containers:
                 return {'message': provided_message, 'containerId': f"{data_profile['displayname']}-{provided_containerId}"}
             else:
-                return False
+                return "Bad ContainerId"
         else:
-            return False
+            return "Bad key"
     else:
-        return False
+        return "Bad version number"
 
 @app.route('/')
 def index():
@@ -57,13 +57,13 @@ def publish():
     if request.get_json():
         data = request.get_json()
         validatedData = validatePost(data)
-        if validatedData:
+        if isinstance(validatedData, dict):
             sse.publish(validatedData, type='event')
             return "SUCCESS: JSON\n"
         else:
-            abort(400)
+            abort(400,validatedData)
     else:
-        return abort(400)
+        return abort(400,"not a json")
 
 @app.route('/sources', methods=['GET','POST'])
 def sources():
