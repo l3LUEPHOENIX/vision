@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, abort
 from flask_sse import sse
 import pymongo
 import secrets
@@ -18,9 +18,36 @@ db = client["log_viewer_db"]
 # Get/Create the sources collection in monogdb
 log_sources = db["sources"]
 
+def validatePost(data):
+    try:
+        provided_version_number = data["version"]
+    except:
+        return False
+
+    if data["version"] == 1:
+        try:
+            provided_key = data["authentication"]["apikey"]
+            provided_containerId = data["content"]["containerId"]
+            provided_message = data["content"]["message"]
+        except:
+            return False
+        keys = [ document["apikey"] for document in list(log_sources.find())]
+        if provided_key in keys:
+            data_profile = log_sources.find_one({'apikey':provided_key})
+            allowed_containers = data_profile["containerIds"]
+            if provided_containerId in allowed_containers:
+                return {'message': provided_message, 'containerId': f"{data_profile['displayname']}-{provided_containerId}"}
+            else:
+                return False
+        else:
+            return False
+    else:
+        return False
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    data = list(log_sources.find())
+    return render_template('index.html',logsources=data)
 
 @app.route('/publish', methods=['POST'])
 def publish():
@@ -28,11 +55,15 @@ def publish():
     # Should be JSON that includes data source and message.
     # Use sse publish to write data to the page
     if request.get_json():
-        message = request.get_json()
-        sse.publish(message, type='event')
-        return "SUCCESS: JSON\n"
+        data = request.get_json()
+        validatedData = validatePost(data)
+        if validatedData:
+            sse.publish(validatedData, type='event')
+            return "SUCCESS: JSON\n"
+        else:
+            abort(400)
     else:
-        return "FAILED TO PUBLISH DATA\n"
+        return abort(400)
 
 @app.route('/sources', methods=['GET','POST'])
 def sources():

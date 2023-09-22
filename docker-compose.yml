@@ -46,7 +46,7 @@ services:
   log-source1:
     image: gibson/log-source2
     build: ./log-source2
-    hostname: edp-provision
+    hostname: edp
     container_name: log-viewer-source1
     depends_on:
       - log-viewer
@@ -57,7 +57,7 @@ services:
   log-source2:
     image: gibson/log-source2
     build: ./log-source2
-    hostname: sar-skyflower
+    hostname: sar
     container_name: log-viewer-source2
     depends_on:
       - log-viewer

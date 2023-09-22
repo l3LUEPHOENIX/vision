@@ -1,0 +1,18 @@
+[
+    {
+        "apikey":"wa1dZgBZx-6Bilo0GT1HAiEvyl2oa87_aVnhrvNR",
+        "displayname":"edp",
+        "containerIds":["provision","tool-comm"]
+    },
+    {
+        "apikey":"2Z34dvGYP8pAF4yVGtKcVEePa-AzZl7m5wZjtii0",
+        "displayname":"sar",
+        "containerIds":["skyflower"]
+    },
+    {
+        "apikey":"A1I0VCmNJPVoJzefHuPNSjArHSW1jbycz-f8-Lsn",
+        "displayname":"test",
+        "containerIds":["test"]
+    }
+
+]

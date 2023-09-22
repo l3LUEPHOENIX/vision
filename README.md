@@ -117,4 +117,7 @@ While inotify only works for linux, I plan on finding a better, more crossplatfo
 I used this to add automatically generate log entries for testing.
 
 To test without having to run publisher.py
-`curl -H "Content-type: application/json" -d '{"message":"Hello World!","source":"edp"}' -X POST https://localhost:8443/publish`
+
+`curl -k -H 'Content-type: application/json' -d '{"version":1,"authentication":{"apikey":"INSERT-API-KEY"},"content":{"message":"Hello World","containerId":"test"}}' -X POST https://localhost:8443/publish`
+
+`python publisher.py -k "INSERT-API-KEY" -u "https://192.168.1.2:8443/publish" -f "dummy.log" -c "provision"`

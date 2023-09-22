@@ -12,6 +12,11 @@
     <label for="sources">Add a Source: </label>
     <select name="sources" id="sources">
       <option value='NONE'></option>
+      {% for source in logsources %}
+      {% for containerid in source.containerIds %}
+      <option value='{"Name":"{{ source.displayname }}","ContainerId":"{{ containerid }}"}'>{{ source.displayname }}:{{ containerid }}</option>
+      {% endfor %}
+      {% endfor %}
       <option value='{"Name":"EDP","Path":"/var/log/edp/edp_provision.log","id":"edp-provision"}'>EDP</option>
       <option value='{"Name":"SAR","Path":"/root/docker_artifacts/skyflower.log","id":"sar-skyflower"}'>SAR</option>
       <option value='{"Name":"OTHER","Path":"none","id":"other"}'>OTHER</option>

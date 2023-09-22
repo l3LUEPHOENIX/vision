@@ -4,23 +4,34 @@ import requests
 import json
 import inotify.adapters
 import socket
+import argparse
 
-url = 'https://192.168.1.2:8443/publish'
+argParser = argparse.ArgumentParser(
+    prog="Log Viewer Publisher",
+    description="Watches a given file for new entries and posts them to Log Viewer."
+)
+argParser.add_argument("-k","--apikey",help="API Key", required=True)
+argParser.add_argument("-u","--url",help="Log Viewer URL", required=True)
+argParser.add_argument("-f","--file",help="Path to watched file", required=True)
+argParser.add_argument("-c","--containerid",help="The ID of the container the publsiher will post to", required=True)
+args = argParser.parse_args()
+
+# url = 'https://192.168.1.2:8443/publish'
 
 # response = requests.post(url, data=json.dumps(data))
 
 # Define the path to the log file you want to watch
-log_file_path = 'dummy.log'
+# log_file_path = 'dummy.log'
 
 # Create an inotify watcher
 notifier = inotify.adapters.Inotify()
 
 try:
     # Add a watch for the log file with IN_MODIFY event
-    notifier.add_watch(log_file_path, mask=inotify.constants.IN_MODIFY)
+    notifier.add_watch(args.file, mask=inotify.constants.IN_MODIFY)
 
     # Create a file object to keep track of the file position
-    log_file = open(log_file_path, 'r')
+    log_file = open(args.file, 'r')
     log_file.seek(0, 2)  # Move to the end of the file
 
     while True:
@@ -29,10 +40,19 @@ try:
 
             new_line = log_file.readline()
             while new_line:
-                data = {'message': new_line.strip(), 'source': socket.gethostname()}
-                requests.post(url, json=json.dumps(data),verify=False)
+                data = {
+                    'version' : 1,
+                    'authentication' : {
+                        'apikey' : args.apikey
+                    },
+                    'content' : {
+                        'message': new_line.strip(), 
+                        'containerId': args.containerid
+                    }
+                }
+                # requests.post(args.url, json=json.dumps(data),verify=False)
 
-                print(new_line.strip())
+                print(requests.post(args.url, json=json.dumps(data),verify=False))
                 new_line = log_file.readline()
 
 except KeyboardInterrupt:
@@ -40,6 +60,6 @@ except KeyboardInterrupt:
 
 finally:
     # Clean up resources
-    notifier.remove_watch(log_file_path)
+    notifier.remove_watch(args.file)
     # notifier.cleanup()
     log_file.close()

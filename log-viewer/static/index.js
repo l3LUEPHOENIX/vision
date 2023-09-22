@@ -1,20 +1,19 @@
 function addSource(form) {
     // Add a Source textarea based on a provided drop down to select from.
-    var newSource = JSON.parse(form.sources.value);
-    var newSourceName = newSource.Name;
-    var newSourcePath = newSource.Path;
-    var newSourceId = newSource.id;
+    const newSource = JSON.parse(form.sources.value);
+    const newSourceName = newSource["Name"];
+    const newSourceId = newSource["ContainerId"];
 
     if (newSource ==  "NONE") {
         return null
-    } else  if (document.getElementById(`${newSourceId}`)){
+    } else  if (document.getElementById(`${newSourceId}-container`)){
         // If a text area exists for what was selected, do nothing.
         return null
     } else {
         var newBox = `
         <div id="${newSourceId}-container" class="grid-item">
             <div class="grid-item-header">
-                <div class="grid-item-header-title">${newSourceName}:${newSourcePath}</div>
+                <div class="grid-item-header-title">${newSourceName}:${newSourceId}</div>
                 <div class="grid-item-header-checkbox-container">
                     <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
                     <input type="checkbox" class="grid-item-header-checkbox">
@@ -26,7 +25,7 @@ function addSource(form) {
                     <button onClick="toggleHide(this)" class="grid-item-header-button" style="display:block;">-</button>
                 </div>
             </div>
-            <textarea id="${newSourceId}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+            <textarea id="${newSourceName}-${newSourceId}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
         </div>
         `;
         document.getElementById("data-container").innerHTML += newBox;
@@ -70,8 +69,8 @@ var source = new EventSource("/stream"); // {{ url_for('sse.stream') }}
 source.addEventListener('event', function(event) {  
     var data = JSON.parse(event.data);
     // Add the newest entry into it's respective textarea, if there is currently a textarea for it.
-    if (document.getElementById(`${data.source}`)) {
-        document.getElementById(`${data.source}`).textContent += `${data.message}\n`;
+    if (document.getElementById(`${data.containerId}`)) {
+        document.getElementById(`${data.containerId}`).textContent += `${data.message}\n`;
     };
     
     // Check to see if each grid-item's follow checkbox is checked. If it is, auto-scroll
