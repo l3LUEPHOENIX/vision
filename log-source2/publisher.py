@@ -52,8 +52,7 @@ try:
                 }
                 # requests.post(args.url, json=json.dumps(data),verify=False)
 
-                print(json.dumps(data))
-                print(requests.post(args.url, json=json.dumps(data),verify=False).text)
+                print(requests.post(args.url, json=data,verify=False).text)
                 new_line = log_file.readline()
 
 except KeyboardInterrupt:

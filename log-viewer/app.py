@@ -22,7 +22,7 @@ def validatePost(data):
     try:
         provided_version_number = data["version"]
     except:
-        return {'message':data["version"],'containerId':'test-test'}
+        return "No Version Number!"
 
     if data["version"] == 1:
         try:

@@ -14,4 +14,4 @@ while True:
     
     count += 1
     
-    time.sleep(2)
+    time.sleep(0.1)
