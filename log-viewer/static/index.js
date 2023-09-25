@@ -1,6 +1,3 @@
-// Taken out of addSource() <button onClick="toggleHide(${newSourceName}-${newSourceId})" class="grid-item-header-button" style="display:block;">-</button>
-
-
 function addSource(form) {
     // Add a Source textarea based on a provided drop down to select from.
     const newSource = JSON.parse(form.sources.value);
@@ -22,9 +19,9 @@ function addSource(form) {
                     <input type="checkbox" class="grid-item-header-checkbox">
                 </div>
                 <div class="grid-item-header-button-container">
-                    <button onClick="clearTextarea(${newSourceName}-${newSourceId})" class="grid-item-header-button">Clear</button>
-                    <button class="grid-item-header-button">Download</button>
-                    <button onClick="removeSource(${newSourceName}-${newSourceId}-container)" class="grid-item-header-button">Remove</button>
+                    <button onClick="clearTextarea('${newSourceName}-${newSourceId}')" class="grid-item-header-button">Clear</button>
+                    <button onClick="downloadText('${newSourceName}-${newSourceId}')" class="grid-item-header-button">Download</button>
+                    <button onClick="removeSource('${newSourceName}-${newSourceId}-container')" class="grid-item-header-button">Remove</button>
                 </div>
             </div>
             <textarea id="${newSourceName}-${newSourceId}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
@@ -34,9 +31,32 @@ function addSource(form) {
     };
 };
 
+function downloadText(elm) {
+    const myTextArea = document.getElementById(elm);
+    const date = new Date();
+    const file_name = `${myTextArea.id}-${date.getMonth()}-${date.getDay()}-${date.getFullYear()}`;
+
+    // Create element with <a> tag
+    const link = document.createElement("a");
+
+    // Create a blog object with the file content which you want to add to the file
+    const file = new Blob([myTextArea.textContent],{text: 'text/plain'});
+
+    // Add file content in the object URL
+    link.href = URL.createObjectURL(file);
+
+    // Add file name
+    link.download = `${file_name}.txt`;
+
+    // Add click event to <a> tag to save file.
+    link.click();
+    URL.revokeObjectURL(link.href);
+};
+
 function removeSource(elem) {
     // Remove a textarea from the page.
-    var sourceBox = elem.parentNode.parentNode.parentNode;
+    // var sourceBox = elem.parentNode.parentNode.parentNode;
+    const sourceBox = document.getElementById(elem);
     sourceBox.remove();
 };
 
@@ -54,19 +74,6 @@ function clearTextarea(elm) {
     const myTextArea = document.getElementById(elm);
     myTextArea.textContent = '';
 };
-
-// function toggleHide(elm) {
-//     // When clicked, will toggle between showing text area and hiding it.
-//     // var myTextArea = elm.parentNode.parentNode.parentNode.getElementsByTagName("textarea");
-//     var myTextArea = document.getElementById(elm);
-//     if (myTextArea.style.display == "block") {
-//         myTextArea.style.display = "none";
-//         elm.textContent = "+";
-//     } else {
-//         myTextArea.style.display = "block";
-//         elm.textContent = "-";
-//     };
-// };
 
 // The event streams
 var source = new EventSource("/stream"); // {{ url_for('sse.stream') }}
