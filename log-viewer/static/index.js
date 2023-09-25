@@ -1,3 +1,6 @@
+// Taken out of addSource() <button onClick="toggleHide(${newSourceName}-${newSourceId})" class="grid-item-header-button" style="display:block;">-</button>
+
+
 function addSource(form) {
     // Add a Source textarea based on a provided drop down to select from.
     const newSource = JSON.parse(form.sources.value);
@@ -19,10 +22,9 @@ function addSource(form) {
                     <input type="checkbox" class="grid-item-header-checkbox">
                 </div>
                 <div class="grid-item-header-button-container">
-                    <button onClick="clearTextarea(this)" class="grid-item-header-button">Clear</button>
+                    <button onClick="clearTextarea(${newSourceName}-${newSourceId})" class="grid-item-header-button">Clear</button>
                     <button class="grid-item-header-button">Download</button>
-                    <button onClick="removeSource(this)" class="grid-item-header-button">Remove</button>
-                    <button onClick="toggleHide(this)" class="grid-item-header-button" style="display:block;">-</button>
+                    <button onClick="removeSource(${newSourceName}-${newSourceId}-container)" class="grid-item-header-button">Remove</button>
                 </div>
             </div>
             <textarea id="${newSourceName}-${newSourceId}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
@@ -48,21 +50,23 @@ function changeFontSize(size) {
 
 function clearTextarea(elm) {
     // Clear all text out of the given textarea.
-    var myTextArea = elm.parentNode.parentNode.parentNode.getElementsByTagName("textarea");
-    myTextArea[0].textContent = '';
+    // var myTextArea = elm.parentNode.parentNode.parentNode.getElementsByTagName("textarea");
+    const myTextArea = document.getElementById(elm);
+    myTextArea.textContent = '';
 };
 
-function toggleHide(elm) {
-    // When clicked, will toggle between showing text area and hiding it.
-    var myTextArea = elm.parentNode.parentNode.parentNode.getElementsByTagName("textarea");
-    if (myTextArea[0].style.display == "block") {
-        myTextArea[0].style.display = "none";
-        elm.textContent = "+";
-    } else {
-        myTextArea[0].style.display = "block";
-        elm.textContent = "-";
-    };
-};
+// function toggleHide(elm) {
+//     // When clicked, will toggle between showing text area and hiding it.
+//     // var myTextArea = elm.parentNode.parentNode.parentNode.getElementsByTagName("textarea");
+//     var myTextArea = document.getElementById(elm);
+//     if (myTextArea.style.display == "block") {
+//         myTextArea.style.display = "none";
+//         elm.textContent = "+";
+//     } else {
+//         myTextArea.style.display = "block";
+//         elm.textContent = "-";
+//     };
+// };
 
 // The event streams
 var source = new EventSource("/stream"); // {{ url_for('sse.stream') }}
