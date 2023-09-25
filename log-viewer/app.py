@@ -19,12 +19,16 @@ db = client["log_viewer_db"]
 log_sources = db["sources"]
 
 def validatePost(data):
+    # Validate data coming in via POST requests in the /publish route. 
     try:
         provided_version_number = data["version"]
     except:
         return "No Version Number!"
 
     if data["version"] == 1:
+        # If the version number is acceptable, the data is structured correctly, and if the
+        # submitted values are valid, retun the message to print to the page. Else, return the
+        # corresponding error.
         try:
             provided_key = data["authentication"]["apikey"]
             provided_containerId = data["content"]["containerId"]
@@ -46,6 +50,7 @@ def validatePost(data):
 
 @app.route('/')
 def index():
+    # Use the data stored in the database to show the index route.
     data = list(log_sources.find())
     return render_template('index.html',logsources=data)
 
@@ -99,5 +104,4 @@ def sources():
 
 if __name__ == '__main__':
     # To start with gunicorn:
-    # gunicorn app:app --worker-class gevent --bind 0.0.0.0:8000
     app.run(host="0.0.0.0",port=8443,ssl_context=('cert.pem', 'key.pem'))

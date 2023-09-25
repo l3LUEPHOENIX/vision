@@ -6,12 +6,12 @@ function addSource(form) {
 
     if (newSource ==  "NONE") {
         return null
-    } else  if (document.getElementById(`${newSourceId}-container`)){
+    } else  if (document.getElementById(`${newSourceName}-${newSourceId}-container`)){
         // If a text area exists for what was selected, do nothing.
         return null
     } else {
         var newBox = `
-        <div id="${newSourceId}-container" class="grid-item">
+        <div id="${newSourceName}-${newSourceId}-container" class="grid-item">
             <div class="grid-item-header">
                 <div class="grid-item-header-title">${newSourceName}:${newSourceId}</div>
                 <div class="grid-item-header-checkbox-container">
