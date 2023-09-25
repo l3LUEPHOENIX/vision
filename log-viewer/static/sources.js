@@ -18,7 +18,7 @@ function addTextinput(elm) {
     newTextinput.type = "text";
     newTextinput.id = `containerId_${itemCount + 1}`;
     newTextinput.name = `containerId_${itemCount + 1}`;
-    newTextinput.value = "new-container";
+    newTextinput.placeholder = "new-container";
     newTextinput.setAttribute("form",`${rowID}-form`);
 
     containeridRow.appendChild(newTextinput);

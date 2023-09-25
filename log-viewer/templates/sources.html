@@ -8,6 +8,10 @@
     <script src="static/sources.js"></script>
 </head>
 <body>
+    <div class="header">
+        <a href="/"><div class="site-name">LOG VIEWER</div></a>
+        <a href="/sources"><div class="link">Sources</div></a>
+    </div>
     <form id="new-form" method="post"></form>
     {% for source in logsources %}
     <form id="{{ source.displayname }}-form" method="post"></form>
@@ -27,11 +31,11 @@
                     <input form="new-form" type="text" name="apikey" readonly="true" value="generated-on-submit">
                 </td>
                 <td id="new-displayname">
-                    <input form="new-form" type="text" name="displayname" value="new-display-name">
+                    <input form="new-form" type="text" name="displayname" placeholder="new-display-name">
                 </td>
                 <td id="new-containerids">
                     <div class="grid-container">
-                        <input form="new-form" type="text" id="containerId_1" name="containerId_1" value="new-containerid">
+                        <input form="new-form" type="text" id="containerId_1" name="containerId_1" placeholder="new-containerid">
                     </div>
                 </td>
                 <td class="table-button-container" id="new-actions">

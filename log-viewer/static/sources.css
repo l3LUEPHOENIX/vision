@@ -1,11 +1,14 @@
 body {
     background-color: #333333;
+    padding: 10px;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 table {
     border-collapse: collapse;
     border-color: #262626;
     width: 100%;
+    border-radius: 5px;
 }
 
 input {
@@ -14,6 +17,8 @@ input {
     height: 25px;
     min-width: 225px;
     font-size: 16px;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 th, td {
@@ -36,6 +41,33 @@ tr:nth-child(odd) {
     background-color: #808080;
 }
 
+a, a:link, a:visited {
+    text-decoration: none;
+    color: white;
+}
+
+.header {
+    background-color: black;
+    margin-bottom: 10px;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* CSS for the website name */
+.site-name {
+    font-size: 30px;
+    margin-right: 15px;
+    float: left;
+}
+
+.link {
+    font-size: 20px;
+    color: #cccccc;
+    float: left;
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -48,7 +80,7 @@ tr:nth-child(odd) {
 }
 
 .table-button {
-    background-color: #007bff;
+    background-color: #00264d;
     color: #fff;
     border: none;
     padding: 5px 5px;
@@ -59,6 +91,7 @@ tr:nth-child(odd) {
     font-size: 16px;
     border-radius: 5px;
     white-space: nowrap;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .table-button:hover {
