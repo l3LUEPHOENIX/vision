@@ -55,7 +55,6 @@ function downloadText(elm) {
 
 function removeSource(elem) {
     // Remove a textarea from the page.
-    // var sourceBox = elem.parentNode.parentNode.parentNode;
     const sourceBox = document.getElementById(elem);
     sourceBox.remove();
 };
@@ -70,13 +69,12 @@ function changeFontSize(size) {
 
 function clearTextarea(elm) {
     // Clear all text out of the given textarea.
-    // var myTextArea = elm.parentNode.parentNode.parentNode.getElementsByTagName("textarea");
     const myTextArea = document.getElementById(elm);
     myTextArea.textContent = '';
 };
 
 // The event streams
-var source = new EventSource("/stream"); // {{ url_for('sse.stream') }}
+var source = new EventSource("/stream");
 source.addEventListener('event', function(event) {  
     var data = JSON.parse(event.data);
     // Add the newest entry into it's respective textarea, if there is currently a textarea for it.

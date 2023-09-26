@@ -3,10 +3,12 @@ body {
     min-width: 1385px;
     font-family: 'Courier New', Courier, monospace;
 }
+
 a, a:link, a:visited {
     text-decoration: none;
     color: white;
 }
+
 select {
     border: 1px solid #262626;
     background-color: #cccccc;
@@ -15,9 +17,11 @@ select {
     border-radius: 5px;
     font-family: 'Courier New', Courier, monospace;
 }
+
 option {
     font-family: 'Courier New', Courier, monospace;
 }
+
 .add-source {
     background-color: #00264d;
     color: #fff;
@@ -30,6 +34,7 @@ option {
     margin-right: 5px;
     font-family: 'Courier New', Courier, monospace;
 }
+
 .data-container {
     display: grid;
     grid-template-columns: 50% 50%;
@@ -37,6 +42,7 @@ option {
     padding: 10px;
     border-radius: 5px;
 }
+
 .data-container-header {
     padding: 10px;
     grid-column: 1 / span 2;
@@ -48,23 +54,28 @@ option {
     display: flex;
     border-radius: 5px;
 }
+
 .left-section {
     display: flex;
     align-items: center;
 }
+
 /* CSS for the website name */
 .site-name {
     font-size: 30px;
     margin-right: 15px;
 }
+
 .link {
     font-size: 20px;
     color: #cccccc;
 }
+
 .grid-item {
     color: black;
     font: 20px;
 }
+
 /* Styling for the banner container */
 .grid-item-header {
     background-color: black;
@@ -76,16 +87,19 @@ option {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
+
 /* Styling for the banner title (aligned to the far left) */
 .grid-item-header-title {
     font-size: 24px;
     flex: 1; /* Takes up remaining space */
 }
+
 /* Styling for the buttons (aligned to the right) */
 .grid-item-header-button-container {
     display: flex;
     align-items: center;
 }
+
 .grid-item-header-button {
     background-color: #00264d;
     color: #fff;
@@ -99,17 +113,21 @@ option {
     border-radius: 5px;
     font-family: 'Courier New', Courier, monospace;
 }
+
 .grid-item-header-button:hover, .add-source:hover {
     background-color: #0056b3;
 }
+
 .grid-item-header-button:active, .add-source:active {
     background-color: #003166;
 }
+
 /* Styling for the checkbox (aligned to the right) */
 .grid-item-header-checkbox-container {
     display: flex;
     align-items: center;
 }
+
 .grid-item-header-checkbox {
     margin-left: 10px;
     float: right;
@@ -117,11 +135,13 @@ option {
     width: 35px;
     border-radius: 5px;
 }
+
 .grid-item-header-checkbox-label {
     float: left;
     font-size: 20px;
     margin-left: 5px;
 }
+
 .grid-item-body {
     height: 70vh;
     box-sizing: border-box;
@@ -131,7 +151,7 @@ option {
     background-color: #595959;
     overflow-anchor: none;
     font-size: 19px;
-    display: block; /* for the hide stuff in index.js... */
+    display: block;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     font-family: 'Courier New', Courier, monospace;

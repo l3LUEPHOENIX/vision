@@ -1,27 +1,19 @@
 # This is the script that will go on endpoints that will send out the POST api requests to log viewer.
 
 import requests
-import json
 import inotify.adapters
-import socket
 import argparse
 
 argParser = argparse.ArgumentParser(
     prog="Log Viewer Publisher",
     description="Watches a given file for new entries and posts them to Log Viewer."
 )
-argParser.add_argument("-k","--apikey",help="API Key", required=True)
-argParser.add_argument("-u","--url",help="Log Viewer URL", required=True)
 argParser.add_argument("-f","--file",help="Path to watched file", required=True)
+argParser.add_argument("-u","--url",help="Log Viewer URL", required=True)
 argParser.add_argument("-c","--containerid",help="The ID of the container the publsiher will post to", required=True)
+argParser.add_argument("-k","--apikey",help="API Key", required=True)
+
 args = argParser.parse_args()
-
-# url = 'https://192.168.1.2:8443/publish'
-
-# response = requests.post(url, data=json.dumps(data))
-
-# Define the path to the log file you want to watch
-# log_file_path = 'dummy.log'
 
 # Create an inotify watcher
 notifier = inotify.adapters.Inotify()
@@ -50,7 +42,6 @@ try:
                         'containerId': args.containerid
                     }
                 }
-                # requests.post(args.url, json=json.dumps(data),verify=False)
 
                 print(requests.post(args.url, json=data,verify=False).text)
                 new_line = log_file.readline()
