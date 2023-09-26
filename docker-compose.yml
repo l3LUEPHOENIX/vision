@@ -30,7 +30,7 @@ services:
     container_name: log-viewer-mongodb
     command: mongod --auth
     volumes:
-      - ./mongodb/data:/data/db
+      - log_viewer_vol:/data/db
     depends_on:
       - redis
       - log-viewer
@@ -49,3 +49,6 @@ networks:
     ipam:
       config:
         - subnet: "192.168.1.0/24"
+volumes:
+  log_viewer_vol:
+    external: false

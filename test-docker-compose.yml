@@ -1,7 +1,7 @@
-version: '1.3'
+version: '1.0'
 services:
   log-viewer:
-    image: gibson/log-viewer:1.3
+    image: gibson/log-viewer:1.0
     build: ./log-viewer
     hostname: log-viewer
     container_name: log-viewer
@@ -30,7 +30,7 @@ services:
     container_name: log-viewer-mongodb
     command: mongod --auth
     volumes:
-      - ./mongodb/data:/data/db
+      - log_viewer_vol:/data/db
     depends_on:
       - redis
       - log-viewer
@@ -71,3 +71,6 @@ networks:
     ipam:
       config:
         - subnet: "192.168.1.0/24"
+volumes:
+  log_viewer_vol:
+    external: false
