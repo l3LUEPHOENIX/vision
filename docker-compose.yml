@@ -13,7 +13,7 @@ services:
       MONGODB_PASSWORD: example
       MONGODB_HOSTNAME: mongodb
     ports:
-      - "8443:8443"
+      - "7443:8443"
     networks:
       log-view-net:
         ipv4_address: 192.168.1.2
