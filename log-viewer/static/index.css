@@ -9,6 +9,7 @@ a, a:link, a:visited {
     color: white;
 }
 
+/* Add a source drop down */
 select {
     border: 1px solid #262626;
     background-color: #cccccc;
@@ -16,12 +17,16 @@ select {
     height: 25px;
     border-radius: 5px;
     font-family: 'Courier New', Courier, monospace;
+    max-width: 250px;
+    min-width: 100px;
+    overflow: hidden;
 }
 
 option {
     font-family: 'Courier New', Courier, monospace;
 }
 
+/* add source button */
 .add-source {
     background-color: #00264d;
     color: #fff;
@@ -91,7 +96,8 @@ option {
 /* Styling for the banner title (aligned to the far left) */
 .grid-item-header-title {
     font-size: 24px;
-    flex: 1; /* Takes up remaining space */
+    flex: 1;
+    overflow-wrap: anywhere;
 }
 
 /* Styling for the buttons (aligned to the right) */
@@ -139,7 +145,7 @@ option {
 .grid-item-header-checkbox-label {
     float: left;
     font-size: 20px;
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 .grid-item-body {
