@@ -1,4 +1,65 @@
-function addSource(form) {
+function getContainerCookies(cname) {
+    // Try to get Log Viewer cookies, and if they exist, use content to add containers to page.
+    const name = cname + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const cArr = cDecoded.split('; ');
+    let res;
+    cArr.forEach(val => {
+    if (val.indexOf(name) === 0) res = val.substring(name.length);
+    })
+    return res
+};
+
+function setContainerCookies(cname, action, data) {
+    // If a cookie doesn't exist, make a new one, but if one does exist, change it's contents.
+    var container = data.split(':');
+    const now = new Date();
+    const time = now.getTime();
+    const expireTime = time + 1000*36000;
+    now.setTime(expireTime);
+    var expires = `expires=${now.toUTCString()}`;
+    var path = "path=/";
+    if (getContainerCookies(cname)) {
+        var containers = JSON.parse(getContainerCookies(cname));
+        if (action == "ADD") {
+            containers.push(`${container[0]}:${container[1]}`);
+            document.cookie = `${cname}=${JSON.stringify(containers)};${expires};${path}`;
+        } else if (action == "REMOVE") {
+            for (i = 0; i < containers.length; i++) {
+                if (containers[i] == data) {
+                    containers.splice(i, 1);
+                    break;
+                }
+            }
+            document.cookie = `${cname}=${JSON.stringify(containers)};${expires};${path}`;
+        }
+    } else {
+        document.cookie = `${cname}=${JSON.stringify([data])};${expires};${path}`;
+    }
+};
+
+function addSource(name, containerId) {
+    var newBox = `
+        <div id="${name}-${containerId}-container" class="grid-item">
+            <div class="grid-item-header">
+                <div class="grid-item-header-title">${name}:${containerId}</div>
+                <div class="grid-item-header-checkbox-container">
+                    <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
+                    <input type="checkbox" class="grid-item-header-checkbox">
+                </div>
+                <div class="grid-item-header-button-container">
+                    <button onClick="clearTextarea('${name}-${containerId}')" class="grid-item-header-button">Clear</button>
+                    <button onClick="downloadText('${name}-${containerId}')" class="grid-item-header-button">Download</button>
+                    <button onClick="removeSource('${name}-${containerId}-container','${name}:${containerId}')" class="grid-item-header-button">Remove</button>
+                </div>
+            </div>
+            <textarea id="${name}-${containerId}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+        </div>
+        `;
+    document.getElementById("data-container").innerHTML += newBox;
+}
+
+function addSourceForm(form) {
     // Add a Source textarea based on a provided drop down to select from.
     const newSource = JSON.parse(form.sources.value);
     const newSourceName = newSource["Name"];
@@ -10,24 +71,8 @@ function addSource(form) {
         // If a text area exists for what was selected, do nothing.
         return null
     } else {
-        var newBox = `
-        <div id="${newSourceName}-${newSourceId}-container" class="grid-item">
-            <div class="grid-item-header">
-                <div class="grid-item-header-title">${newSourceName}:${newSourceId}</div>
-                <div class="grid-item-header-checkbox-container">
-                    <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
-                    <input type="checkbox" class="grid-item-header-checkbox">
-                </div>
-                <div class="grid-item-header-button-container">
-                    <button onClick="clearTextarea('${newSourceName}-${newSourceId}')" class="grid-item-header-button">Clear</button>
-                    <button onClick="downloadText('${newSourceName}-${newSourceId}')" class="grid-item-header-button">Download</button>
-                    <button onClick="removeSource('${newSourceName}-${newSourceId}-container')" class="grid-item-header-button">Remove</button>
-                </div>
-            </div>
-            <textarea id="${newSourceName}-${newSourceId}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
-        </div>
-        `;
-        document.getElementById("data-container").innerHTML += newBox;
+        addSource(newSourceName, newSourceId);
+        setContainerCookies("log-viewer-containers", "ADD",`${newSourceName}:${newSourceId}`);
     };
 };
 
@@ -53,10 +98,11 @@ function downloadText(elm) {
     URL.revokeObjectURL(link.href);
 };
 
-function removeSource(elem) {
+function removeSource(elem, data) {
     // Remove a textarea from the page.
     const sourceBox = document.getElementById(elem);
     sourceBox.remove();
+    setContainerCookies("log-viewer-containers","REMOVE",data);
 };
 
 function changeFontSize(size) {
@@ -71,6 +117,16 @@ function clearTextarea(elm) {
     // Clear all text out of the given textarea.
     const myTextArea = document.getElementById(elm);
     myTextArea.textContent = '';
+};
+
+window.onload = function() {
+    if (getContainerCookies("log-viewer-containers")) {
+        var containers = JSON.parse(getContainerCookies("log-viewer-containers"));
+        for (i = 0; i < containers.length; i++) {
+            var container = containers[i].split(':');
+            addSource(container[0], container[1]);
+        };
+    };
 };
 
 // The event streams
