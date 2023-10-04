@@ -24,11 +24,11 @@ Requires:
 1. Clone the repo: `git clone https://github.com/l3LUEPHOENIX/log-viewer.git`
 2. Start redis server and make sure app.py has the redis address.
 3. Change mongodb details in app.py
-4. From inside repo directory, run: `gunicorn --certfile cert.pem --keyfile key.pem app:app --worker-class gevent --bind 0.0.0.0:8443`
-5. Open a browser and navigate to `https://localhost:8443/sources` and add a source called "test" with a containerId of "test".
+4. From inside repo directory, run: `gunicorn --certfile cert.pem --keyfile key.pem app:app --worker-class gevent --bind 0.0.0.0:7443`
+5. Open a browser and navigate to `https://localhost:7443/sources` and add a source called "test" with a containerId of "test".
 6. Copy the API Key.
-7. In the browser, navigate to `https://localhost:8443/` and add the "test:test" source using the drop down at the top right of the page.
-8. Replace `"INSERT-API-KEY"` with the API Key you copied from the Sources page and run: `curl -k -H 'Content-type: application/json' -d '{"version":1,"authentication":{"apikey":"INSERT-API-KEY"},"content":{"message":"Hello World","containerId":"test"}}' -X POST https://localhost:8443/publish`
+7. In the browser, navigate to `https://localhost:7443/` and add the "test:test" source using the drop down at the top right of the page.
+8. Replace `"INSERT-API-KEY"` with the API Key you copied from the Sources page and run: `curl -k -H 'Content-type: application/json' -d '{"version":1,"authentication":{"apikey":"INSERT-API-KEY"},"content":{"message":"Hello World","containerId":"test"}}' -X POST https://localhost:7443/publish`
 9. If successful, "Hello World" should appear in the "test:test" box.
 
 
@@ -36,7 +36,7 @@ Requires:
 Requires:
 - Docker
     - python:3.10
-    - redis
+    - redis:alpine
     - mongo
 
 ### Steps
@@ -96,7 +96,7 @@ This script lives on the remote server and watches a specified log file. Every t
 
 While inotify only works for linux, I plan on finding a better, more crossplatform solution.
 
-Example: `python publisher.py -f "/path/to/logfile.log" -u "https://192.168.1.2:8443/publish" -c "provision" -k "INSER-API-KEY" `
+Example: `python publisher.py -f "/path/to/logfile.log" -u "https://192.168.1.2:7443/publish" -c "provision" -k "INSER-API-KEY" `
 
 # Testing
 ## log-source container (for testing)

@@ -13,12 +13,12 @@ services:
       MONGODB_PASSWORD: example
       MONGODB_HOSTNAME: mongodb
     ports:
-      - "7443:8443"
+      - "7443:7443"
     networks:
       log-view-net:
         ipv4_address: 192.168.1.2
   redis:
-    image: redis
+    image: redis:alpine
     hostname: redis
     container_name: log-viewer-redis
     networks:
