@@ -45,7 +45,7 @@ function addSource(name, containerId) {
                 <div class="grid-item-header-title">${name}:${containerId}</div>
                 <div class="grid-item-header-checkbox-container">
                     <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
-                    <input type="checkbox" class="grid-item-header-checkbox">
+                    <input id="${name}:${containerId}-checkbox" type="checkbox" class="grid-item-header-checkbox">
                 </div>
                 <div class="grid-item-header-button-container">
                     <button onClick="clearTextarea('${name}:${containerId}')" class="grid-item-header-button">Clear</button>
@@ -55,8 +55,27 @@ function addSource(name, containerId) {
             </div>
             <textarea id="${name}:${containerId}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
         </div>
-        `;
+    `;
+    var newListenerScript = `
+        var ${name}_${containerId}_source = new EventSource("/stream?channel=${name}:${containerId}");
+        ${name}_${containerId}_source.addEventListener('event', function(event) {  
+            var data = JSON.parse(event.data);
+            if (document.getElementById('${name}:${containerId}')) {
+                document.getElementById('${name}:${containerId}').textContent += \`\$\{data.message\}\\n\`;
+                if (document.getElementById('${name}:${containerId}-checkbox').checked) {
+                    document.getElementById('${name}:${containerId}').scrollTop = document.getElementById('${name}:${containerId}').scrollHeight;
+                }
+            };
+        }, false);
+        ${name}_${containerId}_source.addEventListener('error', function(event) {
+            console.log("Failed to connect to event stream. Is Redis running?");
+        }, false);
+    `;
     document.getElementById("data-container").innerHTML += newBox;
+    var newScriptElement = document.createElement("script");
+    var inlineScript = document.createTextNode(newListenerScript);
+    newScriptElement.appendChild(inlineScript);
+    document.getElementById(`${name}:${containerId}-container`).appendChild(newScriptElement);
 }
 
 function addSourceForm(form) {
@@ -128,30 +147,3 @@ window.onload = function() {
         };
     };
 };
-
-// The event streams
-var source = new EventSource("/stream");
-source.addEventListener('event', function(event) {  
-    var data = JSON.parse(event.data);
-    // Add the newest entry into it's respective textarea, if there is currently a textarea for it.
-    if (document.getElementById(`${data.containerId}`)) {
-        document.getElementById(`${data.containerId}`).textContent += `${data.message}\n`;
-    };
-    
-    // Check to see if each grid-item's follow checkbox is checked. If it is, auto-scroll
-    // the text area to the bottom of the page. If this is checked while data is being added
-    // to the textarea, and the user tries to scroll, their scrolling will be interupted.
-    var myCheckBoxes = document.getElementsByClassName("grid-item-header-checkbox");
-    var myTextAreas = document.getElementsByClassName("grid-item-body");
-    for (i = 0; i < myCheckBoxes.length; i++) {
-        if (myCheckBoxes[i].checked) {
-            
-            myTextAreas[i].scrollTop = myTextAreas[i].scrollHeight;
-        
-        };
-    };
-
-}, false);
-source.addEventListener('error', function(event) {
-    alert("Failed to connect to event stream. Is Redis running?");
-}, false);

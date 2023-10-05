@@ -5,6 +5,7 @@ class publisher:
         self.incoming_data = incoming_data
         self.db = db
         self.post = {}
+        self.channel = ''
 
     def validPost(self, minimum_version) -> tuple:
         if isinstance(self.incoming_data, dict):
@@ -47,6 +48,8 @@ class publisher:
             'message': message,
             'containerId': f"{provided_key['displayname']}:{containerId}"
         }
+
+        self.channel = f"{provided_key['displayname']}:{containerId}"
 
         return (True, f"\nSuccessful POST to: {content['containerId']}\n\n")
     

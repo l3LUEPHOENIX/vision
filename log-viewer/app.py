@@ -35,7 +35,7 @@ def publish():
         incomingPost = models.publisher(request.get_json(), list(log_sources.find()))
         postValid = incomingPost.validPost(MINIMUM_VERSION)
         if postValid[0]:
-            sse.publish(incomingPost.post, type='event')
+            sse.publish(incomingPost.post, type='event', channel=incomingPost.channel)
             del incomingPost
             return postValid[1]
         else:
