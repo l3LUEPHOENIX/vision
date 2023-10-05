@@ -1,7 +1,7 @@
-version: '1.0'
+version: '1.1'
 services:
   log-viewer:
-    image: gibson/log-viewer:1.0
+    image: gibson/log-viewer:1.1
     build: ./log-viewer
     hostname: log-viewer
     container_name: log-viewer
@@ -18,7 +18,7 @@ services:
       log-view-net:
         ipv4_address: 192.168.1.2
   redis:
-    image: redis
+    image: redis:alpine
     hostname: redis
     container_name: log-viewer-redis
     networks:

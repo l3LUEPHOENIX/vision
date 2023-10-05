@@ -40,7 +40,7 @@ function setContainerCookies(cname, action, data) {
 
 function addSource(name, containerId) {
     var newBox = `
-        <div id="${name}-${containerId}-container" class="grid-item">
+        <div id="${name}:${containerId}-container" class="grid-item">
             <div class="grid-item-header">
                 <div class="grid-item-header-title">${name}:${containerId}</div>
                 <div class="grid-item-header-checkbox-container">
@@ -48,12 +48,12 @@ function addSource(name, containerId) {
                     <input type="checkbox" class="grid-item-header-checkbox">
                 </div>
                 <div class="grid-item-header-button-container">
-                    <button onClick="clearTextarea('${name}-${containerId}')" class="grid-item-header-button">Clear</button>
-                    <button onClick="downloadText('${name}-${containerId}')" class="grid-item-header-button">Download</button>
-                    <button onClick="removeSource('${name}-${containerId}-container','${name}:${containerId}')" class="grid-item-header-button">Remove</button>
+                    <button onClick="clearTextarea('${name}:${containerId}')" class="grid-item-header-button">Clear</button>
+                    <button onClick="downloadText('${name}:${containerId}')" class="grid-item-header-button">Download</button>
+                    <button onClick="removeSource('${name}:${containerId}-container','${name}:${containerId}')" class="grid-item-header-button">Remove</button>
                 </div>
             </div>
-            <textarea id="${name}-${containerId}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+            <textarea id="${name}:${containerId}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
         </div>
         `;
     document.getElementById("data-container").innerHTML += newBox;
