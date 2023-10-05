@@ -4,6 +4,7 @@ import pymongo
 import secrets
 import os
 import redis
+import models
 
 app = Flask(__name__)
 app.register_blueprint(sse, url_prefix='/stream')
@@ -60,13 +61,19 @@ def publish():
     # Should be JSON that includes data source and message.
     # Use sse publish to write data to the page
     if request.get_json():
-        data = request.get_json()
-        validatedData = validatePost(data)
-        if isinstance(validatedData, dict):
-            sse.publish(validatedData, type='event')
-            return "SUCCESS: JSON\n"
+        incomingPost = models.publisherPost(request.get_json(), log_sources)
+        if incomingPost.valid() == True:
+            incomingPost.post()
         else:
-            abort(400,validatedData)
+            abort(400, incomingPost.valid())
+
+        # data = request.get_json()
+        # validatedData = validatePost(data)
+        # if isinstance(validatedData, dict):
+        #     sse.publish(validatedData, type='event')
+        #     return "SUCCESS: JSON\n"
+        # else:
+        #     abort(400,validatedData)
     else:
         return abort(400,"not a json")
 
