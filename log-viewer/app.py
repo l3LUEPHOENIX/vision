@@ -8,6 +8,7 @@ import models
 
 app = Flask(__name__)
 app.register_blueprint(sse, url_prefix='/stream')
+app.config["SECRET_KEY"] = str(os.urandom(24).hex())
 app.config["REDIS_URL"] = "redis://192.168.1.3"
 app.config['DEBUG'] = True
 MINIMUM_VERSION = 1
