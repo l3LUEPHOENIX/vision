@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, abort
+from flask_wtf.csrf import CSRFProtect, CSRFError
 from flask_sse import sse
 import pymongo
 import secrets
@@ -7,9 +8,11 @@ import redis
 import models
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = str(os.urandom(24).hex())
 app.register_blueprint(sse, url_prefix='/stream')
 app.config["REDIS_URL"] = "redis://192.168.1.3"
 app.config['DEBUG'] = True
+csrf = CSRFProtect(app)
 MINIMUM_VERSION = 1
 
 # Create a mongodb client
