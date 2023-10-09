@@ -1,4 +1,23 @@
 # Data models for Heimdall to validate and manipulate API data.
+from pydantic import BaseModel, ValidationError
+
+class apiAuthtentication(BaseModel):
+    auth_type: dict[str, str]
+    auth_key: dict[str, str]
+
+class viewer(BaseModel):
+    version: int
+    authentication: dict
+    content: dict
+
+
+
+
+
+
+
+
+
 
 class publisher:
     def __init__(self, incoming_data, db):
