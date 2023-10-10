@@ -1,84 +1,42 @@
 # Data models for Heimdall to validate and manipulate API data.
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, model_validator
+from typing_extensions import Literal
+import pymongo
+import os
 
-class apiAuthtentication(BaseModel):
-    auth_type: dict[str, str]
-    auth_key: dict[str, str]
+# Create a mongodb client
+CLIENT = pymongo.MongoClient(os.environ['MONGODB_HOSTNAME'], 27017, username=os.environ['MONGODB_USERNAME'],password=os.environ['MONGODB_PASSWORD'])
 
-class viewer(BaseModel):
+# Get the Log Viewer database from mongodb
+DB = CLIENT["log_viewer_db"]
+# Get/Create the sources collection in monogdb
+LOG_SOURCES = DB["sources"]
+
+class viewerApi(BaseModel):
     version: int
-    authentication: dict
-    content: dict
+    authentication: dict[Literal['apikey'], str]
+    content: dict[Literal['message','containerId'], str]
+    display_name: str = None
+    post: dict = None
 
-
-
-
-
-
-
-
-
-
-class publisher:
-    def __init__(self, incoming_data, db):
-        self.incoming_data = incoming_data
-        self.db = db
-        self.post = {}
-
-    def validPost(self, minimum_version) -> tuple:
-        if isinstance(self.incoming_data, dict):
-            try:
-                version = self.incoming_data["version"]
-                authentication = self.incoming_data["authentication"]
-                content = self.incoming_data["content"]
-            except:
-                return (False, "Fields Unsatisfied")
-        else:
-            return (False, f"Wrong Data Type")
+    @model_validator(mode='after')
+    def valid_keys_and_containers (self):
+        key = self.authentication['apikey']
+        container = self.content['containerId']
+        mongo_document = LOG_SOURCES.find_one({'apikey':key})
+        if not mongo_document:
+            print(key)
+            raise ValueError(f"\n\nInvalid Key: {key}\nDoc Type: {type(mongo_document)}\nDoc Value: {mongo_document}\n\n")
         
-        if int(version) < minimum_version:
-            return (False, "Version too old")
+        if container not in mongo_document['containerIds']:
+            raise ValueError('Invalid Container ID')
         
-        try:
-            if authentication["apikey"]:
-                for i, dic in enumerate(self.db):
-                    if dic["apikey"] == authentication["apikey"]:
-                        provided_key = self.db[i]
-                try:
-                    provided_key
-                except:
-                    return (False, "Bad Key")
-        except:
-            return (False, "No Key Provided")
-
-        try:
-            message = content["message"]
-            containerId = content["containerId"]
-            containers = provided_key["containerIds"]
-            
-            if containerId not in containers:
-                return (False, "Bad ContainerId")
-            
-        except:
-            return (False, "Content fields unsatisified")
-        
+        self.display_name = mongo_document['displayname']
         self.post = {
-            'message': message,
-            'containerId': f"{provided_key['displayname']}:{containerId}"
+            'message': self.content['message'],
+            'containerId': f"{self.display_name}:{container}"
         }
-
-        return (True, f"\nSuccessful POST to: {content['containerId']}\n\n")
-    
-    def createSource(self):
-        pass
-
-    def updateSource(self):
-        pass
-
-    def deleteSource(self):
-        pass
-
-class archivistPost:
-    def __init__(self):
-        pass
-
+        return self
+        
+class archiveApi(BaseModel):
+    pass
