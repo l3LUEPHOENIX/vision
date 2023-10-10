@@ -26,8 +26,7 @@ class viewerApi(BaseModel):
         container = self.content['containerId']
         mongo_document = LOG_SOURCES.find_one({'apikey':key})
         if not mongo_document:
-            print(key)
-            raise ValueError(f"\n\nInvalid Key: {key}\nDoc Type: {type(mongo_document)}\nDoc Value: {mongo_document}\n\n")
+            raise ValueError("Invalid Key")
         
         if container not in mongo_document['containerIds']:
             raise ValueError('Invalid Container ID')
