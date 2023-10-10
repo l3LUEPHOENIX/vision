@@ -36,7 +36,7 @@ def publish():
     if request.get_json():
         try:
             m = models.viewerApi.model_validate(request.get_json())
-            sse.publish(m.post, type='event')
+            sse.publish(m.post, type='event', channel=m.channel)
             del m
             return "\n\nSuccess\n\n"
         except ValidationError as e:

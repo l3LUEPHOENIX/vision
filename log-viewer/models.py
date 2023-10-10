@@ -18,6 +18,7 @@ class viewerApi(BaseModel):
     content: dict[Literal['message','containerId'], str]
     display_name: str = None
     post: dict = None
+    channel: str = None
 
     @model_validator(mode='after')
     def valid_keys_and_containers (self):
@@ -32,9 +33,10 @@ class viewerApi(BaseModel):
             raise ValueError('Invalid Container ID')
         
         self.display_name = mongo_document['displayname']
+        self.channel = f"{self.display_name}:{container}"
         self.post = {
             'message': self.content['message'],
-            'containerId': f"{self.display_name}:{container}"
+            'containerId': self.channel
         }
         return self
         
