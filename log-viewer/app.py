@@ -31,6 +31,7 @@ def index():
     return render_template('index.html',logsources=data)
 
 @app.route('/publish', methods=['POST'])
+@csrf.exempt
 def publish():
     # Handle post request
     # Should be JSON that includes data source and message.
