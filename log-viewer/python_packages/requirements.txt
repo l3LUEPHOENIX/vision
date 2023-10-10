@@ -22,3 +22,5 @@ python_packages/annotated_types-0.6.0-py3-none-any.whl
 python_packages/pydantic-2.4.2-py3-none-any.whl
 python_packages/pydantic_core-2.10.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 python_packages/typing_extensions-4.8.0-py3-none-any.whl
+python_packages/WTForms-3.0.1-py3-none-any.whl
+python_packages/flask_wtf-1.2.1-py3-none-any.whl
