@@ -86,7 +86,7 @@ function addSourceForm(form) {
 
     if (newSource ==  "NONE") {
         return null
-    } else  if (document.getElementById(`${newSourceName}-${newSourceId}-container`)){
+    } else  if (document.getElementById(`${newSourceName}:${newSourceId}-container`)){
         // If a text area exists for what was selected, do nothing.
         return null
     } else {
