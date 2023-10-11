@@ -1,7 +1,7 @@
-version: '1.1'
+version: '1.0'
 services:
   log-viewer:
-    image: gibson/log-viewer:1.1
+    image: log-viewer:1.0
     build: ./log-viewer
     hostname: log-viewer
     container_name: log-viewer
@@ -10,7 +10,7 @@ services:
     environment:
       MONGODB_DATABASE: log_viewer_db
       MONGODB_USERNAME: root
-      MONGODB_PASSWORD: example
+      MONGODB_PASSWORD: e61ddc9534f8efd85b6cd91a661fef9f
       MONGODB_HOSTNAME: mongodb
     ports:
       - "7443:7443"
@@ -36,7 +36,7 @@ services:
       - log-viewer
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_PASSWORD: e61ddc9534f8efd85b6cd91a661fef9f
       MONGO_INITDB_DATABASE: log_viewer_db
       MONGO_DATA_DIR: /data/db
       MONGO_LOG_DIR: /dev/null
