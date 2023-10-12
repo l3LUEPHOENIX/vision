@@ -1,4 +1,4 @@
-# Log Viewer Version 1.0.0
+# Vision Version 1.0.0
 View remote log contents in real time on a web page.
 
 Remote servers have a python script watching specific log files and send POST requests every time new content is added to the log file.
@@ -54,7 +54,7 @@ Then delete the repo and re-clone it. After that, try docker compose again.
 
 ## Changes
 ### 1.0.0
-- Log Viewer exists!!!
+- Vision exists!!!
 
 ### Up coming:
 - input validation
@@ -66,7 +66,7 @@ Then delete the repo and re-clone it. After that, try docker compose again.
     - bash
     - a way to start and stop watcher scripts from web ui
 
-# log-viewer container
+# vision container
 ## app.py
 The main flask app. Has all routes and configurations.
 
@@ -100,7 +100,7 @@ Example: `python publisher.py -f "/path/to/logfile.log" -u "https://192.168.1.2:
 
 # Testing
 ## log-source container (for testing)
-Barebones container that has the event_generator script adding to a log file. The publisher.py script is started manually using the details from the Sources page in Log Viewer.
+Barebones container that has the event_generator script adding to a log file. The publisher.py script is started manually using the details from the Sources page in Vision.
 
 ### dummy.log
 The log being watched and being written to by event_generator.py

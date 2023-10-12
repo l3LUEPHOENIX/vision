@@ -1,5 +1,5 @@
 function getContainerCookies(cname) {
-    // Try to get Log Viewer cookies, and if they exist, use content to add containers to page.
+    // Try to get Vision cookies, and if they exist, use content to add containers to page.
     const name = cname + "=";
     const cDecoded = decodeURIComponent(document.cookie);
     const cArr = cDecoded.split('; ');
@@ -91,7 +91,7 @@ function addSourceForm(form) {
         return null
     } else {
         addSource(newSourceName, newSourceId);
-        setContainerCookies("log-viewer-containers", "ADD",`${newSourceName}:${newSourceId}`);
+        setContainerCookies("vision-containers", "ADD",`${newSourceName}:${newSourceId}`);
     };
 };
 
@@ -121,7 +121,7 @@ function removeSource(elem, data) {
     // Remove a textarea from the page.
     const sourceBox = document.getElementById(elem);
     sourceBox.remove();
-    setContainerCookies("log-viewer-containers","REMOVE",data);
+    setContainerCookies("vision-containers","REMOVE",data);
 };
 
 function changeFontSize(size) {
@@ -139,8 +139,8 @@ function clearTextarea(elm) {
 };
 
 window.onload = function() {
-    if (getContainerCookies("log-viewer-containers")) {
-        var containers = JSON.parse(getContainerCookies("log-viewer-containers"));
+    if (getContainerCookies("vision-containers")) {
+        var containers = JSON.parse(getContainerCookies("vision-containers"));
         for (i = 0; i < containers.length; i++) {
             var container = containers[i].split(':');
             addSource(container[0], container[1]);

@@ -1,15 +1,15 @@
-# This is the script that will go on endpoints that will send out the POST api requests to log viewer.
+# This is the script that will go on endpoints that will send out the POST api requests to Vision.
 
 import requests
 import inotify.adapters
 import argparse
 
 argParser = argparse.ArgumentParser(
-    prog="Log Viewer Publisher",
-    description="Watches a given file for new entries and posts them to Log Viewer."
+    prog="Vision Publisher",
+    description="Watches a given file for new entries and posts them to Vision."
 )
 argParser.add_argument("-f","--file",help="Path to watched file", required=True)
-argParser.add_argument("-u","--url",help="Log Viewer URL", required=True)
+argParser.add_argument("-u","--url",help="Vision URL", required=True)
 argParser.add_argument("-c","--containerid",help="The ID of the container the publsiher will post to", required=True)
 argParser.add_argument("-k","--apikey",help="API Key", required=True)
 

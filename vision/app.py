@@ -19,15 +19,15 @@ MINIMUM_VERSION = 1
 # Create a mongodb client
 CLIENT = pymongo.MongoClient(os.environ['MONGODB_HOSTNAME'], 27017, username=os.environ['MONGODB_USERNAME'],password=os.environ['MONGODB_PASSWORD'])
 
-# Get the Log Viewer database from mongodb
-DB = CLIENT["log_viewer_db"]
+# Get the Vision database from mongodb
+DB = CLIENT["viewer_db"]
 # Get/Create the sources collection in monogdb
-LOG_SOURCES = DB["sources"]
+VISION_VIEWER_SOURCES = DB["vision_viewer_sources"]
 
 @app.route('/')
 def index():
     # Use the data stored in the database to show the index route.
-    data = list(LOG_SOURCES.find())
+    data = list(VISION_VIEWER_SOURCES.find())
     return render_template('index.html',logsources=data)
 
 @app.route('/publish', methods=['POST'])
@@ -62,8 +62,8 @@ def sources():
                     'containerIds' : [request.form[containerId] for containerId in request.form.keys() if 'containerId' in containerId and request.form[containerId] != '']
                 }
             }
-            if LOG_SOURCES.find_one(apikey):
-                LOG_SOURCES.update_one(apikey,data)
+            if VISION_VIEWER_SOURCES.find_one(apikey):
+                VISION_VIEWER_SOURCES.update_one(apikey,data)
             else:
                 # Generate api-key and get all fields
                 newdata = {
@@ -71,15 +71,15 @@ def sources():
                     'displayname': request.form['displayname'],
                     'containerIds' : [request.form[containerId] for containerId in request.form.keys() if 'containerId' in containerId and request.form[containerId] != '']
                 }
-                LOG_SOURCES.insert_one(newdata)
+                VISION_VIEWER_SOURCES.insert_one(newdata)
             return redirect(url_for('sources'))
         elif request.form['actionType'] == "DELETE":
-            if LOG_SOURCES.find_one(apikey):
-                LOG_SOURCES.delete_one(apikey)
+            if VISION_VIEWER_SOURCES.find_one(apikey):
+                VISION_VIEWER_SOURCES.delete_one(apikey)
             return redirect(url_for('sources'))
     else:
         # Turn mongo cursor object (output of find()) into a list.
-        data = list(LOG_SOURCES.find())
+        data = list(VISION_VIEWER_SOURCES.find())
         return render_template('sources.html', logsources=data)
 
 if __name__ == '__main__':
