@@ -1,0 +1,1 @@
+# A place to store constants for the Vision tool
