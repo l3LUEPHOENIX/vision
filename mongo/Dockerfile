@@ -1,11 +1,11 @@
-# Taken from: https://github.com/mvertes/docker-alpine-mongo/blob/master/Dockerfile
-FROM alpine:edge
+# Inspired by: https://github.com/mvertes/docker-alpine-mongo/blob/master/Dockerfile
+FROM alpine:3.8
 
-RUN apk add --no-cache mongodb
-
-VOLUME /data/db
-EXPOSE 27017 28017
-
-COPY run.sh /root
-ENTRYPOINT [ "/root/run.sh" ]
-CMD [ "mongod", "--bind_ip", "0.0.0.0" ]
+RUN mkdir /opt/ \
+    && mkdir /opt/mongodb 
+WORKDIR /opt/mongodb
+COPY . .
+RUN mkdir /data && \
+    mkdir /data/db && \
+    sh ./apk_packages/install_packages.sh
+CMD ["sh", "./run.sh"]

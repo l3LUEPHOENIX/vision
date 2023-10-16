@@ -25,25 +25,16 @@ services:
       vision-net:
         ipv4_address: 192.168.1.3
   mongo:
-    image: mvertes/alpine-mongo # https://github.com/mvertes/docker-alpine-mongo
+    image: alpine-mongo:1.0
+    build: ./mongo
     hostname: mongodb
     container_name: vision-mongodb
     volumes:
       - vision_vol:/data/db
-      - ./mongo/mongodb.conf:/etc/mongodb.conf
-      - ./mongo/setupMongo.js:/etc/setupMongo.js
     depends_on:
       - redis
       - vision
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: e61ddc9534f8efd85b6cd91a661fef9f
-      MONGO_INITDB_DATABASE: vision_db
-      MONGO_DATA_DIR: /data/db
-      MONGO_LOG_DIR: /dev/null
-    command: >
-      nohup mongod --bind_ip 0.0.0.0 --auth &
-      && mongo < /etc/setupMongo.js
+    command: sh ./run.sh
     networks:
       vision-net:
         ipv4_address: 192.168.1.6
