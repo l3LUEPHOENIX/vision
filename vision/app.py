@@ -8,6 +8,8 @@ import os
 import redis
 import models
 
+from config import *
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = str(os.urandom(24).hex())
 app.register_blueprint(sse, url_prefix='/stream')
@@ -15,14 +17,6 @@ app.config["REDIS_URL"] = "redis://192.168.1.3"
 app.config['DEBUG'] = True
 csrf = CSRFProtect(app)
 MINIMUM_VERSION = 1
-
-# Create a mongodb client
-CLIENT = pymongo.MongoClient(os.environ['MONGODB_HOSTNAME'], 27017, username=os.environ['MONGODB_USERNAME'],password=os.environ['MONGODB_PASSWORD'])
-
-# Get the Vision database from mongodb
-DB = CLIENT["viewer_db"]
-# Get/Create the sources collection in monogdb
-VISION_VIEWER_SOURCES = DB["vision_viewer_sources"]
 
 @app.route('/')
 def index():
@@ -54,7 +48,7 @@ def publish():
 def sources():
     # Return the sources page and POST any changes.
     if request.method == 'POST':
-        apikey = {'apikey':request.form['apikey']}
+        apikey = {'apikey_sum': hashed_key(request.form['apikey'])}
         if request.form['actionType'] == "UPDATE":
             data = {
                 "$set" : {
@@ -66,20 +60,23 @@ def sources():
                 VISION_VIEWER_SOURCES.update_one(apikey,data)
             else:
                 # Generate api-key and get all fields
+                new_token = secrets.token_urlsafe(30)
                 newdata = {
-                    'apikey': secrets.token_urlsafe(30),
+                    'apikey': new_token,
+                    'apikey_sum': hashed_key(new_token),
                     'displayname': request.form['displayname'],
                     'containerIds' : [request.form[containerId] for containerId in request.form.keys() if 'containerId' in containerId and request.form[containerId] != '']
                 }
                 VISION_VIEWER_SOURCES.insert_one(newdata)
             return redirect(url_for('sources'))
         elif request.form['actionType'] == "DELETE":
-            if VISION_VIEWER_SOURCES.find_one(apikey):
-                VISION_VIEWER_SOURCES.delete_one(apikey)
+            VISION_VIEWER_SOURCES.delete_one(apikey)
             return redirect(url_for('sources'))
     else:
         # Turn mongo cursor object (output of find()) into a list.
         data = list(VISION_VIEWER_SOURCES.find())
+        for doc in data:
+            doc['apikey'] = decrypt(doc['apikey'])
         return render_template('sources.html', logsources=data)
 
 if __name__ == '__main__':

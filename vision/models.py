@@ -4,13 +4,7 @@ from typing_extensions import Literal
 import pymongo
 import os
 
-# Create a mongodb client
-CLIENT = pymongo.MongoClient(os.environ['MONGODB_HOSTNAME'], 27017, username=os.environ['MONGODB_USERNAME'],password=os.environ['MONGODB_PASSWORD'])
-
-# Get the Vision database from mongodb
-DB = CLIENT["viewer_db"]
-# Get/Create the sources collection in monogdb
-VISION_VIEWER_SOURCES = DB["vision_viewer_sources"]
+from config import *
 
 class viewerApi(BaseModel):
     version: int
@@ -22,9 +16,9 @@ class viewerApi(BaseModel):
 
     @model_validator(mode='after')
     def valid_keys_and_containers (self):
-        key = self.authentication['apikey']
+        key = hashed_key(self.authentication['apikey'])
         container = self.content['containerId']
-        mongo_document = VISION_VIEWER_SOURCES.find_one({'apikey':key})
+        mongo_document = VISION_VIEWER_SOURCES.find_one({'apikey_sum':key})
         if not mongo_document:
             raise ValueError("Invalid Key")
         
