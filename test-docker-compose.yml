@@ -9,9 +9,11 @@ services:
       - redis
     environment:
       MONGODB_DATABASE: vision_db
-      MONGODB_USERNAME: root
-      MONGODB_PASSWORD: e61ddc9534f8efd85b6cd91a661fef9f
+      MONGODB_USERNAME: vision
+      MONGODB_PASSWORD: /run/secrets/mongo_vision_user_pass
       MONGODB_HOSTNAME: mongodb
+    secrets:
+      - mongo_vision_user_pass
     ports:
       - "7443:7443"
     networks:
@@ -34,6 +36,14 @@ services:
     depends_on:
       - redis
       - vision
+    environment:
+      MONGO_ADMIN_USER: root
+      MONGO_ADMIN_PASS: /run/secrets/mongo_admin_pass
+      MONGO_USER_USER: vision
+      MONGO_USER_PASS: /run/secrets/mongo_vision_user_pass
+    secrets:
+      - mongo_admin_pass
+      - mongo_vision_user_pass
     # cap_add: was ran for iptables... which presently doesn't work
     #   - SYS_ADMIN
     #   - NET_ADMIN
@@ -73,3 +83,8 @@ networks:
 volumes:
   vision_vol:
     external: false
+# secrets:
+#   mongo_admin_pass:
+#     file: ./mongo/mongo_admin_pass.txt
+#   mongo_vision_user_pass:
+#     file: ./mongo/mongo_vision_user_pass.txt

@@ -28,8 +28,11 @@ def decrypt(text, HexKey):
 # Create a mongodb client
 # Get the Vision database from mongodb
 # Get/Create the sources collection in monogdb
-CLIENT=pymongo.MongoClient(os.environ['MONGODB_HOSTNAME'], 27017, username=os.environ['MONGODB_USERNAME'],password=os.environ['MONGODB_PASSWORD'])
-DB=CLIENT["viewer_db"]
+CLIENT=pymongo.MongoClient(os.environ['MONGODB_HOSTNAME'],
+                           port=27017,
+                           username=os.environ['MONGODB_USERNAME'],
+                           password=os.environ['MONGODB_PASSWORD'])
+DB=CLIENT[os.environ['MONGODB_DATABASE']]
 VISION_VIEWER_SOURCES=DB["vision_viewer_sources"]
 
 with open('./vision_key','r') as vision_key:
