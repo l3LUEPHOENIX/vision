@@ -12,10 +12,11 @@ services:
       MONGODB_USERNAME: vision
       MONGODB_PASSWORD: a7c405c995052e2294c068292f6b0da6
       MONGODB_HOSTNAME: mongodb
-    secrets:
-      - mongo_vision_user_pass
     ports:
       - "7443:7443"
+    command: sh ./run.sh
+    volumes:
+      - ./vision/secrets/:/opt/vision/secrets/
     networks:
       vision-net:
         ipv4_address: 192.168.1.2
@@ -38,12 +39,9 @@ services:
       - vision
     environment:
       MONGO_ADMIN_USER: root
-      MONGO_ADMIN_PASS: /run/secrets/mongo_admin_pass
+      MONGO_ADMIN_PASS: e61ddc9534f8efd85b6cd91a661fef9f
       MONGO_USER_USER: vision
-      MONGO_USER_PASS: /run/secrets/mongo_vision_user_pass
-    secrets:
-      - mongo_admin_pass
-      - mongo_vision_user_pass
+      MONGO_USER_PASS: a7c405c995052e2294c068292f6b0da6
     # cap_add: was ran for iptables... which presently doesn't work
     #   - SYS_ADMIN
     #   - NET_ADMIN

@@ -32,5 +32,5 @@ CLIENT=pymongo.MongoClient(os.environ['MONGODB_HOSTNAME'], 27017, username=os.en
 DB = CLIENT["vision_db"]
 VISION_VIEWER_SOURCES = DB["vision_viewer_sources"]
 
-with open('./vision_key','r') as vision_key:
+with open('/opt/vision/secrets/vision_key.txt','r') as vision_key:
     VISION_KEY=vision_key.read()

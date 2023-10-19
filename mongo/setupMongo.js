@@ -3,8 +3,8 @@ use admin;
 if (!db.auth('root','e61ddc9534f8efd85b6cd91a661fef9f')) {
     db.createUser(
         {
-            user: admin_user,
-            pwd: admin_pass,
+            user: 'root',
+            pwd: 'e61ddc9534f8efd85b6cd91a661fef9f',
             roles: [
                 "userAdminAnyDatabase",
                 "dbAdminAnyDatabase",
