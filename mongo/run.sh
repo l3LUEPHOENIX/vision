@@ -7,7 +7,5 @@
 # iptables -A OUTPUT -j DROP
 # iptables-save
 nohup mongod -f /opt/mongodb/mongod.conf
-# mongo < ./setupMongo.js
-mongo admin --eval "db.createUser({user:'root',pwd: '$(cat /run/secrets/mongo_admin_pass)',roles: ['userAdminAnyDatabase','dbAdminAnyDatabase','readWriteAnyDatabase']});"
-mongo admin -u root -p $(cat /run/secrets/mongo_admin_pass) --eval "db.createUser({user:'vision',pwd:'$(cat /run/secrets/mongo_user_pass)',roles:[{role:'readWrite',db:'vision_db'}]});"
+mongo < ./setupMongo.js 
 tail -f ./mongod.log

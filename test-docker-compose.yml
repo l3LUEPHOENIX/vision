@@ -10,7 +10,7 @@ services:
     environment:
       MONGODB_DATABASE: vision_db
       MONGODB_USERNAME: vision
-      MONGODB_PASSWORD: /run/secrets/mongo_vision_user_pass
+      MONGODB_PASSWORD: a7c405c995052e2294c068292f6b0da6
       MONGODB_HOSTNAME: mongodb
     secrets:
       - mongo_vision_user_pass
@@ -83,8 +83,3 @@ networks:
 volumes:
   vision_vol:
     external: false
-# secrets:
-#   mongo_admin_pass:
-#     file: ./mongo/mongo_admin_pass.txt
-#   mongo_vision_user_pass:
-#     file: ./mongo/mongo_vision_user_pass.txt

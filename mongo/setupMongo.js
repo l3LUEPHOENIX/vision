@@ -1,10 +1,6 @@
-const admin_user = process.env.MONGO_ADMIN_USER
-const user_user = process.env.MONGO_USER_USER
-const admin_pass = process.env.MONGO_ADMIN_PASS
-const user_pass = process.env.MONGO_USER_PASS
-
+use vision_db;
 use admin;
-if (!db.auth(admin_user, admin_pass)) {
+if (!db.auth('root','e61ddc9534f8efd85b6cd91a661fef9f')) {
     db.createUser(
         {
             user: admin_user,
@@ -17,12 +13,12 @@ if (!db.auth(admin_user, admin_pass)) {
         }
     )
 }
-use vision_db;
-if (!db.auth(user_user, user_pass)) {
+db.auth('root', 'e61ddc9534f8efd85b6cd91a661fef9f');
+if (!db.auth('vision','a7c405c995052e2294c068292f6b0da6')) {
     db.createUser(
         {
-            user: user_user,
-            pwd: user_pass,
+            user: 'vision',
+            pwd: 'a7c405c995052e2294c068292f6b0da6',
             roles: [
                 {
                     role: 'readWrite',
