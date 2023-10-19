@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, abort
+from flask import Flask, render_template, request, redirect, url_for, abort, session, flash, render_template_string
 from flask_wtf.csrf import CSRFProtect, CSRFError
+from ldap3 import Server, Connection, ALL
 from flask_sse import sse
 from pydantic import ValidationError
+from functools import wraps
 import pymongo
 import secrets
 import os
@@ -9,6 +11,7 @@ import redis
 import models
 
 from config import *
+from auth import authenticate_user
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = str(os.urandom(24).hex())
@@ -18,7 +21,42 @@ app.config['DEBUG'] = True
 csrf = CSRFProtect(app)
 MINIMUM_VERSION = 1
 
+def vision_login_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if session.get('authenticated'):
+            return func(*args, **kwargs)
+        else:
+            return redirect(url_for('login'))
+    return wrapper
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+    template = """
+    <form method="POST">
+        <label>Username</label>
+        <label>Password</label>
+        <input type='text' name='username'>
+        <input type='text' name='password'>
+        <input type='submit'>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    </form>
+    """
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        if authenticate_user(username, password):
+            session['authenticated'] = True
+            session['username'] = username
+            return redirect(url_for('index'))
+        else:
+            return redirect(url_for('login')) #flash('Login Failed!')
+    else:
+        return render_template_string(template)
+
 @app.route('/')
+@vision_login_required
 def index():
     # Use the data stored in the database to show the index route.
     data = list(VISION_VIEWER_SOURCES.find())
@@ -44,7 +82,9 @@ def publish():
     else:
         return abort(400, 'POST must be JSON')
 
+
 @app.route('/sources', methods=['GET','POST'])
+@vision_login_required
 def sources():
     # Return the sources page and POST any changes.
     if request.method == 'POST':

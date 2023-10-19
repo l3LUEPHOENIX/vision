@@ -72,6 +72,20 @@ services:
     networks:
       vision-net:
         ipv4_address: 192.168.1.5
+  openldap:
+    image: bitnami/openldap:2
+    environment:
+      - LDAP_ROOT=dc=domain3,dc=local
+      - LDAP_ADMIN_USERNAME=vision
+      - LDAP_ADMIN_PASSWORD=abc123
+      - LDAP_GROUP=cn=vision_users,ou=Groups,dc=domain3,dc=local
+      - LDAP_USERS=vision_user01
+      - LDAP_PASSWORDS=aaaa
+    volumes:
+      - openldap_data:/bitnami/openldap
+    networks:
+      vision-net:
+        ipv4_address: 192.168.1.7
 networks:
   vision-net:
     name: vision-net
@@ -81,3 +95,5 @@ networks:
 volumes:
   vision_vol:
     external: false
+  openldap_data:
+    driver: local
