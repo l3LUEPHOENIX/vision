@@ -9,8 +9,8 @@ services:
       - redis
     environment:
       MONGODB_DATABASE: vision_db
-      MONGODB_USERNAME: root
-      MONGODB_PASSWORD: e61ddc9534f8efd85b6cd91a661fef9f
+      MONGODB_USERNAME: vision
+      MONGODB_PASSWORD: a7c405c995052e2294c068292f6b0da6
       MONGODB_HOSTNAME: mongodb
     ports:
       - "7443:7443"

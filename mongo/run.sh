@@ -6,4 +6,6 @@
 # iptables -A INPUT -j DROP
 # iptables -A OUTPUT -j DROP
 # iptables-save
-nohup mongod -f /opt/mongodb/mongod.conf && mongo < ./setupMongo.js && tail -f ./mongod.log
+nohup mongod -f /opt/mongodb/mongod.conf
+mongo < ./setupMongo.js 
+tail -f ./mongod.log
