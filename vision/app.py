@@ -62,7 +62,7 @@ def sources():
                 # Generate api-key and get all fields
                 new_token = secrets.token_urlsafe(30)
                 newdata = {
-                    'apikey': encrypt(new_token, VISION_KEY),
+                    'apikey': new_token,
                     'apikey_sum': hashed_key(new_token),
                     'displayname': request.form['displayname'],
                     'containerIds' : [request.form[containerId] for containerId in request.form.keys() if 'containerId' in containerId and request.form[containerId] != '']
@@ -76,7 +76,7 @@ def sources():
         # Turn mongo cursor object (output of find()) into a list.
         data = list(VISION_VIEWER_SOURCES.find())
         for doc in data:
-            doc['apikey'] = decrypt(doc['apikey'], VISION_KEY)
+            doc['apikey'] = decrypt(doc['apikey'])
         return render_template('sources.html', logsources=data)
 
 if __name__ == '__main__':
