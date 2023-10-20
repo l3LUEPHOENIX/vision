@@ -1,0 +1,33 @@
+dn: ou=Groups,dc=domain3,dc=local
+objectClass: organizationalUnit
+ou: Groups
+
+# User vision_user02 creation
+dn: cn=vision_user02,ou=users,dc=domain3,dc=local
+cn: vision_user02
+sn: Bar1
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword: bbbb
+uid: vision_user02
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/vision_user02
+
+dn: cn=vision_users,ou=Groups,dc=domain3,dc=local
+changetype: modify
+add: member
+member: cn=vision_user02,ou=users,dc=domain3,dc=local
+
+dn: cn=vision_user03,ou=users,dc=domain3,dc=local
+cn: vision_user03
+sn: Bar1
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword: cccc
+uid: vision_user03
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/vision_user03
