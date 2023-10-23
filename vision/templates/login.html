@@ -13,8 +13,11 @@
             <input type="text" id="username" name="username" placeholder="Username">
             <input type="password" id="password" name="password" placeholder="Password">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <button id="login-button" type="submit">Login</button>
+            <button id="login-button" type="submit">LOGIN</button>
         </form>
+        {% if error %}
+        <p class="error">Login Failed!</p>
+        {% endif %}
     </div>
 </body>
 </html>

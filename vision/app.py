@@ -42,9 +42,9 @@ def login():
             return redirect(url_for('index'))
         else:
             flash('Login Failed!')
-            return redirect(url_for('login')) #flash('Login Failed!')
+            return render_template('login.html',error=True) #flash('Login Failed!')
     else:
-        return render_template('login.html')
+        return render_template('login.html',error=False)
 
 @app.route('/')
 @vision_login_required

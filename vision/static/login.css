@@ -10,6 +10,7 @@ body {
 
 .container {
     background-color: #595959;
+    width: 15%;
     text-align: center;
     padding: 20px;
     border: 5px solid #262626;
@@ -25,11 +26,13 @@ form {
 
 h1 {
     color: #fff;
+    font-size: 35px;
 }
 
 input[type="text"],
 input[type="password"] {
     font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
     width: 100%;
     padding: 10px;
     margin: 10px 0;
@@ -41,12 +44,13 @@ input[type="password"] {
 button {
     background-color: #00264d;
     font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    width: 100%;
     color: #fff;
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
-    transition: background-color 0.3s;
     margin-top: 10px;
 }
 
@@ -58,3 +62,11 @@ button:active {
     background-color: #003166;
 }
 
+.error {
+    color: red;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    align-content: center;
+    text-align: center;
+    padding: 5px;
+}
