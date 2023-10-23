@@ -12,6 +12,11 @@ services:
       MONGODB_USERNAME: vision
       MONGODB_PASSWORD: a7c405c995052e2294c068292f6b0da6
       MONGODB_HOSTNAME: mongodb
+      LDAP_ADDRESS: ldap://192.168.1.7:1389
+      LDAP_PORT: 636
+      LDAP_BASE_DN: 'dc=domain3,dc=local'
+      LDAP_VISION_GROUP: 'cn=vision_users,ou=Groups'
+      LDAP_USER_OU: users
     ports:
       - "7443:7443"
     command: sh ./run.sh
@@ -42,10 +47,6 @@ services:
       MONGO_ADMIN_PASS: e61ddc9534f8efd85b6cd91a661fef9f
       MONGO_USER_USER: vision
       MONGO_USER_PASS: a7c405c995052e2294c068292f6b0da6
-    # cap_add: was ran for iptables... which presently doesn't work
-    #   - SYS_ADMIN
-    #   - NET_ADMIN
-    #   - NET_RAW
     command: sh ./run.sh
     networks:
       vision-net:
@@ -75,6 +76,11 @@ services:
   openldap:
     image: bitnami/openldap:2
     environment:
+      LDAP_CONFIG_ADMIN_ENABLED: yes
+      LDAP_ENABLE_TLS: no
+      LDAP_TLS_CERT_FILE: /opt/bitnami/openldap/certs/openldap.crt
+      LDAP_TLS_KEY_FILE: /opt/bitnami/openldap/certs/openldap.key
+      LDAP_TLS_CA_FILE: /opt/bitnami/openldap/certs/ca.crt
       LDAP_ROOT: dc=domain3,dc=local
       LDAP_ADMIN_USERNAME: vision
       LDAP_ADMIN_PASSWORD: abc123
@@ -83,7 +89,9 @@ services:
       LDAP_PASSWORDS: aaaa
     volumes:
       - openldap_data:/bitnami/openldap
-      - ./tree.ldif:/opt/bitnami/openldap/share/tree.ldif
+      - ./openldap/certs/:/opt/bitnami/openldap/certs/
+      - ./openldap/:/home/openldap
+      # - ./tree.ldif:/opt/bitnami/openldap/share/tree.ldif
     networks:
       vision-net:
         ipv4_address: 192.168.1.7

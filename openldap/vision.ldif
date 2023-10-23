@@ -1,0 +1,28 @@
+dn: ou=Groups,dc=domain3,dc=local
+objectClass: organizationalUnit
+ou: Groups
+
+dn: cn=vision_users,ou=Groups,dc=domain3,dc=local
+cn: vision_users
+objectClass: groupOfNames
+member: cn=vision_user01,ou=users,dc=domain3,dc=local
+
+dn: cn=vision_users,ou=Groups,dc=domain3,dc=local
+changetype: modify
+add: member
+member: cn=vision_user02,ou=users,dc=domain3,dc=local
+
+# User vision_user02 creation
+dn: cn=vision_user02,ou=users,dc=domain3,dc=local
+cn: vision_user02
+sn: Bar2
+objectClass: inetOrgPerson
+userPassword: bbbb
+uid: vision_user02
+
+dn: cn=vision_user03,ou=users,dc=domain3,dc=local
+cn: vision_user03
+sn: Bar3
+objectClass: inetOrgPerson
+userPassword: cccc
+uid: vision_user03

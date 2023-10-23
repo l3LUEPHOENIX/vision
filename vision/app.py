@@ -32,16 +32,6 @@ def vision_login_required(func):
 
 @app.route('/login', methods=['GET','POST'])
 def login():
-    template = """
-    <form method="POST">
-        <label>Username</label>
-        <label>Password</label>
-        <input type='text' name='username'>
-        <input type='text' name='password'>
-        <input type='submit'>
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    </form>
-    """
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -51,9 +41,10 @@ def login():
             session['username'] = username
             return redirect(url_for('index'))
         else:
+            flash('Login Failed!')
             return redirect(url_for('login')) #flash('Login Failed!')
     else:
-        return render_template_string(template)
+        return render_template('login.html')
 
 @app.route('/')
 @vision_login_required

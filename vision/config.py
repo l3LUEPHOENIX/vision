@@ -31,6 +31,11 @@ def decrypt(text, HexKey):
 CLIENT=pymongo.MongoClient(os.environ['MONGODB_HOSTNAME'], 27017, username=os.environ['MONGODB_USERNAME'],password=os.environ['MONGODB_PASSWORD'])
 DB = CLIENT["vision_db"]
 VISION_VIEWER_SOURCES = DB["vision_viewer_sources"]
-LDAP_HOST='ldap://192.168.1.7:1389'
+
+LDAP_BASE_DN        =os.environ['LDAP_BASE_DN']
+LDAP_VISION_GROUP   =os.environ['LDAP_VISION_GROUP']
+LDAP_USER_OU        =os.environ['LDAP_USER_OU']
+LDAP_HOST           =os.environ['LDAP_HOST']
+
 with open('/opt/vision/secrets/vision_key.txt','r') as vision_key:
     VISION_KEY=vision_key.read()
