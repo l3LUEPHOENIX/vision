@@ -1,11 +1,37 @@
 #!/bin/sh
 # Start mongo, run the setup script, follow the log
-# --bind_ip 0.0.0.0 --port 27017 --auth --fork --logpath ./mongod.log
-# iptables -I INPUT -s 192.168.1.2,127.0.0.1 -p tcp --destination-port 27017 -m state --state NEW,ESTABLISHED -j ACCEPT
-# iptables -I OUTPUT -d 192.168.1.2,127.0.0.1 -p tcp --source-port 27017 -m state --state ESTABLISHED -j ACCEPT
-# iptables -A INPUT -j DROP
-# iptables -A OUTPUT -j DROP
-# iptables-save
 nohup mongod -f /opt/mongodb/mongod.conf
+cat <<EOF > ./setupMongo.js
+use vision_db;
+use admin;
+if (!db.auth('$MONGO_ADMIN_USER','$MONGO_ADMIN_PASS')) {
+    db.createUser(
+        {
+            user: '$MONGO_ADMIN_USER',
+            pwd: '$MONGO_ADMIN_PASS',
+            roles: [
+                "userAdminAnyDatabase",
+                "dbAdminAnyDatabase",
+                "readWriteAnyDatabase"
+            ]
+        }
+    )
+}
+db.auth('$MONGO_ADMIN_USER', '$MONGO_ADMIN_PASS');
+if (!db.auth('$MONGO_USER_USER','$MONGO_USER_PASS')) {
+    db.createUser(
+        {
+            user: '$MONGO_USER_USER',
+            pwd: '$MONGO_USER_PASS',
+            roles: [
+                {
+                    role: 'readWrite',
+                    db: 'vision_db'
+                }
+            ]
+        }
+    )
+}
+EOF
 mongo < ./setupMongo.js 
 tail -f ./mongod.log

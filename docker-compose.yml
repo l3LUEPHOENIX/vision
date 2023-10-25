@@ -19,6 +19,8 @@ services:
     ports:
       - "7443:7443"
     command: sh ./run.sh
+    volumes:
+      - ./vision/secrets/:/opt/vision/secrets/
     networks:
       vision-net:
         ipv4_address: 192.168.1.2
