@@ -3,7 +3,6 @@ from Crypto.Cipher import AES
 import os
 import pymongo
 from hashlib import sha256
-import base64
 
 def hashed_key(provided_key):
     return sha256(provided_key.encode('utf-8')).hexdigest()

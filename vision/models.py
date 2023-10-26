@@ -1,8 +1,6 @@
 # Data models for Heimdall to validate and manipulate API data.
 from pydantic import BaseModel, model_validator
 from typing_extensions import Literal
-import pymongo
-import os
 
 from config import *
 

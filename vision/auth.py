@@ -6,8 +6,6 @@ from config import LDAP_HOST, LDAP_BASE_DN, LDAP_VISION_GROUP, LDAP_USER_OU
 ad_server = Server(LDAP_HOST, use_ssl=True, get_info=ALL)
 ad_vision_group = f"{LDAP_VISION_GROUP},{LDAP_BASE_DN}"
 
-# tls = Tls(validate=ssl.CERT_OPTIONAL)
-
 def authenticate_user(username, password):
     try:
         with Connection(ad_server, user=f'CN={username},OU={LDAP_USER_OU},{LDAP_BASE_DN}', password=password) as conn:
@@ -19,5 +17,4 @@ def authenticate_user(username, password):
             else:
                 return False # Successful authenticate, but not member of group
     except Exception as e:
-        # app.logger.error(f"LDAP authentication error: {str(e)}")
         return False
