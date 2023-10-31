@@ -4,7 +4,7 @@ from typing_extensions import Literal
 
 from config import *
 
-class viewerApi(BaseModel):
+class publisherApi_v1_0(BaseModel):
     version: int
     authentication: dict[Literal['apikey'], str]
     content: dict[Literal['message','containerId'], str]
@@ -32,4 +32,7 @@ class viewerApi(BaseModel):
         return self
         
 class archiveApi(BaseModel):
+    pass
+
+class relayApi(BaseModel):
     pass

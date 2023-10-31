@@ -5,8 +5,8 @@ from pydantic import ValidationError
 from functools import wraps
 import secrets
 import os
-import models
 
+import models
 from config import *
 from auth import authenticate_user
 
@@ -50,16 +50,21 @@ def index():
     data = list(VISION_VIEWER_SOURCES.find())
     return render_template('index.html',logsources=data)
 
-@app.route('/publish', methods=['POST'])
+@app.route('/api/<object>/<object_version>', methods=['POST'])
 @csrf.exempt
-def publish():
+def publish(object=None,object_version=None):
     # Handle post request
     # Should be JSON that includes data source and message.
     # Use sse publish to write data to the page
-    
+    objects = {
+        "publisher" : {
+            "v1.0" : models.publisherApi_v1_0
+        }
+    }
+
     if request.get_json():
         try:
-            m = models.viewerApi.model_validate(request.get_json())
+            m = objects[object][object_version].model_validate(request.get_json())
             sse.publish(m.post, type='event', channel=m.channel)
             del m
             return "\n\nSuccess\n\n"
@@ -67,6 +72,10 @@ def publish():
             return abort(400, e)
         except TypeError:
             return abort(400, m)
+        except KeyError:
+            return abort(404, "That route does not exist!")
+        except:
+            return abort(400)
     else:
         return abort(400, 'POST must be JSON')
 
