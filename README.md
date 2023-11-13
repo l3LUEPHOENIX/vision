@@ -107,3 +107,6 @@ The log being watched and being written to by event_generator.py
 
 ### event_generator.py
 I used this to add automatically generate log entries for testing.
+
+
+curl -k -H 'Content-type: application/json' -d '{"version":1,"authentication":{"apikey":"EtvHtmY2rWfFgyGQSMW-32_tC0PIVjkMkWmUgXVR"},"content":{"action_type":"created","file_name":"hello_world.txt","file_size":"15kb"}}' -X POST https://localhost:7443/api/indexer/v1.0

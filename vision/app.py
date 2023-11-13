@@ -50,6 +50,11 @@ def index():
     data = list(VISION_VIEWER_SOURCES.find())
     return render_template('index.html',logsources=data)
 
+@app.route('/archivist/<source>', methods=['GET','POST'])
+@vision_login_required
+def archivist(source=None):
+    pass
+
 @app.route('/api/<object>/<object_version>', methods=['POST'])
 @csrf.exempt
 def publish(object=None,object_version=None):
@@ -58,21 +63,39 @@ def publish(object=None,object_version=None):
     # Use sse publish to write data to the page
     objects = {
         "publisher" : {
-            "v1.0" : models.publisherApi_v1_0
+            "v1.0" : models.publisherApi_v1_0,
+            "action": sse.publish
+        },
+        "indexer" : {
+            "v1.0" : models.indexerApi_v1_0,
+            "action": indexer_update
+        },
+        "archivist" : {
+            "v1.0" : models.archivistApi_v1_0,
+            "action" : None
         }
     }
 
     if request.get_json():
         try:
             m = objects[object][object_version].model_validate(request.get_json())
-            sse.publish(m.post, type='event', channel=m.channel)
+            objects[object]["action"](**m)
             del m
             return "\n\nSuccess\n\n"
         except ValidationError as e:
-            return abort(400, e)
-        except TypeError:
-            return abort(400, m)
-        except KeyError:
+            with open('error.log','a') as error_log:
+                error_log.write(repr(e))
+                error_log.write(str(e))
+            return abort(400, "Validation Error")
+        except TypeError as t:
+            with open('error.log','a') as error_log:
+                error_log.write(repr(t))
+                error_log.write(str(t))
+            return abort(400, "Type Error")
+        except KeyError as k:
+            with open('error.log','a') as error_log:
+                error_log.write(repr(k))
+                error_log.write(str(k))
             return abort(404, "That route does not exist!")
         except:
             return abort(400)

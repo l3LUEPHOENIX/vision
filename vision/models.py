@@ -29,10 +29,21 @@ class publisherApi_v1_0(BaseModel):
             'message': self.content['message'],
             'containerId': self.channel
         }
-        return self
-        
-class archiveApi(BaseModel):
-    pass
+        return {'data': self.post, 'type': 'event', 'channel': self.channel}
 
-class relayApi(BaseModel):
+class indexerApi_v1_0(BaseModel):
+    version: int
+    authentication: dict[Literal['apikey'], str]
+    content: dict[Literal['action_type','file_name','file_size'], str]
+
+    @model_validator(mode='after')
+    def validate_key(self):
+        key = hashed_key(self.authentication['apikey'])
+        mongo_document = VISION_VIEWER_SOURCES.find_one({'apikey_sum':key})
+        if not mongo_document:
+            raise ValueError("Invalid Key")
+        
+        return {'authentication' : self.authentication['apikey'], 'content' : self.content}
+
+class archivistApi_v1_0(BaseModel):
     pass

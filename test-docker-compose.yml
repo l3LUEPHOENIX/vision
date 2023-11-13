@@ -51,7 +51,7 @@ services:
       vision-net:
         ipv4_address: 192.168.1.6
   log-source1:
-    image: log-source
+    image: log-source:test
     build: ./log-source
     hostname: edp
     container_name: log-source1
@@ -62,7 +62,7 @@ services:
       vision-net:
         ipv4_address: 192.168.1.4
   log-source2:
-    image: log-source
+    image: log-source:test
     build: ./log-source
     hostname: sar
     container_name: log-source2

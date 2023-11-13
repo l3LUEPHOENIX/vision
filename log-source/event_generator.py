@@ -1,6 +1,7 @@
 import time
 import datetime
 import socket
+import os
 
 count = 1
 while True:
@@ -14,4 +15,8 @@ while True:
     
     count += 1
     
+    if count % 20 == 0:
+        with open(f"/opt/log-source/dummy_dir/dummy_doc{str(int(count/20))}.txt", "w") as file:
+            file.write(str(os.urandom(1000).hex()))
+
     time.sleep(0.5)
