@@ -1,8 +1,12 @@
 # Watch a directory and send all changes to Vision
 import os
 import requests
-from inotify_simple import INotify, flags
+import inotify.adapters
 import argparse
+from urllib3.exceptions import InsecureRequestWarning
+
+# Suppress only the InsecureRequestWarning from urllib3 needed for self-signed certificates
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 argParser = argparse.ArgumentParser(
     prog="Vision Indexer",
@@ -17,9 +21,7 @@ args = argParser.parse_args()
 WATCHED_DIR = args.directory
 WEB_SERVER_URL = args.url
 
-def send_post_request(event, action_type):
-    file_path = os.path.join(WATCHED_DIR, event.name)
-    file_name = event.name
+def send_post_request(file_path, file_name, action_type):
     file_size = os.path.getsize(file_path)
     
     data = {
@@ -28,36 +30,34 @@ def send_post_request(event, action_type):
             'apikey' : args.apikey
         },
         'content' : {
-            'action_type': action_type,
-            'file_name' : file_name,
-            'file_size' : file_size
+            'action_type': str(action_type),
+            'file_name' : str(file_name),
+            'file_size' : str(file_size)
         }
     }
     
-    response = requests.post(WEB_SERVER_URL, json=data)
+    response = requests.post(WEB_SERVER_URL, json=data, verify=False)
     if response.status_code == 200:
         print(f"File {action_type}: {file_name} ({file_size} bytes) - POST request sent")
     else:
         print(f"File {action_type}: {file_name} ({file_size} bytes) - POST request failed")
 
 def watch_directory():
-    with INotify() as ino:
-        wd = ino.add_watch(WATCHED_DIR, flags.CREATE | flags.DELETE | flags.MODIFY)
+    notifier = inotify.adapters.Inotify()
+    watch_mask = inotify.constants.IN_CREATE | inotify.constants.IN_MODIFY | inotify.constants.IN_DELETE
+    notifier.add_watch(args.directory, watch_mask)
 
-        while True:
-            for event in ino.read():
-                for flag, _, event_name in event:
-                    is_create = flag & flags.CREATE
-                    is_delete = flag & flags.DELETE
-                    is_modify = flag & flags.MODIFY
+    while True:
+        for event in notifier.event_gen(yield_nones=False):
+            (_,type_names,path,filename) = event
+            if 'IN_CREATE' in type_names:
+                response = "created"
+            elif 'IN_MODIFY' in type_names:
+                response = "modified"
+            elif 'IN_DELETE' in type_names:
+                response = "deleted"
 
-                    if is_create:
-                        response = "created"
-                    elif is_delete:
-                        response = "deleted"
-                    elif is_modify:
-                        response = "modified"
-                    send_post_request(event, response)
+            send_post_request(path, filename, response)
 
 if __name__ == "__main__":
     print(f"Watching directory: {WATCHED_DIR}")

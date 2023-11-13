@@ -81,7 +81,7 @@ def publish(object=None,object_version=None):
             m = objects[object][object_version].model_validate(request.get_json())
             objects[object]["action"](**m)
             del m
-            return "\n\nSuccess\n\n"
+            return "200"
         except ValidationError as e:
             with open('error.log','a') as error_log:
                 error_log.write(repr(e))
