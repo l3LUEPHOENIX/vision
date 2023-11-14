@@ -53,7 +53,11 @@ def index():
 @app.route('/archivist/<source>', methods=['GET','POST'])
 @vision_login_required
 def archivist(source=None):
-    pass
+    if source == None:
+        return render_template('archivist.html',files=None)
+    else:
+        data = VISION_VIEWER_SOURCES.find_one({'displayname':source})
+        return render_template('archivist.html',files=data['files'])
 
 @app.route('/api/<object>/<object_version>', methods=['POST'])
 @csrf.exempt

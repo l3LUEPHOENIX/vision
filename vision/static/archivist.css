@@ -1,0 +1,225 @@
+body {
+    background-color: #333333;
+    min-width: 1385px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+a, a:link, a:visited {
+    text-decoration: none;
+    color: white;
+}
+
+/* Add a source drop down */
+select {
+    border: 1px solid #262626;
+    background-color: #cccccc;
+    font-size: 16px;
+    height: 25px;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    max-width: 250px;
+    min-width: 100px;
+    overflow: hidden;
+}
+
+option {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* add source button */
+.add-source {
+    background-color: #00264d;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 5px;
+    margin-right: 5px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.data-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    column-gap: 5px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.data-container-header {
+    padding: 10px;
+    grid-column: 1 / span 2;
+    background-color: black;
+    color: white;
+    margin-bottom: 10px;
+    justify-content:  space-between;
+    align-items: center;
+    display: flex;
+    border-radius: 5px;
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+}
+
+/* CSS for the website name */
+.site-name {
+    font-size: 30px;
+    margin-right: 15px;
+}
+
+.link {
+    font-size: 20px;
+    color: #cccccc;
+    margin-right: 15px;
+}
+
+table {
+    border-collapse: collapse;
+    border-color: #262626;
+    width: 100%;
+    border-radius: 5px;
+}
+
+table.scrolldown {
+    width: 100%;
+}
+
+table.scrolldown tbody, table.scrolldown thead {
+    display: block;
+}
+
+table.scrolldown tbody {
+    height: 70vh;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+th, td {
+    border: 1px solid #262626;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: black;
+    color: white;
+    height: 40px;
+}
+
+tr td:nth-child(2), th:nth-child(2) {
+    width:70%;
+  }
+  
+  tr td:nth-child(3), th:nth-child(3) {
+      width: 30%;
+  }
+
+tr {
+    height: 40px;
+}
+
+tr:nth-child(even) {
+    background-color: #666666;
+}
+
+tr:nth-child(odd) {
+    background-color: #808080;
+}
+
+.selection-box {
+    height: 25px;
+    width: 25px;
+    border-radius: 5px;
+}
+
+.grid-item {
+    color: black;
+    font: 20px;
+}
+
+/* Styling for the banner container */
+.grid-item-header {
+    background-color: black;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+/* Styling for the banner title (aligned to the far left) */
+.grid-item-header-title {
+    font-size: 24px;
+    flex: 1;
+    overflow-wrap: anywhere;
+}
+
+/* Styling for the buttons (aligned to the right) */
+.grid-item-header-button-container {
+    display: flex;
+    align-items: center;
+}
+
+.grid-item-header-button {
+    background-color: #00264d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.grid-item-header-button:hover, .add-source:hover {
+    background-color: #0056b3;
+}
+
+.grid-item-header-button:active, .add-source:active {
+    background-color: #003166;
+}
+
+/* Styling for the checkbox (aligned to the right) */
+.grid-item-header-checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.grid-item-header-checkbox {
+    margin-left: 10px;
+    float: right;
+    height: 35px;
+    width: 35px;
+    border-radius: 5px;
+}
+
+.grid-item-header-checkbox-label {
+    float: left;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.grid-item-body {
+    height: 70vh;
+    box-sizing: border-box;
+    width: 100%;
+    resize: none;
+    border: 2px solid #262626;
+    background-color: #595959;
+    overflow-anchor: none;
+    font-size: 19px;
+    display: block;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+}

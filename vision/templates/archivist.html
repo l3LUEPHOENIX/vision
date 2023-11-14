@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vision - Archivist</title>
+  <link rel="stylesheet" href="/static/archivist.css">
+  <script src="/static/archivist.js"></script>
+</head>
+<body>
+  <div id="data-container" class="data-container">
+    <div class="data-container-header">
+      <div class="left-section">
+        <a href="/"><div class="site-name">VISION</div></a>
+        <a href="/sources"><div class="link">Sources</div></a>
+        <a href="/archivist"><div class="link">Archivist</div></a>
+      </div>
+      <form action="javascript:;" onsubmit="addSourceForm(this)">
+        <label for="sources">Add a Source: </label>
+        <select name="sources" id="sources" onchange="addArchivistSource(this.value)">
+          <option value='NONE'></option>
+          {% for source in logsources %}
+          <option value="{{ source }}">{{ source }}</option>
+          {% endfor %}
+        </select>
+        <input class="add-source" type="submit" value="Add">
+        <label for="fontsize">Font Size: </label>
+        <select name="fontsize" id="fontsize" onchange="changeFontSize(this.value)">
+          <option value="15px">15</option>
+          <option value="16px">16</option>
+          <option value="17px">17</option>
+          <option value="18px">18</option>
+          <option value="19px" selected>19</option>
+          <option value="20px">20</option>
+          <option value="21px">21</option>
+          <option value="22px">22</option>
+          <option value="23px">23</option>
+        </select>
+      </form>
+    </div>
+    <table class="scrolldown">
+        <thead>
+            <tr>
+                <th>
+                  <input form="source-form" type="checkbox" name="selection" class="selection-box">
+                </th>
+                <th>File Name</th>
+                <th>File Size</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in files %}
+                <tr id="{{ file.file_name }}">
+                    <td id="{{ file.file_name }}-selection">
+                        <input form="source-form" type="checkbox" name="selection" class="selection-box">
+                    </td>
+                    <td id="{{ file.file_name }}">{{ file.file_name }}</td>
+                    <td id="{{ file.file_name }}-filesize">{{ file.file_size }} bytes</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div id="data-container" class="grid-item">
+      <div class="grid-item-header">
+          <div class="grid-item-header-title">data</div>
+          <div class="grid-item-header-checkbox-container">
+              <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
+              <input id="data-checkbox" type="checkbox" class="grid-item-header-checkbox">
+          </div>
+          <div class="grid-item-header-button-container">
+              <button onClick="clearTextarea('data')" class="grid-item-header-button">Clear</button>
+              <button onClick="downloadText('data')" class="grid-item-header-button">Download</button>
+              <button onClick="removeSource('data-container','data')" class="grid-item-header-button">Remove</button>
+          </div>
+      </div>
+      <textarea id="data" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+  </div>
+  </div>
+</body>
+</html>

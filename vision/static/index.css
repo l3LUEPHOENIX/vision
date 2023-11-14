@@ -74,6 +74,7 @@ option {
 .link {
     font-size: 20px;
     color: #cccccc;
+    margin-right: 15px;
 }
 
 .grid-item {
