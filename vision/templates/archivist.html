@@ -38,6 +38,7 @@
         </select>
       </form>
     </div>
+    {% for source in sources_and_files %}
     <table class="scrolldown">
         <thead>
             <tr>
@@ -49,7 +50,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for file in files %}
+            {% for file in source.files %}
                 <tr id="{{ file.file_name }}">
                     <td id="{{ file.file_name }}-selection">
                         <input form="source-form" type="checkbox" name="selection" class="selection-box">
@@ -60,21 +61,22 @@
             {% endfor %}
         </tbody>
     </table>
-    <div id="data-container" class="grid-item">
+    <div id="{{ source.displayname }}-container" class="grid-item">
       <div class="grid-item-header">
-          <div class="grid-item-header-title">data</div>
+          <div class="grid-item-header-title">{{ source.displayname }}</div>
           <div class="grid-item-header-checkbox-container">
               <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
-              <input id="data-checkbox" type="checkbox" class="grid-item-header-checkbox">
+              <input id="{{ source.displayname }}-checkbox" type="checkbox" class="grid-item-header-checkbox">
           </div>
           <div class="grid-item-header-button-container">
-              <button onClick="clearTextarea('data')" class="grid-item-header-button">Clear</button>
-              <button onClick="downloadText('data')" class="grid-item-header-button">Download</button>
-              <button onClick="removeSource('data-container','data')" class="grid-item-header-button">Remove</button>
+              <button onClick="clearTextarea('{{ source.displayname }}')" class="grid-item-header-button">Clear</button>
+              <button onClick="downloadText('{{ source.displayname }}')" class="grid-item-header-button">Download</button>
+              <button onClick="removeSource('{{ source.displayname }}-container','{{ source.displayname }}')" class="grid-item-header-button">Remove</button>
           </div>
       </div>
-      <textarea id="data" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
-  </div>
+      <textarea id="{{ source.displayname }}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+    </div>
+    {% endfor %}
   </div>
 </body>
 </html>

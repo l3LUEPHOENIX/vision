@@ -13,10 +13,10 @@ while True:
     
     print(f"Successful write count: {count}")
     
-    count += 1
-    
     if count % 20 == 0:
         with open(f"/opt/log-source/dummy_dir/dummy_doc{str(int(count/20))}.txt", "w") as file:
             file.write(str(os.urandom(1000).hex()))
+            
+    count += 1
 
     time.sleep(0.5)

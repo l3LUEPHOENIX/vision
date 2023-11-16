@@ -50,14 +50,23 @@ def index():
     data = list(VISION_VIEWER_SOURCES.find())
     return render_template('index.html',logsources=data)
 
-@app.route('/archivist/<source>', methods=['GET','POST'])
+@app.route('/archivist/<path:path_sources>', methods=['GET','POST'])
 @vision_login_required
-def archivist(source=None):
-    if source == None:
-        return render_template('archivist.html',files=None)
+def archivist(path_sources):
+    if request.method == 'POST':
+        pass
     else:
-        data = VISION_VIEWER_SOURCES.find_one({'displayname':source})
-        return render_template('archivist.html',files=data['files'])
+        listed_sources = path_sources.split("/")
+        source_docs = []
+        for source in listed_sources:
+            doc = VISION_VIEWER_SOURCES.find_one({'displayname':source})
+            data = {
+                'displayname' : doc['displayname'],
+                'files' : doc['files']
+            }
+            source_docs.append(data)
+        
+        return render_template('archivist.html',sources_and_files=source_docs)
 
 @app.route('/api/<object>/<object_version>', methods=['POST'])
 @csrf.exempt
