@@ -39,6 +39,23 @@
       </form>
     </div>
     {% for source in sources_and_files %}
+    <div class="{{ source.displayname }}-search-bar">
+      {{ source.displayname }}
+      <div class="left-section">
+        <label for="basic_search">
+          Basic
+          <input type="radio" id="basic_search">
+        </label>
+        <label for="regex_search">
+          RegEx
+          <input type="radio" id="regex_search">
+        </label>
+        <input type="text">
+        <input type="text">
+        <button class="grid-item-header-button">Search</button>
+        <button onClick="removeSource('{{ source.displayname }}-container','{{ source.displayname }}')" class="grid-item-header-button">Remove</button>
+      </div>
+    </div>
     <table class="scrolldown">
         <thead>
             <tr>
@@ -71,7 +88,6 @@
           <div class="grid-item-header-button-container">
               <button onClick="clearTextarea('{{ source.displayname }}')" class="grid-item-header-button">Clear</button>
               <button onClick="downloadText('{{ source.displayname }}')" class="grid-item-header-button">Download</button>
-              <button onClick="removeSource('{{ source.displayname }}-container','{{ source.displayname }}')" class="grid-item-header-button">Remove</button>
           </div>
       </div>
       <textarea id="{{ source.displayname }}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>

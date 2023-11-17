@@ -76,7 +76,7 @@ services:
     image: bitnami/openldap:2
     environment:
       LDAP_CONFIG_ADMIN_ENABLED: yes
-      LDAP_ENABLE_TLS: no
+      # LDAP_ENABLE_TLS: no
       LDAP_TLS_CERT_FILE: /opt/bitnami/openldap/certs/openldap.crt
       LDAP_TLS_KEY_FILE: /opt/bitnami/openldap/certs/openldap.key
       LDAP_TLS_CA_FILE: /opt/bitnami/openldap/certs/ca.crt
