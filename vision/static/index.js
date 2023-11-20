@@ -5,7 +5,7 @@ function getContainerCookies(cname) {
     const cArr = cDecoded.split('; ');
     let res;
     cArr.forEach(val => {
-    if (val.indexOf(name) === 0) res = val.substring(name.length);
+        if (val.indexOf(name) === 0) res = val.substring(name.length);
     })
     return res
 };
@@ -15,7 +15,7 @@ function setContainerCookies(cname, action, data) {
     var container = data.split(':');
     const now = new Date();
     const time = now.getTime();
-    const expireTime = time + 1000*36000;
+    const expireTime = time + 1000 * 36000;
     now.setTime(expireTime);
     var expires = `expires=${now.toUTCString()}`;
     var path = "path=/";
@@ -84,14 +84,14 @@ function addSourceForm(form) {
     const newSourceName = newSource["Name"];
     const newSourceId = newSource["ContainerId"];
 
-    if (newSource ==  "NONE") {
+    if (newSource == "NONE") {
         return null
-    } else  if (document.getElementById(`${newSourceName}:${newSourceId}-container`)){
+    } else if (document.getElementById(`${newSourceName}:${newSourceId}-container`)) {
         // If a text area exists for what was selected, do nothing.
         return null
     } else {
         addSource(newSourceName, newSourceId);
-        setContainerCookies("vision-containers", "ADD",`${newSourceName}:${newSourceId}`);
+        setContainerCookies("vision-containers", "ADD", `${newSourceName}:${newSourceId}`);
     };
 };
 
@@ -104,7 +104,7 @@ function downloadText(elm) {
     const link = document.createElement("a");
 
     // Create a blog object with the file content which you want to add to the file
-    const file = new Blob([myTextArea.textContent],{text: 'text/plain'});
+    const file = new Blob([myTextArea.textContent], { text: 'text/plain' });
 
     // Add file content in the object URL
     link.href = URL.createObjectURL(file);
@@ -121,7 +121,7 @@ function removeSource(elem, data) {
     // Remove a textarea from the page.
     const sourceBox = document.getElementById(elem);
     sourceBox.remove();
-    setContainerCookies("vision-containers","REMOVE",data);
+    setContainerCookies("vision-containers", "REMOVE", data);
 };
 
 function changeFontSize(size) {
@@ -138,7 +138,7 @@ function clearTextarea(elm) {
     myTextArea.textContent = '';
 };
 
-window.onload = function() {
+window.onload = function () {
     if (getContainerCookies("vision-containers")) {
         var containers = JSON.parse(getContainerCookies("vision-containers"));
         for (i = 0; i < containers.length; i++) {

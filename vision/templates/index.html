@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,20 @@
   <link rel="stylesheet" href="static/index.css">
   <script src="static/index.js"></script>
 </head>
+
 <body>
   <div id="data-container" class="data-container">
     <div class="data-container-header">
       <div class="left-section">
-        <a href="/"><div class="site-name">VISION</div></a>
-        <a href="/sources"><div class="link">Sources</div></a>
-        <a href="/archivist"><div class="link">Archivist</div></a>
+        <a href="/">
+          <div class="site-name">VISION</div>
+        </a>
+        <a href="/sources">
+          <div class="link">Sources</div>
+        </a>
+        <a href="/archivist">
+          <div class="link">Archivist</div>
+        </a>
       </div>
       <form action="javascript:;" onsubmit="addSourceForm(this)">
         <label for="sources">Add a Source: </label>
@@ -21,7 +29,8 @@
           <option value='NONE'></option>
           {% for source in logsources %}
           {% for containerid in source.containerIds %}
-          <option value='{"Name":"{{ source.displayname }}","ContainerId":"{{ containerid }}"}'>{{ source.displayname }}:{{ containerid }}</option>
+          <option value='{"Name":"{{ source.displayname }}","ContainerId":"{{ containerid }}"}'>{{ source.displayname
+            }}:{{ containerid }}</option>
           {% endfor %}
           {% endfor %}
         </select>
@@ -42,4 +51,5 @@
     </div>
   </div>
 </body>
+
 </html>

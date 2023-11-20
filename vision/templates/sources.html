@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,18 +8,23 @@
     <link rel="stylesheet" href="static/sources.css">
     <script src="static/sources.js"></script>
 </head>
+
 <body>
     {% set token = csrf_token() %}
     <div class="header">
-        <a href="/"><div class="site-name">VISION</div></a>
-        <a href="/sources"><div class="link">Sources</div></a>
+        <a href="/">
+            <div class="site-name">VISION</div>
+        </a>
+        <a href="/sources">
+            <div class="link">Sources</div>
+        </a>
     </div>
     <form id="new-form" method="post">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
     </form>
     {% for source in logsources %}
     <form id="{{ source.displayname }}-form" method="post">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
     </form>
     {% endfor %}
     <table>
@@ -40,40 +46,49 @@
                 </td>
                 <td id="new-containerids">
                     <div class="grid-container">
-                        <input form="new-form" type="text" id="containerId_1" name="containerId_1" placeholder="new-containerid">
+                        <input form="new-form" type="text" id="containerId_1" name="containerId_1"
+                            placeholder="new-containerid">
                     </div>
                 </td>
                 <td class="table-button-container" id="new-actions">
-                    <button class="table-button" type="button" class="add-button" onclick="addTextinput(this)">Add</button>
+                    <button class="table-button" type="button" class="add-button"
+                        onclick="addTextinput(this)">Add</button>
                     <button class="table-button" form="new-form">Submit</button>
                     <input form="new-form" type="text" name="actionType" value="UPDATE" style="display:none">
                 </td>
             </tr>
             {% for source in logsources %}
-                <tr id="{{ source.displayname }}">
-                    <td id="{{ source.displayname }}-apikey">
-                        <input form="{{ source.displayname }}-form" type="text" name="apikey" readonly="true" value="{{ source.apikey }}">
-                        <button class="table-button" type="button" onclick="copyToClipboard(this)">Copy</button>
-                    </td>
-                    <td id="{{ source.displayname }}-displayname">
-                        <input form="{{ source.displayname }}-form" type="text" name="displayname" value="{{ source.displayname }}">
-                    </td>
-                    <td id="{{ source.displayname }}-containerids">
-                        <div class="grid-container">
-                            {% for containerid in source.containerIds %}
-                            <input form="{{ source.displayname }}-form" type="text" id="containerId_{{ loop.index }}" name="containerId_{{ loop.index }}" value="{{ containerid }}">
-                            {% endfor %}
-                        </div>
-                    </td>
-                    <td class="table-button-container" id="{{ source.displayname }}-actions">
-                        <button class="table-button" type="button" class="add-button" onclick="addTextinput(this)">Add</button>
-                        <button class="table-button" form="{{ source.displayname }}-form">Apply Changes</button>
-                        <input form="{{ source.displayname }}-form" type="text" name="actionType" value="UPDATE" style="display:none">
-                        <button class="table-button" form="{{ source.displayname }}-form" type="button" onclick="deleteRow(this)">Delete</button>
-                    </td>
-                </tr>
+            <tr id="{{ source.displayname }}">
+                <td id="{{ source.displayname }}-apikey">
+                    <input form="{{ source.displayname }}-form" type="text" name="apikey" readonly="true"
+                        value="{{ source.apikey }}">
+                    <button class="table-button" type="button" onclick="copyToClipboard(this)">Copy</button>
+                </td>
+                <td id="{{ source.displayname }}-displayname">
+                    <input form="{{ source.displayname }}-form" type="text" name="displayname"
+                        value="{{ source.displayname }}">
+                </td>
+                <td id="{{ source.displayname }}-containerids">
+                    <div class="grid-container">
+                        {% for containerid in source.containerIds %}
+                        <input form="{{ source.displayname }}-form" type="text" id="containerId_{{ loop.index }}"
+                            name="containerId_{{ loop.index }}" value="{{ containerid }}">
+                        {% endfor %}
+                    </div>
+                </td>
+                <td class="table-button-container" id="{{ source.displayname }}-actions">
+                    <button class="table-button" type="button" class="add-button"
+                        onclick="addTextinput(this)">Add</button>
+                    <button class="table-button" form="{{ source.displayname }}-form">Apply Changes</button>
+                    <input form="{{ source.displayname }}-form" type="text" name="actionType" value="UPDATE"
+                        style="display:none">
+                    <button class="table-button" form="{{ source.displayname }}-form" type="button"
+                        onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
 </body>
+
 </html>

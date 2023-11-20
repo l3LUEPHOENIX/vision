@@ -8,12 +8,12 @@ function addTextinput(elm) {
     const rowID = elm.parentNode.parentNode.getAttribute('id');
     const newTextinput = document.createElement('input');
     var itemCount = containeridRow.getElementsByTagName('input').length;
-    
+
     newTextinput.type = "text";
     newTextinput.id = `containerId_${itemCount + 1}`;
     newTextinput.name = `containerId_${itemCount + 1}`;
     newTextinput.placeholder = "new-container";
-    newTextinput.setAttribute("form",`${rowID}-form`);
+    newTextinput.setAttribute("form", `${rowID}-form`);
 
     containeridRow.appendChild(newTextinput);
 }
@@ -23,7 +23,7 @@ function deleteRow(elm) {
     const thisRowInputs = elm.parentNode.parentNode.getElementsByTagName("input");
     const actionType = thisRowInputs[thisRowInputs.length - 1];
 
-    actionType.setAttribute('value','DELETE');
+    actionType.setAttribute('value', 'DELETE');
     document.getElementById(elm.getAttribute('form')).submit();
     elm.parentNode.parentNode.remove();
 }

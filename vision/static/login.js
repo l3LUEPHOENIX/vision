@@ -1,10 +1,10 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("login-form");
     const loginButton = document.getElementById("login-button");
     const usernameInput = document.getElementById("username");
     const passwordInput = document.getElementById("password");
 
-    form.addEventListener("submit", function(event) {
+    form.addEventListener("submit", function (event) {
         const username = usernameInput.value;
         const password = passwordInput.value;
 

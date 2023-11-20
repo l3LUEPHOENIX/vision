@@ -21,7 +21,8 @@ input {
     font-family: 'Courier New', Courier, monospace;
 }
 
-th, td {
+th,
+td {
     border: 1px solid #262626;
     padding: 8px;
     text-align: left;
@@ -41,7 +42,9 @@ tr:nth-child(odd) {
     background-color: #808080;
 }
 
-a, a:link, a:visited {
+a,
+a:link,
+a:visited {
     text-decoration: none;
     color: white;
 }

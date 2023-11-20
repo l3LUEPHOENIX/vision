@@ -4,7 +4,9 @@ body {
     font-family: 'Courier New', Courier, monospace;
 }
 
-a, a:link, a:visited {
+a,
+a:link,
+a:visited {
     text-decoration: none;
     color: white;
 }
@@ -54,7 +56,7 @@ option {
     background-color: black;
     color: white;
     margin-bottom: 10px;
-    justify-content:  space-between;
+    justify-content: space-between;
     align-items: center;
     display: flex;
     border-radius: 5px;
@@ -121,11 +123,13 @@ option {
     font-family: 'Courier New', Courier, monospace;
 }
 
-.grid-item-header-button:hover, .add-source:hover {
+.grid-item-header-button:hover,
+.add-source:hover {
     background-color: #0056b3;
 }
 
-.grid-item-header-button:active, .add-source:active {
+.grid-item-header-button:active,
+.add-source:active {
     background-color: #003166;
 }
 

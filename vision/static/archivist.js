@@ -2,7 +2,7 @@ function addArchivistSourceForm(form) {
     // Add a Source textarea based on a provided drop down to select from.
     const newSource = form.sources.value;
 
-    if (newSource ==  "NONE") {
+    if (newSource == "NONE") {
         // If the blank option is selected, do nothing.
         return null
     } else {
@@ -60,7 +60,7 @@ function removeSource(elem, data) {
     // Remove a textarea from the page.
     const sourceBox = document.getElementById(elem);
     sourceBox.remove();
-    setContainerCookies("vision-containers","REMOVE",data);
+    setContainerCookies("vision-containers", "REMOVE", data);
 };
 
 function downloadText(elm) {
@@ -72,7 +72,7 @@ function downloadText(elm) {
     const link = document.createElement("a");
 
     // Create a blog object with the file content which you want to add to the file
-    const file = new Blob([myTextArea.textContent],{text: 'text/plain'});
+    const file = new Blob([myTextArea.textContent], { text: 'text/plain' });
 
     // Add file content in the object URL
     link.href = URL.createObjectURL(file);

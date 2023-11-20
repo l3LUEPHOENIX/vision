@@ -4,7 +4,9 @@ body {
     font-family: 'Courier New', Courier, monospace;
 }
 
-a, a:link, a:visited {
+a,
+a:link,
+a:visited {
     text-decoration: none;
     color: white;
 }
@@ -54,7 +56,7 @@ option {
     background-color: black;
     color: white;
     margin-bottom: 10px;
-    justify-content:  space-between;
+    justify-content: space-between;
     align-items: center;
     display: flex;
     border-radius: 5px;
@@ -88,7 +90,8 @@ table.scrolldown {
     width: 100%;
 }
 
-table.scrolldown tbody, table.scrolldown thead {
+table.scrolldown tbody,
+table.scrolldown thead {
     display: block;
 }
 
@@ -99,7 +102,8 @@ table.scrolldown tbody {
     overflow-x: hidden;
 }
 
-th, td {
+th,
+td {
     border: 1px solid #262626;
     padding: 8px;
     text-align: left;
@@ -111,13 +115,15 @@ th {
     height: 40px;
 }
 
-tr td:nth-child(2), th:nth-child(2) {
-    width:70%;
-  }
-  
-  tr td:nth-child(3), th:nth-child(3) {
-      width: 30%;
-  }
+tr td:nth-child(2),
+th:nth-child(2) {
+    width: 70%;
+}
+
+tr td:nth-child(3),
+th:nth-child(3) {
+    width: 30%;
+}
 
 tr {
     height: 40px;
@@ -181,11 +187,13 @@ tr:nth-child(odd) {
     font-family: 'Courier New', Courier, monospace;
 }
 
-.grid-item-header-button:hover, .add-source:hover {
+.grid-item-header-button:hover,
+.add-source:hover {
     background-color: #0056b3;
 }
 
-.grid-item-header-button:active, .add-source:active {
+.grid-item-header-button:active,
+.add-source:active {
     background-color: #003166;
 }
 
@@ -231,10 +239,10 @@ tr:nth-child(odd) {
     color: white;
     margin-top: 10px;
     margin-bottom: 5px;
-    justify-content:  space-between;
+    justify-content: space-between;
     align-items: center;
     display: flex;
-    border-radius: 5px;   
+    border-radius: 5px;
 }
 
 input[type=text] {

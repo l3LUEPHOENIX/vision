@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,20 @@
   <link rel="stylesheet" href="/static/archivist.css">
   <script src="/static/archivist.js"></script>
 </head>
+
 <body>
   <div id="data-container" class="data-container">
     <div class="data-container-header">
       <div class="left-section">
-        <a href="/"><div class="site-name">VISION</div></a>
-        <a href="/sources"><div class="link">Sources</div></a>
-        <a href="/archivist"><div class="link">Archivist</div></a>
+        <a href="/">
+          <div class="site-name">VISION</div>
+        </a>
+        <a href="/sources">
+          <div class="link">Sources</div>
+        </a>
+        <a href="/archivist">
+          <div class="link">Archivist</div>
+        </a>
       </div>
       <form action="javascript:;" onsubmit="addSourceForm(this)">
         <label for="sources">Add a Source: </label>
@@ -53,46 +61,49 @@
         <input type="text">
         <input type="text">
         <button class="grid-item-header-button">Search</button>
-        <button onClick="removeSource('{{ source.displayname }}-container','{{ source.displayname }}')" class="grid-item-header-button">Remove</button>
+        <button onClick="removeSource('{{ source.displayname }}-container','{{ source.displayname }}')"
+          class="grid-item-header-button">Remove</button>
       </div>
     </div>
     <table class="scrolldown">
-        <thead>
-            <tr>
-                <th>
-                  <input form="source-form" type="checkbox" name="selection" class="selection-box">
-                </th>
-                <th>File Name</th>
-                <th>File Size</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for file in source.files %}
-                <tr id="{{ file.file_name }}">
-                    <td id="{{ file.file_name }}-selection">
-                        <input form="source-form" type="checkbox" name="selection" class="selection-box">
-                    </td>
-                    <td id="{{ file.file_name }}">{{ file.file_name }}</td>
-                    <td id="{{ file.file_name }}-filesize">{{ file.file_size }} bytes</td>
-                </tr>
-            {% endfor %}
-        </tbody>
+      <thead>
+        <tr>
+          <th>
+            <input form="source-form" type="checkbox" name="selection" class="selection-box">
+          </th>
+          <th>File Name</th>
+          <th>File Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for file in source.files %}
+        <tr id="{{ file.file_name }}">
+          <td id="{{ file.file_name }}-selection">
+            <input form="source-form" type="checkbox" name="selection" class="selection-box">
+          </td>
+          <td id="{{ file.file_name }}">{{ file.file_name }}</td>
+          <td id="{{ file.file_name }}-filesize">{{ file.file_size }} bytes</td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
     <div id="{{ source.displayname }}-container" class="grid-item">
       <div class="grid-item-header">
-          <div class="grid-item-header-title">{{ source.displayname }}</div>
-          <div class="grid-item-header-checkbox-container">
-              <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
-              <input id="{{ source.displayname }}-checkbox" type="checkbox" class="grid-item-header-checkbox">
-          </div>
-          <div class="grid-item-header-button-container">
-              <button onClick="clearTextarea('{{ source.displayname }}')" class="grid-item-header-button">Clear</button>
-              <button onClick="downloadText('{{ source.displayname }}')" class="grid-item-header-button">Download</button>
-          </div>
+        <div class="grid-item-header-title">{{ source.displayname }}</div>
+        <div class="grid-item-header-checkbox-container">
+          <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
+          <input id="{{ source.displayname }}-checkbox" type="checkbox" class="grid-item-header-checkbox">
+        </div>
+        <div class="grid-item-header-button-container">
+          <button onClick="clearTextarea('{{ source.displayname }}')" class="grid-item-header-button">Clear</button>
+          <button onClick="downloadText('{{ source.displayname }}')" class="grid-item-header-button">Download</button>
+        </div>
       </div>
-      <textarea id="{{ source.displayname }}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
+      <textarea id="{{ source.displayname }}" class="grid-item-body" cols="80" rows="50" readonly="true"
+        wrap="true"></textarea>
     </div>
     {% endfor %}
   </div>
 </body>
+
 </html>
