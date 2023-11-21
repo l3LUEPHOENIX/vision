@@ -63,11 +63,13 @@ def archivist(path_sources):
         listed_sources = path_sources.split("/")
         source_docs = []
         for source in listed_sources:
-            doc = VISION_VIEWER_SOURCES.find_one({"displayname": source})
-            data = {"displayname": doc["displayname"], "files": doc["files"]}
-            source_docs.append(data)
+            if source:
+                doc = VISION_VIEWER_SOURCES.find_one({"displayname": source})
+                if doc:
+                    data = {"displayname": doc["displayname"], "files": doc["files"]}
+                    source_docs.append(data)
 
-        return render_template("archivist.html", sources_and_files=source_docs)
+        return render_template("archivist.html", logsources=list(VISION_VIEWER_SOURCES.find()), sources_and_files=source_docs)
 
 
 @app.route("/api/<object>/<object_version>", methods=["POST"])

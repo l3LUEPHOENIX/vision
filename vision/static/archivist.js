@@ -6,7 +6,7 @@ function addArchivistSourceForm(form) {
         // If the blank option is selected, do nothing.
         return null
     } else {
-        return window.location.replace(`/archivist/${newSource}`);
+        return window.location.assign(`${window.location.href}/${newSource}`);
     };
 };
 

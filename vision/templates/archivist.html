@@ -10,6 +10,11 @@
 </head>
 
 <body>
+  {% for source in logsources %}
+  <form id="{{ source.displayname }}-form" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  </form>
+  {% endfor %}
   <div id="data-container" class="data-container">
     <div class="data-container-header">
       <div class="left-section">
@@ -23,12 +28,12 @@
           <div class="link">Archivist</div>
         </a>
       </div>
-      <form action="javascript:;" onsubmit="addSourceForm(this)">
+      <form action="javascript:;" onsubmit="addArchivistSourceForm(this)">
         <label for="sources">Add a Source: </label>
-        <select name="sources" id="sources" onchange="addArchivistSource(this.value)">
+        <select name="sources" id="sources" onchange="null">
           <option value='NONE'></option>
           {% for source in logsources %}
-          <option value="{{ source }}">{{ source }}</option>
+          <option value="{{ source.displayname }}">{{ source.displayname }}</option>
           {% endfor %}
         </select>
         <input class="add-source" type="submit" value="Add">
@@ -47,19 +52,19 @@
       </form>
     </div>
     {% for source in sources_and_files %}
-    <div class="source-search-bar">
+    <div id="{{ source.displayname }}-source-search-bar" class="source-search-bar">
       {{ source.displayname }}
       <div class="left-section">
-        <label for="basic_search">
+        <label class="source-search-bar-radio" for="basic_search">
           Basic
-          <input type="radio" id="basic_search">
+          <input form="{{ source.displayname }}-form" type="radio" id="basic_search">
         </label>
-        <label for="regex_search">
+        <label class="source-search-bar-radio" for="regex_search">
           RegEx
-          <input type="radio" id="regex_search">
+          <input form="{{ source.displayname }}-form" type="radio" id="regex_search">
         </label>
-        <input type="text">
-        <input type="text">
+        <input form="{{ source.displayname }}-form" type="text">
+        <input form="{{ source.displayname }}-form" type="text">
         <button class="grid-item-header-button">Search</button>
         <button onClick="removeSource('{{ source.displayname }}-container','{{ source.displayname }}')"
           class="grid-item-header-button">Remove</button>
@@ -69,7 +74,7 @@
       <thead>
         <tr>
           <th>
-            <input form="source-form" type="checkbox" name="selection" class="selection-box">
+            <input form="{{ source.displayname }}-form" type="checkbox" name="selection" class="selection-box">
           </th>
           <th>File Name</th>
           <th>File Size</th>
@@ -79,7 +84,7 @@
         {% for file in source.files %}
         <tr id="{{ file.file_name }}">
           <td id="{{ file.file_name }}-selection">
-            <input form="source-form" type="checkbox" name="selection" class="selection-box">
+            <input form="{{ source.displayname }}-form" type="checkbox" name="selection" class="selection-box">
           </td>
           <td id="{{ file.file_name }}">{{ file.file_name }}</td>
           <td id="{{ file.file_name }}-filesize">{{ file.file_size }} bytes</td>

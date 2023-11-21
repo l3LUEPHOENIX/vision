@@ -255,3 +255,7 @@ input[type=text] {
     border-radius: 5px;
     font-family: 'Courier New', Courier, monospace;
 }
+
+label.source-search-bar-radio {
+    margin-right: 15px;
+}
