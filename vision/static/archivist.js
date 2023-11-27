@@ -53,16 +53,16 @@ function changeFontSize(size) {
 
 function filterList(list_name, query) {
     var list = document.getElementById(list_name).rows;
-    if (query.value == '') {
+    if (!query || query.trim() === '') {
         for (x = 0; x < list.length; x++) {
-            list[x].style.visibility = 'visible';
+            list[x].style.display = '';
         }
     } else {
         for (x = 0; x < list.length; x++) {
             if (!(RegExp('^' + query.replace(/\*/g, '.*') + '$').test(list[x].id))) {
-                list[x].style.visibility = 'hidden';
+                list[x].style.display = 'none';
             } else {
-                list[x].style.visibility = 'visible';
+                list[x].style.display = '';
             }
         }
     }

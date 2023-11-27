@@ -63,7 +63,7 @@
           RegEx
           <input form="{{ source.displayname }}-form" type="radio" id="regex_search">
         </label>
-        <input form="{{ source.displayname }}-form" type="text" onchange="filterList('{{ source.displayname }}-table-body',this.value)">
+        <input form="{{ source.displayname }}-form" type="text" onkeyup="filterList('{{ source.displayname }}-table-body',this.value)">
         <input form="{{ source.displayname }}-form" type="text">
         <button class="grid-item-header-button">Search</button>
         <button onClick="removeSource('{{ source.displayname }}-container')"
