@@ -63,14 +63,14 @@
           RegEx
           <input form="{{ source.displayname }}-form" type="radio" id="regex_search">
         </label>
-        <input form="{{ source.displayname }}-form" type="text">
+        <input form="{{ source.displayname }}-form" type="text" onchange="filterList('{{ source.displayname }}-table-body',this.value)">
         <input form="{{ source.displayname }}-form" type="text">
         <button class="grid-item-header-button">Search</button>
-        <button onClick="removeSource('{{ source.displayname }}-container','{{ source.displayname }}')"
+        <button onClick="removeSource('{{ source.displayname }}-container')"
           class="grid-item-header-button">Remove</button>
       </div>
     </div>
-    <table class="scrolldown">
+    <table id="{{ source.displayname }}-table" class="scrolldown">
       <thead>
         <tr>
           <th>
@@ -80,7 +80,7 @@
           <th>File Size</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="{{ source.displayname }}-table-body">
         {% for file in source.files %}
         <tr id="{{ file.file_name }}">
           <td id="{{ file.file_name }}-selection">
@@ -100,11 +100,11 @@
           <input id="{{ source.displayname }}-checkbox" type="checkbox" class="grid-item-header-checkbox">
         </div>
         <div class="grid-item-header-button-container">
-          <button onClick="clearTextarea('{{ source.displayname }}')" class="grid-item-header-button">Clear</button>
-          <button onClick="downloadText('{{ source.displayname }}')" class="grid-item-header-button">Download</button>
+          <button onClick="clearTextarea('{{ source.displayname }}-textarea')" class="grid-item-header-button">Clear</button>
+          <button onClick="downloadText('{{ source.displayname }}-textarea')" class="grid-item-header-button">Download</button>
         </div>
       </div>
-      <textarea id="{{ source.displayname }}" class="grid-item-body" cols="80" rows="50" readonly="true"
+      <textarea id="{{ source.displayname }}-textarea" class="grid-item-body" cols="80" rows="50" readonly="true"
         wrap="true"></textarea>
     </div>
     {% endfor %}

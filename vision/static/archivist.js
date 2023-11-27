@@ -10,57 +10,15 @@ function addArchivistSourceForm(form) {
     };
 };
 
-function addArchivistSourceFeed(name, containerId) {
-    var newBox = `
-        <div id="${name}:${containerId}-container" class="grid-item">
-            <div class="grid-item-header">
-                <div class="grid-item-header-title">${name}:${containerId}</div>
-                <div class="grid-item-header-checkbox-container">
-                    <label for="checkbox" class="grid-item-header-checkbox-label">Follow</label>
-                    <input id="${name}:${containerId}-checkbox" type="checkbox" class="grid-item-header-checkbox">
-                </div>
-                <div class="grid-item-header-button-container">
-                    <button onClick="clearTextarea('${name}:${containerId}')" class="grid-item-header-button">Clear</button>
-                    <button onClick="downloadText('${name}:${containerId}')" class="grid-item-header-button">Download</button>
-                    <button onClick="removeSource('${name}:${containerId}-container','${name}:${containerId}')" class="grid-item-header-button">Remove</button>
-                </div>
-            </div>
-            <textarea id="${name}:${containerId}" class="grid-item-body" cols="80" rows="50" readonly="true" wrap="true"></textarea>
-        </div>
-    `;
-    var newListenerScript = `
-        var ${name}_${containerId}_source = new EventSource("/stream?channel=${name}:${containerId}");
-        ${name}_${containerId}_source.addEventListener('event', function(event) {  
-            var data = JSON.parse(event.data);
-            if (document.getElementById('${name}:${containerId}')) {
-                document.getElementById('${name}:${containerId}').textContent += \`\$\{data.message\}\\n\`;
-                if (document.getElementById('${name}:${containerId}-checkbox').checked) {
-                    document.getElementById('${name}:${containerId}').scrollTop = document.getElementById('${name}:${containerId}').scrollHeight;
-                }
-            };
-        }, false);
-        ${name}_${containerId}_source.addEventListener('error', function(event) {
-            console.log("Failed to connect to event stream. Is Redis running?");
-        }, false);
-    `;
-    document.getElementById("data-container").innerHTML += newBox;
-    var newScriptElement = document.createElement("script");
-    var inlineScript = document.createTextNode(newListenerScript);
-    newScriptElement.appendChild(inlineScript);
-    document.getElementById(`${name}:${containerId}-container`).appendChild(newScriptElement);
-}
-
 function clearTextarea(elm) {
     // Clear all text out of the given textarea.
     const myTextArea = document.getElementById(elm);
     myTextArea.textContent = '';
 };
 
-function removeSource(elem, data) {
+function removeSource(elem) {
     // Remove a textarea from the page.
-    const sourceBox = document.getElementById(elem);
-    sourceBox.remove();
-    setContainerCookies("vision-containers", "REMOVE", data);
+    document.getElementById(elem).remove();
 };
 
 function downloadText(elm) {
@@ -92,3 +50,20 @@ function changeFontSize(size) {
         myTextAreas[i].style.fontSize = size;
     };
 };
+
+function filterList(list_name, query) {
+    var list = document.getElementById(list_name).rows;
+    if (query.value == '') {
+        for (x = 0; x < list.length; x++) {
+            list[x].style.visibility = 'visible';
+        }
+    } else {
+        for (x = 0; x < list.length; x++) {
+            if (!(RegExp('^' + query.replace(/\*/g, '.*') + '$').test(list[x].id))) {
+                list[x].style.visibility = 'hidden';
+            } else {
+                list[x].style.visibility = 'visible';
+            }
+        }
+    }
+}
