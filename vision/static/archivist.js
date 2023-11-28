@@ -16,9 +16,10 @@ function clearTextarea(elm) {
     myTextArea.textContent = '';
 };
 
-function removeSource(elem) {
+function removeSource(source_displayname) {
     // Remove a textarea from the page.
-    document.getElementById(elem).remove();
+    var current_location = window.location.href;
+    return window.location.assign(current_location.replace(`/${source_displayname}`, ''));
 };
 
 function downloadText(elm) {
@@ -65,5 +66,27 @@ function filterList(list_name, query) {
                 list[x].style.display = '';
             }
         }
+    }
+}
+
+function sumbitFileQuery () {
+
+}
+
+function selectAllCheckbox(source_displayname) {
+    var table = document.getElementById(`${source_displayname}-table`);
+    var checkboxes = table.querySelectorAll('input[type="checkbox"]');
+    var selectAll = document.getElementById(`${source_displayname}-selection`);
+
+    if (selectAll.checked) {
+        checkboxes.forEach(function (currentValue, index, arr) {
+            if (currentValue.closest('tr').style.display !== 'none') {
+                currentValue.checked = true;
+            }
+        });
+    } else {
+        checkboxes.forEach(function (currentValue, index, arr) {
+            currentValue.checked = false;
+        });
     }
 }
