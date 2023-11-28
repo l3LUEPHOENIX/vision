@@ -86,7 +86,7 @@
         {% for file in source.files %}
         <tr id="{{ file.file_name }}">
           <td id="{{ file.file_name }}-selection">
-            <input form="{{ source.displayname }}-form" type="checkbox" name="selection" class="selection-box">
+            <input form="{{ source.displayname }}-form" type="checkbox" name="{{ file.file_name }}" class="selection-box" value="{{ file.file_name }}">
           </td>
           <td id="{{ file.file_name }}">{{ file.file_name }}</td>
           <td id="{{ file.file_name }}-filesize">{{ file.file_size }} bytes</td>

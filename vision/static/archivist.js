@@ -69,7 +69,7 @@ function filterList(list_name, query) {
     }
 }
 
-function sumbitFileQuery () {
+function sumbitFileQuery(form) {
 
 }
 
