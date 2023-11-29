@@ -58,7 +58,8 @@ def index():
 @vision_login_required
 def archivist(path_sources):
     if request.method == "POST":
-        pass
+        data = request.get_json()
+        sse.publish(data=data, type="event", channel=f"{data['source']}:archivist")
     else:
         listed_sources = path_sources.split("/")
         source_docs = []
@@ -69,7 +70,11 @@ def archivist(path_sources):
                     data = {"displayname": doc["displayname"], "files": doc["files"]}
                     source_docs.append(data)
 
-        return render_template("archivist.html", logsources=list(VISION_VIEWER_SOURCES.find()), sources_and_files=source_docs)
+        return render_template(
+            "archivist.html",
+            logsources=list(VISION_VIEWER_SOURCES.find()),
+            sources_and_files=source_docs,
+        )
 
 
 @app.route("/api/<object>/<object_version>", methods=["POST"])

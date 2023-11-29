@@ -69,8 +69,21 @@ function filterList(list_name, query) {
     }
 }
 
-function sumbitFileQuery(form) {
-
+function sumbitFileQuery(source_displayname) {
+    event.preventDefault();
+    const form = document.getElementById(`${source_displayname}-form`);
+    const formData = new FormData(form);
+    
+    fetch(window.location.href, {
+        method: "POST",
+        headers: "Content-type: application/json",
+        body: JSON.stringify({
+            source: source_displayname,
+            query_type: formData.get('query_type'),
+            query: String(formData.get('query')),
+            files: formData.getAll('file')
+        })
+    });
 }
 
 function selectAllCheckbox(source_displayname) {

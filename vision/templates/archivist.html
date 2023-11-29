@@ -60,14 +60,14 @@
       <div class="left-section">
         <label class="source-search-bar-radio" for="basic_search">
           Basic
-          <input form="{{ source.displayname }}-form" type="radio" id="basic_search">
+          <input form="{{ source.displayname }}-form" type="radio" id="basic_search" name="query_type" value="basic_search">
         </label>
         <label class="source-search-bar-radio" for="regex_search">
           RegEx
-          <input form="{{ source.displayname }}-form" type="radio" id="regex_search">
+          <input form="{{ source.displayname }}-form" type="radio" id="regex_search" name="query_type" value="regex_search">
         </label>
-        <input form="{{ source.displayname }}-form" type="text" placeholder="File Query">
-        <button class="grid-item-header-button">Search</button>
+        <input form="{{ source.displayname }}-form" type="text" placeholder="File Query" name="query">
+        <button form="{{ source.displayname }}-form" onClick="submitFileQuery('{{ source.displayname }}')" class="grid-item-header-button" type="button">Search</button>
         <button onClick="removeSource('{{ source.displayname }}')"
           class="grid-item-header-button">Remove</button>
       </div>
@@ -86,7 +86,7 @@
         {% for file in source.files %}
         <tr id="{{ file.file_name }}">
           <td id="{{ file.file_name }}-selection">
-            <input form="{{ source.displayname }}-form" type="checkbox" name="{{ file.file_name }}" class="selection-box" value="{{ file.file_name }}">
+            <input form="{{ source.displayname }}-form" type="checkbox" name="file" class="selection-box" value="{{ file.file_name }}">
           </td>
           <td id="{{ file.file_name }}">{{ file.file_name }}</td>
           <td id="{{ file.file_name }}-filesize">{{ file.file_size }} bytes</td>
