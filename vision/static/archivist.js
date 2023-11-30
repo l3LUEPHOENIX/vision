@@ -69,14 +69,17 @@ function filterList(list_name, query) {
     }
 }
 
-function sumbitFileQuery(source_displayname) {
+function submitFileQuery(source_displayname) {
     event.preventDefault();
     const form = document.getElementById(`${source_displayname}-form`);
     const formData = new FormData(form);
     
     fetch(window.location.href, {
         method: "POST",
-        headers: "Content-type: application/json",
+        headers: new Headers({
+            "Content-type":"application/json",
+            "X-CSRFToken": formData.get('csrf_token')
+        }),
         body: JSON.stringify({
             source: source_displayname,
             query_type: formData.get('query_type'),
@@ -102,4 +105,29 @@ function selectAllCheckbox(source_displayname) {
             currentValue.checked = false;
         });
     }
+}
+
+// Create all listeners for the textareas on the page.
+window.onload = function () {
+    const source_containers = document.querySelectorAll("div[id$='-container'].grid-item");
+    source_containers.forEach(function(currentValue, index, arr) {
+        var source_displayname = currentValue.id.split('-')[0];
+        const newListenerScript = `
+        var ${source_displayname}_source_listener = new EventSource('/stream?channel=${source_displayname}:archivist');
+        ${source_displayname}_source_listener.addEventListener('event', function(event) {
+            var data = JSON.parse(event.data);
+            var sourceTextArea = document.getElementById('${source_displayname}-textarea');
+            if (sourceTextArea) {
+                sourceTextArea.textContent += \`\$\{event.data\}\\n\`;
+                if (document.getElementById('${source_displayname}-checkbox').checked) {
+                    sourceTextArea.scrollTop = sourceTextArea.scrollHeight;
+                }
+            }
+        }, false);
+        `
+        var newScriptElement = document.createElement("script");
+        var inlineScript = document.createTextNode(newListenerScript);
+        newScriptElement.appendChild(inlineScript);
+        currentValue.appendChild(newScriptElement);
+    });
 }

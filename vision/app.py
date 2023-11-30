@@ -60,6 +60,7 @@ def archivist(path_sources):
     if request.method == "POST":
         data = request.get_json()
         sse.publish(data=data, type="event", channel=f"{data['source']}:archivist")
+        return "200"
     else:
         listed_sources = path_sources.split("/")
         source_docs = []
