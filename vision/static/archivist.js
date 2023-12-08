@@ -118,13 +118,13 @@ window.onload = function () {
             var data = JSON.parse(event.data);
             var sourceTextArea = document.getElementById('${source_displayname}-textarea');
             if (sourceTextArea) {
-                sourceTextArea.textContent += \`\$\{event.data\}\\n\`;
+                sourceTextArea.textContent += \`\$\{data.message\}\\n\`;
                 if (document.getElementById('${source_displayname}-checkbox').checked) {
                     sourceTextArea.scrollTop = sourceTextArea.scrollHeight;
                 }
             }
         }, false);
-        `
+        `;
         var newScriptElement = document.createElement("script");
         var inlineScript = document.createTextNode(newListenerScript);
         newScriptElement.appendChild(inlineScript);
