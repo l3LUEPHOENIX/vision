@@ -41,10 +41,12 @@ def publish_archive(jsonArguments:str=None, source:str=None, queryType:str=None,
         # requests.post(url, json={ "message" : header }, verify=False)
         print(header)
         with open(file, "r") as file_object:
-            file_text = file_object.read()
-            matches = re.findall(pattern, file_text)
-            # requests.post(url, json={ "message" : matches }, verify=False)
-            print(matches)
+            file_text = file_object.readlines()
+            for line in file_text:
+                if re.search(pattern, line):
+                    print(f"{file_text.index(line)}:\t{line}")
+                
+                # requests.post(url, json={ "message" : matches }, verify=False)
         footer = (f"{'='*30}\n"f"END: {file}\n"f"{'='*30}")
         # requests.post(url, json={ "message" : footer }, verify=False)
         print(footer)
