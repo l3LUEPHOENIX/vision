@@ -54,7 +54,7 @@ def index():
     return render_template("index.html", logsources=data)
 
 
-@app.route("/archivist/<path:path_sources>", methods=["GET", "POST"])
+@app.route("/archivist/<path:path_sources>", methods=["GET","POST"])
 @vision_login_required
 def archivist(path_sources):
     if request.method == "POST":
@@ -87,7 +87,7 @@ def publish(object=None, object_version=None):
     objects = {
         "publisher": {"v1.0": models.publisherApi_v1_0, "action": sse.publish},
         "indexer": {"v1.0": models.indexerApi_v1_0, "action": indexer_update},
-        "archivist": {"v1.0": models.archivistApi_v1_0, "action": None},
+        "archivist": {"v1.0": models.archivistApi_v1_0, "action": sse.publish},
     }
 
     if request.get_json():

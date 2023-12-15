@@ -9,24 +9,22 @@ class publisherApi_v1_0(BaseModel):
     version: int
     authentication: dict[Literal["apikey"], str]
     content: dict[Literal["message", "containerId"], str]
-    display_name: str = None
     post: dict = None
     channel: str = None
 
     @model_validator(mode="after")
-    def valid_keys_and_containers(self):
-        key = hashed_key(self.authentication["apikey"])
+    def validate_keys_and_containers(self):
         container = self.content["containerId"]
-        mongo_document = VISION_VIEWER_SOURCES.find_one({"apikey_sum": key})
-        if not mongo_document:
+        mongo_document = mongo_document_validator(self.authentication["apikey"])
+        if not mongo_document.valid_key():
             raise ValueError("Invalid Key")
 
-        if container not in mongo_document["containerIds"]:
+        if container not in mongo_document.document["containerIds"]:
             raise ValueError("Invalid Container ID")
 
-        self.display_name = mongo_document["displayname"]
-        self.channel = f"{self.display_name}:{container}"
+        self.channel = f"{mongo_document.document['displayname']}:{container}"
         self.post = {"message": self.content["message"], "containerId": self.channel}
+        del mongo_document
         return {"data": self.post, "type": "event", "channel": self.channel}
 
 
@@ -37,9 +35,8 @@ class indexerApi_v1_0(BaseModel):
 
     @model_validator(mode="after")
     def validate_key(self):
-        key = hashed_key(self.authentication["apikey"])
-        mongo_document = VISION_VIEWER_SOURCES.find_one({"apikey_sum": key})
-        if not mongo_document:
+        mongo_document = mongo_document_validator(self.authentication["apikey"])
+        if not mongo_document.valid_key():
             raise ValueError("Invalid Key")
 
         return {
@@ -49,4 +46,18 @@ class indexerApi_v1_0(BaseModel):
 
 
 class archivistApi_v1_0(BaseModel):
-    pass
+    authentication: dict[Literal["apikey"], str]
+    content: dict[Literal["message", "containerId"], str]
+    channel: str = None
+    post: dict = None
+
+    @model_validator(mode="after")
+    def validate_key(self):
+        mongo_document = mongo_document_validator(self.authentication["apikey"])
+        if not mongo_document.valid_key():
+            raise ValueError("Invalid Key")
+
+        self.channel = f"{mongo_document.document['displayname']}:archivist"
+        self.post = {"message": self.content["message"], "containerId": self.channel}
+        del mongo_document
+        return {"data": self.post, "type": "event", "channel": self.channel}

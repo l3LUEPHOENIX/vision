@@ -66,3 +66,31 @@ def indexer_update(authentication, content):
         apikey["files.file_name"] = content["file_name"]
         set_data = {"$set": {"files.$.file_size": content["file_size"]}}
         VISION_VIEWER_SOURCES.update_one(apikey, set_data)
+
+class mongo_document_validator():
+    def __init__(self, key):
+        self.key = hashed_key(key)
+        self.document = VISION_VIEWER_SOURCES.find_one({"apikey_sum": self.key})
+
+    def valid_key(self):
+        if self.document:
+            return True
+        else:
+            return False
+        
+
+    def valid_containers(self, containers):
+        def container_check(containers):
+            for container in containers:
+                if container in self.document["containerIds"]:
+                    return True
+                else:
+                    return False
+        
+        if isinstance(containers, str):
+            containers = [containers]
+
+        if self.document:
+            return container_check(containers)
+        else:
+            return False    

@@ -13,11 +13,27 @@ argParser.add_argument("-t", "--queryType", help="The type of query; Basic or Re
 argParser.add_argument("-q", "--query", help="The query")
 argParser.add_argument("-f", "--files", nargs='*', help="The files to search (List)")
 argParser.add_argument("-u", "--url", help="The URL to the Vision instance")
-# argParser.add_argument("-k","--key", help="API key for this source")
+argParser.add_argument("-k","--key", help="API key for this source")
 
 args = argParser.parse_args()
 
-def publish_archive(jsonArguments:str=None, source:str=None, queryType:str=None, query:str=None, files:list=None, url:str=None):
+def publish_archive(jsonArguments:str=None, source:str=None, queryType:str=None, query:str=None, files:list=None, url:str=None, key:str=None):
+    class post:
+        def __init__(self, key, source):
+            self.key = key
+            self.source = source
+
+        def new_post(self, message):
+            return { 
+                "authentication" : {
+                    "apikey" : self.key
+                }, 
+                "content": {
+                    "message": message,
+                    "containerId":f"{self.source}:archivist"
+                }
+            }
+    
     if jsonArguments:
         data = json.loads(jsonArguments)
     else:
@@ -25,7 +41,9 @@ def publish_archive(jsonArguments:str=None, source:str=None, queryType:str=None,
             "source" : source,
             "query_type" : queryType,
             "query" : query,
-            "files" : files
+            "files" : files,
+            "url" : url,
+            "key" : key
         }
 
     if data["query_type"] == "basic_search":
@@ -34,22 +52,18 @@ def publish_archive(jsonArguments:str=None, source:str=None, queryType:str=None,
         user_query = f"{user_query}"
         pattern = re.compile(user_query)
     elif data["query_type"] == "regex_search":
-        pattern = str(data["query"])
+        pattern = re.compile(str(data["query"]))
 
     for file in data["files"]:
-        header = (f"BEGIN: {file}\n"f"{'='*30}")
-        # requests.post(url, json={ "message" : header }, verify=False)
-        print(header)
+        data = post(data["key"], data["source"])
+        print(requests.post(url, json=data.new_post(f"BEGIN: {file}\n"f"{'='*30}"), verify=False).text)
         with open(file, "r") as file_object:
             file_text = file_object.readlines()
             for line in file_text:
                 if re.search(pattern, line):
-                    print(f"{file_text.index(line)}:\t{line}")
-                
-                # requests.post(url, json={ "message" : matches }, verify=False)
-        footer = (f"{'='*30}\n"f"END: {file}\n"f"{'='*30}")
-        # requests.post(url, json={ "message" : footer }, verify=False)
-        print(footer)
+                    print(requests.post(url, json=data.new_post(f"{file_text.index(line) + 1}:\t{line}"), verify=False))
+        print(requests.post(url, json=data.new_post(f"{'='*30}\n"f"END: {file}\n"f"{'='*30}"), verify=False))
+
 
 if args.jsonArguments and isinstance(args.jsonArguments, str):
     publish_archive(jsonArguments=args.jsonArguments)
@@ -59,5 +73,6 @@ else:
         queryType = str(args.queryType),
         query = str(args.query),
         files = args.files,
-        url = str(args.url)
+        url = str(args.url),
+        key = str(args.key)
     )

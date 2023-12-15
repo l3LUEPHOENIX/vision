@@ -84,7 +84,7 @@ function submitFileQuery(source_displayname) {
             source: source_displayname,
             query_type: formData.get('query_type'),
             query: String(formData.get('query')),
-            files: formData.getAll('file')
+            files: formData.getAll('file'),
         })
     });
 }
