@@ -1,5 +1,6 @@
 import argparse
 import requests
+import tarfile
 import json
 import re
 
@@ -17,8 +18,46 @@ argParser.add_argument("-k","--key", help="API key for this source")
 
 args = argParser.parse_args()
 
-def publish_archive(jsonArguments:str=None, source:str=None, queryType:str=None, query:str=None, files:list=None, url:str=None, key:str=None):
-    class post:
+plain_file_types = [
+    "txt", "csv", "xml",
+    "json", "html", "css",
+    "js", "log", "md", "yaml",
+    "yml", "ini", "cfg", "conf",
+    "bat", "sh", "sql", "py",
+]
+
+supported_file_types = [
+    "gz",
+]
+
+class file_sorter:
+    def __init__(self, files:list):
+        self.plain_file_types = [
+            "txt", "csv", "xml",
+            "json", "html", "css",
+            "js", "log", "md", "yaml",
+            "yml", "ini", "cfg", "conf",
+            "bat", "sh", "sql", "py",
+            "ps1", "psm1",
+        ]
+        self.special_file_types = [
+            "gz",
+        ]
+        self.special_files =[]
+        self.plain_files = []
+        self.unsupported_files = []
+
+        for file in files:
+            file_extension = file.split('.')[-1]
+            if file_extension in self.plain_file_types:
+                self.plain_files.append(file)
+            elif file_extension in self.special_file_types:
+                self.special_files.append(file)
+            else:
+                self.unsupported_files.append(file)
+
+
+class post:
         def __init__(self, key, source):
             self.key = key
             self.source = source
@@ -33,6 +72,8 @@ def publish_archive(jsonArguments:str=None, source:str=None, queryType:str=None,
                     "containerId":f"{self.source}:archivist"
                 }
             }
+        
+def publish_archive(jsonArguments:str=None, source:str=None, queryType:str=None, query:str=None, files:list=None, url:str=None, key:str=None):
     
     if jsonArguments:
         data = json.loads(jsonArguments)
