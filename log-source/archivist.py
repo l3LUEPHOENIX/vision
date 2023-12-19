@@ -1,3 +1,8 @@
+"""
+Archivist: v1.0
+This script is meant to read and query from files, then ship out the data to The Vision Tool.
+"""
+
 import argparse
 import requests
 import tarfile
@@ -18,45 +23,6 @@ argParser.add_argument("-k","--key", help="API key for this source")
 
 args = argParser.parse_args()
 
-plain_file_types = [
-    "txt", "csv", "xml",
-    "json", "html", "css",
-    "js", "log", "md", "yaml",
-    "yml", "ini", "cfg", "conf",
-    "bat", "sh", "sql", "py",
-]
-
-supported_file_types = [
-    "gz",
-]
-
-class file_sorter:
-    def __init__(self, files:list):
-        self.plain_file_types = [
-            "txt", "csv", "xml",
-            "json", "html", "css",
-            "js", "log", "md", "yaml",
-            "yml", "ini", "cfg", "conf",
-            "bat", "sh", "sql", "py",
-            "ps1", "psm1",
-        ]
-        self.special_file_types = [
-            "gz",
-        ]
-        self.special_files =[]
-        self.plain_files = []
-        self.unsupported_files = []
-
-        for file in files:
-            file_extension = file.split('.')[-1]
-            if file_extension in self.plain_file_types:
-                self.plain_files.append(file)
-            elif file_extension in self.special_file_types:
-                self.special_files.append(file)
-            else:
-                self.unsupported_files.append(file)
-
-
 class post:
         def __init__(self, key, source):
             self.key = key
@@ -72,7 +38,30 @@ class post:
                     "containerId":f"{self.source}:archivist"
                 }
             }
-        
+
+def lines(file):
+    supported_file_types = [
+        "txt", "csv", "xml",
+        "json", "html", "css",
+        "js", "log", "md", "yaml",
+        "yml", "ini", "cfg", "conf",
+        "bat", "sh", "sql", "py",
+        "ps1", "psm1","gz",
+    ]
+    extension = file.split('.')[-1]
+    if extension in supported_file_types:
+        if extension == "gz":
+            with tarfile.open(file) as tar:
+                for member in tar.getmembers():
+                    f = tar.extractfile(member)
+                    return [ line.decode('utf-8') for line in f.readlines() ]
+        else:
+            with open(file, 'r') as f:
+                return f.readlines()
+    else:
+        return f"File: {file} is not supported!"
+    
+
 def publish_archive(jsonArguments:str=None, source:str=None, queryType:str=None, query:str=None, files:list=None, url:str=None, key:str=None):
     
     if jsonArguments:
@@ -98,11 +87,10 @@ def publish_archive(jsonArguments:str=None, source:str=None, queryType:str=None,
     for file in data["files"]:
         data = post(data["key"], data["source"])
         print(requests.post(url, json=data.new_post(f"BEGIN: {file}\n"f"{'='*30}"), verify=False).text)
-        with open(file, "r") as file_object:
-            file_text = file_object.readlines()
-            for line in file_text:
-                if re.search(pattern, line):
-                    print(requests.post(url, json=data.new_post(f"{file_text.index(line) + 1}:\t{line}"), verify=False))
+        file_text = lines(file)
+        for line in file_text:
+            if re.search(pattern, line):
+                print(requests.post(url, json=data.new_post(f"{file_text.index(line) + 1}:\t{line}"), verify=False))
         print(requests.post(url, json=data.new_post(f"{'='*30}\n"f"END: {file}\n"f"{'='*30}"), verify=False))
 
 
