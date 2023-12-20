@@ -23,7 +23,7 @@ argParser.add_argument("-k","--key", help="API key for this source")
 
 args = argParser.parse_args()
 
-class post:
+class vision_post:
         def __init__(self, key, source):
             self.key = key
             self.source = source
@@ -39,7 +39,7 @@ class post:
                 }
             }
 
-def lines(file):
+def lines(file:str=None):
     supported_file_types = [
         "txt", "csv", "xml",
         "json", "html", "css",
@@ -59,7 +59,7 @@ def lines(file):
             with open(file, 'r') as f:
                 return f.readlines()
     else:
-        return f"File: {file} is not supported!"
+        return None
     
 
 def publish_archive(jsonArguments:str=None, source:str=None, queryType:str=None, query:str=None, files:list=None, url:str=None, key:str=None):
@@ -78,20 +78,23 @@ def publish_archive(jsonArguments:str=None, source:str=None, queryType:str=None,
 
     if data["query_type"] == "basic_search":
         user_query = re.escape(data['query'])
-        user_query = user_query.replace('\\*','.*')
-        user_query = f"{user_query}"
+        user_query = str(user_query.replace('\\*','.*'))
         pattern = re.compile(user_query)
     elif data["query_type"] == "regex_search":
         pattern = re.compile(str(data["query"]))
 
     for file in data["files"]:
-        data = post(data["key"], data["source"])
-        print(requests.post(url, json=data.new_post(f"BEGIN: {file}\n"f"{'='*30}"), verify=False).text)
+        message = vision_post(data["key"], data["source"])
+        print(requests.post(data["url"], json=message.new_post(f"BEGIN: {file}\n"f"{'='*30}"), verify=False).text)
         file_text = lines(file)
-        for line in file_text:
-            if re.search(pattern, line):
-                print(requests.post(url, json=data.new_post(f"{file_text.index(line) + 1}:\t{line}"), verify=False))
-        print(requests.post(url, json=data.new_post(f"{'='*30}\n"f"END: {file}\n"f"{'='*30}"), verify=False))
+        if file_text:
+            for line in file_text:
+                if re.search(pattern, line):
+                    print(requests.post(data["url"], json=message.new_post(f"{file_text.index(line) + 1}:\t{line}"), verify=False))
+        else:
+            print(requests.post(data["url"], json=message.new_post(f"Error for {file}: Type not supported!"), verify=False))
+
+        print(requests.post(data["url"], json=message.new_post(f"{'='*30}\n"f"END: {file}\n"f"{'='*30}"), verify=False))
 
 
 if args.jsonArguments and isinstance(args.jsonArguments, str):
